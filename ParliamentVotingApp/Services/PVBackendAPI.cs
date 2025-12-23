@@ -9,13 +9,11 @@ public class PVBackendAPI : IPVBackendAPI
 {
     private readonly HttpClient _httpClient;
     private readonly string _baseUrl;
-    private readonly IOptions<ExternalAPIOptions> _options;
 
     public PVBackendAPI(HttpClient httpClient, IOptions<ExternalAPIOptions> options)
     {
         _httpClient = httpClient;
-        _options = options;
-        _baseUrl = _options.Value.BaseURL;
+        _baseUrl = options.Value.BaseURL;
     }
 
     public async Task<TermInfoResponse?> GetCurrentTerm()
