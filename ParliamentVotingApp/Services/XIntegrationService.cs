@@ -4,4 +4,5 @@ namespace ParliamentVotingApp.Services;
 
 public class XIntegrationService : IXIntegrationService
 {
+
 }
