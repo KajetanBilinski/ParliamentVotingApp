@@ -69,7 +69,6 @@ public class PVBackendAPI : IPVBackendAPI
         int proceedingNumber
     )
     {
-        int i = 0;
         try
         {
             _logger.LogDebug(
@@ -83,7 +82,6 @@ public class PVBackendAPI : IPVBackendAPI
             List<VotingDetailsResponse> votingDetails = new List<VotingDetailsResponse>();
             foreach (var voting in votings)
             {
-                i++;
                 var votingDetail = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(
                     $"{_baseUrl}/term{termInfoResponse.Number}/votings/{proceedingNumber}/{voting.VotingNumber}"
                 );
@@ -99,11 +97,8 @@ public class PVBackendAPI : IPVBackendAPI
                 return null;
             return votingDetails;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _logger.LogError(ex.Message);
-            _logger.LogError(ex.StackTrace);
-            Console.WriteLine(i);
             _logger.LogError("Error during fetching votings details for proceeding");
         }
         return null;
@@ -177,7 +172,9 @@ public class PVBackendAPI : IPVBackendAPI
             var proceedings = await GetProceedings(termInfoResponse);
             if (proceedings == null || proceedings.Count == 0)
                 return null;
-            var proceeding = proceedings.OrderBy(p => p.ProceedingNumber).FirstOrDefault();
+            var proceeding = proceedings
+                .OrderByDescending(p => p.ProceedingNumber)
+                .FirstOrDefault();
             if (proceeding == null)
                 return null;
             return proceeding;
@@ -211,5 +208,32 @@ public class PVBackendAPI : IPVBackendAPI
             _logger.LogError("Error during fetching current proceeding votings");
         }
         return null;
+    }
+
+    public async Task<VotingDetailsResponse?> GetLastVoting(TermInfoResponse termInfoResponse)
+    {
+        var proceeding = await GetLastOrCurrentProceeding(termInfoResponse);
+        if (proceeding == null)
+            return null;
+        var votings = await _httpClient.GetFromJsonAsync<List<VotingResponse>>(
+            $"{_baseUrl}/term{termInfoResponse.Number}/votings/{proceeding.ProceedingNumber}"
+        );
+        if (votings == null)
+            return null;
+        var lastVotingNumber = votings
+            .OrderByDescending(v => v.VotingNumber)
+            .FirstOrDefault()
+            ?.VotingNumber;
+        if (lastVotingNumber == null)
+            return null;
+        var lastDetailedVoting = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(
+            $"{_baseUrl}/term{termInfoResponse.Number}/votings/{proceeding.ProceedingNumber}/{lastVotingNumber}"
+        );
+        if (lastDetailedVoting == null) return null;
+        lastDetailedVoting =
+            (lastDetailedVoting.VotingOptions == null)
+                ? HandleClubVotes(lastDetailedVoting)
+                : HandleClubListVotes(lastDetailedVoting);
+        return lastDetailedVoting;
     }
 }

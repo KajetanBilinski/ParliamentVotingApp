@@ -16,9 +16,6 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var term = await _pvBackendAPI.GetCurrentTerm();
-        _logger.LogDebug(term!.From.ToString());
-        var proceedings = await _pvBackendAPI.GetCurrentProceedingVotings(term);
-        Console.WriteLine();
+
     }
 }

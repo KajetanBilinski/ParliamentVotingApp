@@ -5,6 +5,8 @@ namespace ParliamentVotingApp.Models.DTO;
 
 public class VotingDetailsResponse
 {
+    [JsonPropertyName("votingNumber")]
+    public int VotingNumber { get; set; }
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
     [JsonPropertyName("title")]
