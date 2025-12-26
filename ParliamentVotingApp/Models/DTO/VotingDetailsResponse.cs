@@ -1,9 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using ParliamentVotingApp.Enums;
+using System.Text.Json.Serialization;
 
 namespace ParliamentVotingApp.Models.DTO;
 
 public class VotingDetailsResponse
 {
+    [JsonPropertyName("votingNumber")]
+    public int VotingNumber { get; set; }
     [JsonPropertyName("date")]
     public DateTime Date { get; set; }
     [JsonPropertyName("title")]
@@ -22,8 +25,17 @@ public class VotingDetailsResponse
     public int AbstainCount { get; set; }
     [JsonPropertyName("totalVoted")]
     public int TotalVoted { get; set; }
+    [JsonPropertyName("majorityType")]
+    public string? MajorityType { get; set; }
+    [JsonPropertyName("majorityVotes")]
+    public int? MajorityVotes { get; set; }
     [JsonPropertyName("votes")]
     public IList<VoteResponse>? Votes { get; set; }
+    [JsonPropertyName("votingOptions")]
+    public List<VotingOptions>? VotingOptions { get; set; }
     [JsonIgnore]
-    public bool Adopted => YesVotesCount > NoVotesCount;
+    public Dictionary<string,Dictionary<VoteType,int>>? ClubVotes { get; set; }
+    public Dictionary<string, Dictionary<string, Dictionary<VoteType, int>>>? ClubListVotes { get; set; }
+    [JsonIgnore]
+    public bool Adopted => MajorityVotes == null? YesVotesCount > NoVotesCount : YesVotesCount >= MajorityVotes;
 }
