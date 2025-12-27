@@ -4,6 +4,8 @@
 
 /ParliamentVotingApp/.vs/ParliamentVotingApp.slnx
 /ParliamentVotingApp/.vs/ProjectEvaluation
+node_modules
+.vscode
 /ParliamentVotingApp/appsettings.Development.json
 /ParliamentVotingClient/node_modules
 /ParliamentVotingClient/.vscode
