@@ -5,6 +5,8 @@ namespace ParliamentVotingApp.Models.DTO;
 
 public class VotingDetailsResponse
 {
+    [JsonIgnore]
+    public int ProceedingNumber { get; set; }
     [JsonPropertyName("votingNumber")]
     public int VotingNumber { get; set; }
     [JsonPropertyName("date")]
@@ -30,7 +32,7 @@ public class VotingDetailsResponse
     [JsonPropertyName("majorityVotes")]
     public int? MajorityVotes { get; set; }
     [JsonPropertyName("votes")]
-    public IList<VoteResponse>? Votes { get; set; }
+    public IList<VoteResponseDTO>? Votes { get; set; }
     [JsonPropertyName("votingOptions")]
     public List<VotingOptions>? VotingOptions { get; set; }
     [JsonIgnore]
