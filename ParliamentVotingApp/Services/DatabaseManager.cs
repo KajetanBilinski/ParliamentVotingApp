@@ -11,7 +11,6 @@ public class DatabaseManager : IDatabaseManager
 {
     private readonly ParliamentContext _context;
 
-
     public DatabaseManager(ParliamentContext context)
     {
         _context = context;
@@ -20,7 +19,7 @@ public class DatabaseManager : IDatabaseManager
     public async Task<Dictionary<int,List<int>>> GetAllProceedingAndVotingNumbers()
     {
         var data = await _context.VotingDetails
-            .Include(v => v.Proceeding) // załaduj powiązane Proceedings
+            .Include(v => v.Proceeding) 
             .Select(v => new
             {
                 ProceedingNumber = v.Proceeding.ProceedingNumber,
@@ -36,6 +35,13 @@ public class DatabaseManager : IDatabaseManager
             );
 
         return result;
+    }
+
+    public async Task<List<Proceeding>> GetAllProceedings()
+    {
+        var proceedings = await _context.Proceedings.ToListAsync();
+        if (proceedings == null || proceedings.Count == 0) return new List<Proceeding>();
+        return proceedings;
     }
 
     public async Task AddNewProceeding(ProceedingResponse proceedingResponse)
