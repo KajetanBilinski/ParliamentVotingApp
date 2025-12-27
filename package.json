@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@primeuix/themes": "^2.0.2",
+    "primeng": "^21.0.2"
+  }
+}

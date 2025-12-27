@@ -4,3 +4,5 @@
 
 /ParliamentVotingApp/.vs/ParliamentVotingApp.slnx
 /ParliamentVotingApp/.vs/ProjectEvaluation
+node_modules
+.vscode
