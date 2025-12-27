@@ -49,20 +49,13 @@ public class PVBackendAPI : IPVBackendAPI
     {
         try
         {
-            _logger.LogDebug($"Request URL: {_baseUrl}/term{termInfoResponse.Current}/votings");
+            _logger.LogDebug($"Request URL: {_baseUrl}/term{termInfoResponse.Current}/proceedings");
             var proceedings = await _httpClient.GetFromJsonAsync<List<ProceedingResponse>>(
-                $"{_baseUrl}/term{termInfoResponse.Number}/votings"
+                $"{_baseUrl}/term{termInfoResponse.Number}/proceedings"
             );
             if (proceedings == null)
                 return null;
-            var grouped = proceedings
-                .GroupBy(p => p.ProceedingNumber)
-                .Select(g => new ProceedingResponse
-                {
-                    ProceedingNumber = g.Key
-                })
-                .ToList();
-            return grouped;
+            return proceedings;
         }
         catch (Exception)
         {

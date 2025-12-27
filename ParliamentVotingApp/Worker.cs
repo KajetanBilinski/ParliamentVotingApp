@@ -27,8 +27,14 @@ public class Worker : BackgroundService
         //    await _databaseManager.SaveVotingDetails(voting);
         var proceedingsAndVotingsDB = await _databaseManager.GetAllProceedingAndVotingNumbers();
         var proceedings = await _pvBackendAPI.GetProceedings(term!); //24
-        foreach(var proceeding in proceedings!)
+        if (proceedings == null) return;
+        foreach(var p in proceedings)
         {
+            await _databaseManager.AddNewProceeding(p);
+        }
+        foreach (var proceeding in proceedings!)
+        {
+            
             var votings = await _pvBackendAPI.GetVotingsForProceeding(term!, proceeding.ProceedingNumber);
             if (votings != null)
             {

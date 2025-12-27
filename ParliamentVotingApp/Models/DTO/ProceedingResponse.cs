@@ -4,6 +4,8 @@ namespace ParliamentVotingApp.Models.DTO;
 
 public class ProceedingResponse
 {
-    [JsonPropertyName("proceeding")]
+    [JsonPropertyName("number")]
     public int ProceedingNumber { get; set; }
+    [JsonPropertyName("title")]
+    public string? Title { get; set; }
 }
