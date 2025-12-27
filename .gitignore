@@ -5,3 +5,6 @@
 /ParliamentVotingApp/.vs/ParliamentVotingApp.slnx
 /ParliamentVotingApp/.vs/ProjectEvaluation
 /ParliamentVotingApp/appsettings.Development.json
+/ParliamentVotingClient/node_modules
+/ParliamentVotingClient/.vscode
+/ParliamentVotingClient/.angular/cache/21.0.4/ParliamentVotingClient
