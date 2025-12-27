@@ -55,7 +55,14 @@ public class PVBackendAPI : IPVBackendAPI
             );
             if (proceedings == null)
                 return null;
-            return proceedings;
+            var grouped = proceedings
+                .GroupBy(p => p.ProceedingNumber)
+                .Select(g => new ProceedingResponse
+                {
+                    ProceedingNumber = g.Key
+                })
+                .ToList();
+            return grouped;
         }
         catch (Exception)
         {
@@ -91,6 +98,7 @@ public class PVBackendAPI : IPVBackendAPI
                     (votingDetail.VotingOptions == null)
                         ? HandleClubVotes(votingDetail)
                         : HandleClubListVotes(votingDetail);
+                votingDetail.ProceedingNumber = proceedingNumber;
                 votingDetails.Add(votingDetail);
             }
             if (votingDetails == null || votingDetails.Count == 0)
@@ -235,5 +243,20 @@ public class PVBackendAPI : IPVBackendAPI
                 ? HandleClubVotes(lastDetailedVoting)
                 : HandleClubListVotes(lastDetailedVoting);
         return lastDetailedVoting;
+    }
+
+    public async Task<VotingDetailsResponse?> GetVotingForProceeding(TermInfoResponse termInfoResponse, 
+        int proceedingNumber, int votingNumber)
+    {
+        var detailedVoting = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(
+            $"{_baseUrl}/term{termInfoResponse.Number}/votings/{proceedingNumber}/{votingNumber}"
+        );
+        if (detailedVoting == null) return null;
+        detailedVoting =
+            (detailedVoting.VotingOptions == null)
+                ? HandleClubVotes(detailedVoting)
+                : HandleClubListVotes(detailedVoting);
+        detailedVoting.ProceedingNumber = proceedingNumber;
+        return detailedVoting;
     }
 }

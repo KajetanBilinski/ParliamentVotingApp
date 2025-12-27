@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace ParliamentVotingApp.Models.DTO;
 
-public sealed class VoteResponse
+public sealed class VoteResponseDTO
 {
     [JsonPropertyName("club")]
     public required string Club { get; set; }
