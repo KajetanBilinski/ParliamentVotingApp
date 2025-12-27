@@ -11,7 +11,6 @@ public class DatabaseManager : IDatabaseManager
 {
     private readonly ParliamentContext _context;
 
-
     public DatabaseManager(ParliamentContext context)
     {
         _context = context;
@@ -20,8 +19,13 @@ public class DatabaseManager : IDatabaseManager
     public async Task<Dictionary<int,List<int>>> GetAllProceedingAndVotingNumbers()
     {
         var data = await _context.VotingDetails
-       .Select(v => new { v.ProceedingNumber, v.VotingNumber })
-       .ToListAsync();
+            .Include(v => v.Proceeding) 
+            .Select(v => new
+            {
+                ProceedingNumber = v.Proceeding.ProceedingNumber,
+                v.VotingNumber
+            })
+            .ToListAsync();
 
         var result = data
             .GroupBy(x => x.ProceedingNumber)
@@ -29,7 +33,28 @@ public class DatabaseManager : IDatabaseManager
                 g => g.Key,
                 g => g.Select(x => x.VotingNumber).ToList()
             );
+
         return result;
+    }
+
+    public async Task<List<Proceeding>> GetAllProceedings()
+    {
+        var proceedings = await _context.Proceedings.ToListAsync();
+        if (proceedings == null || proceedings.Count == 0) return new List<Proceeding>();
+        return proceedings;
+    }
+
+    public async Task AddNewProceeding(ProceedingResponse proceedingResponse)
+    {
+        var exist = await _context.Proceedings.FirstOrDefaultAsync(p=>p.ProceedingNumber == proceedingResponse.ProceedingNumber);
+        if (exist != null) return;
+        var proceeding = new Proceeding
+        {
+            ProceedingNumber = proceedingResponse.ProceedingNumber,
+            Title = proceedingResponse.Title,
+        };
+        _context.Proceedings.Add(proceeding);
+        await _context.SaveChangesAsync();
     }
 
     public async Task SaveVotingDetails(VotingDetailsResponse votingDetailsResponse)
@@ -37,11 +62,22 @@ public class DatabaseManager : IDatabaseManager
         if (votingDetailsResponse == null)
             throw new ArgumentNullException(nameof(votingDetailsResponse));
 
-        // ===== Tworzymy VotingDetail =====
+        var proceeding = await _context.Proceedings
+            .FirstOrDefaultAsync(p => p.ProceedingNumber == votingDetailsResponse.ProceedingNumber);
+        if(proceeding ==  null)
+        {
+            proceeding = new Proceeding
+            {
+                ProceedingNumber = votingDetailsResponse.ProceedingNumber,
+
+            };
+            _context.Proceedings.Add(proceeding);
+            await  _context.SaveChangesAsync();
+        }
         var votingDetail = new VotingDetail
         {
             VotingNumber = votingDetailsResponse.VotingNumber,
-            ProceedingNumber = votingDetailsResponse.ProceedingNumber,
+
             Date = votingDetailsResponse.Date,
             Title = votingDetailsResponse.Title,
             Topic = votingDetailsResponse.Topic,
