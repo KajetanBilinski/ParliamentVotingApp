@@ -75,6 +75,7 @@ public class DatabaseManager : IDatabaseManager
             Title = voting.Title,
             Topic = voting.Topic,
             Description = voting.Description,
+            PrintsInfo = voting.PrintInfo,
 
             YesVotesCount = voting.YesVotesCount,
             NoVotesCount = voting.NoVotesCount,
