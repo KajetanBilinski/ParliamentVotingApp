@@ -36,6 +36,10 @@
   <p-panel header="Temat">
     <p>{{ votingDetails()!.topic }}</p>
   </p-panel>
+  } @if (votingDetails()!.printInfo) {
+  <p-panel header="Szczegóły">
+    <p>{{ votingDetails()!.printInfo }}</p>
+  </p-panel>
   }
 
   <p-card styleClass="vote-chart-card">
