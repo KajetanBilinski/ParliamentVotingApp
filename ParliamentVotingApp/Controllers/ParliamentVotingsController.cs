@@ -57,6 +57,7 @@ public class ParliamentVotingsController : ControllerBase
     {
         var voting = await _databaseManager.GetVotingDetails(proceedingNumber, votingNumber);
         if(voting == null) return NotFound();
+        voting.Votes = voting.Votes.OrderBy(v => v.FirstName).ThenBy(v=>v.LastName).ToList();
         var filtred = new
         {
             voting.ProceedingNumber,

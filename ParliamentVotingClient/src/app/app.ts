@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { CheckboxModule } from 'primeng/checkbox';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-demo',
   templateUrl: './app.html',
-  imports: [ButtonModule, CheckboxModule],
+  imports: [RouterOutlet],
 })
-export class App {
-  
-}
+export class App {}
