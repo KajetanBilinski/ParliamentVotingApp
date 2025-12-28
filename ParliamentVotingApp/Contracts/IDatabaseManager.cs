@@ -9,4 +9,6 @@ public interface IDatabaseManager
     Task<Dictionary<int, List<int>>> GetAllProceedingAndVotingNumbers();
     Task AddNewProceeding(ProceedingResponse proceedingResponse);
     Task<List<Proceeding>> GetAllProceedings();
+    Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber);
+    Task<VotingDetailsResponse?> GetVotingDetails(int proceedingNumber, int votingNumber);
 }
