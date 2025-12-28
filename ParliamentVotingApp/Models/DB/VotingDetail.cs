@@ -15,6 +15,7 @@ public class VotingDetail
     public DateTime Date { get; set; }
     public string? Title { get; set; }
     public string? Topic { get; set; }
+    public string? PrintInfo { get; set; }
     public string? Description { get; set; }
     public int YesVotesCount { get; set; }
     public int NoVotesCount { get; set; }

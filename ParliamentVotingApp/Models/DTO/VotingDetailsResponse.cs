@@ -13,6 +13,8 @@ public class VotingDetailsResponse
     public DateTime Date { get; set; }
     [JsonPropertyName("title")]
     public string? Title { get; set; }
+    [JsonPropertyName("printsInfo")]
+    public string? PrintsInfo { get; set; }
     [JsonPropertyName("topic")]
     public string? Topic { get; set; }
     [JsonPropertyName("description")]

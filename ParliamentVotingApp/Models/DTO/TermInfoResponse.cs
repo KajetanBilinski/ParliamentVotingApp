@@ -13,16 +13,4 @@ public class TermInfoResponse
     public required DateOnly From { get; set; }
     [JsonPropertyName("to")]
     public DateOnly? To { get; set; }
-    [JsonPropertyName("prints")]
-    public Prints? Prints { get; set; }
-}
-
-public class Prints
-{
-    [JsonPropertyName("count")]
-    public required int Count { get; set; }
-    [JsonPropertyName("lastChanged")]
-    public required DateTime LastChanged { get; set; }
-    [JsonPropertyName("link")]
-    public required string Link { get; set; }
 }
