@@ -6,7 +6,7 @@
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #ffffff;
   margin-bottom: 2rem;
 }
 
@@ -26,14 +26,24 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+::ng-deep .proceeding-card {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
 ::ng-deep .proceeding-card .p-card-header {
+  background: #333333;
   color: #4caf50;
   font-size: 1.2rem;
   font-weight: 600;
 }
 
+::ng-deep .proceeding-card .p-card-body {
+  background: #2a2a2a;
+}
+
 ::ng-deep .proceeding-card .p-card-body p {
-  color: #666;
+  color: #e0e0e0;
   margin: 0;
   line-height: 1.5;
 }

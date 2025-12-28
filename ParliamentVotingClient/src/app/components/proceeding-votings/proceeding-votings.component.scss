@@ -6,7 +6,7 @@
 
 h1 {
   text-align: center;
-  color: #333;
+  color: #ffffff;
   margin: 1.5rem 0 2rem 0;
 }
 
@@ -26,9 +26,18 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+::ng-deep .voting-card {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
 ::ng-deep .voting-card .p-card-header {
   padding: 1rem 1.5rem;
-  background: #f8f9fa;
+  background: #333333;
+}
+
+::ng-deep .voting-card .p-card-body {
+  background: #2a2a2a;
 }
 
 .voting-header {
@@ -40,30 +49,30 @@ h1 {
 
 .voting-number {
   font-weight: bold;
-  color: #666;
+  color: #b0b0b0;
   font-size: 0.9rem;
 }
 
 .voting-date {
-  color: #888;
+  color: #999999;
   font-size: 0.9rem;
   margin-bottom: 0.75rem;
 }
 
 ::ng-deep .voting-card h3 {
-  color: #333;
+  color: #ffffff;
   margin: 0.5rem 0;
   font-size: 1.1rem;
 }
 
 .description {
-  color: #666;
+  color: #cccccc;
   margin: 0.5rem 0;
   line-height: 1.5;
 }
 
 .topic {
-  color: #555;
+  color: #b0b0b0;
   margin: 0.5rem 0 0 0;
   font-size: 0.95rem;
 }

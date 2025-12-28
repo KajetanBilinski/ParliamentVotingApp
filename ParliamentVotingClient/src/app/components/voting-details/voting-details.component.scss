@@ -13,7 +13,7 @@
 }
 
 h1 {
-  color: #333;
+  color: #ffffff;
   margin: 0;
   flex: 1;
 }
@@ -25,6 +25,12 @@ h1 {
 
 ::ng-deep .info-card {
   margin-bottom: 1.5rem;
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .info-card .p-card-body {
+  background: #2a2a2a;
 }
 
 .info-grid {
@@ -34,12 +40,12 @@ h1 {
 }
 
 .info-item {
-  color: #333;
+  color: #ffffff;
   font-size: 1rem;
 }
 
 .info-item strong {
-  color: #666;
+  color: #b0b0b0;
 }
 
 ::ng-deep p-panel {
@@ -47,8 +53,25 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
+::ng-deep .p-panel {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-panel .p-panel-header {
+  background: #333333;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-panel .p-panel-content {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #3a3a3a;
+}
+
 h2 {
-  color: #333;
+  color: #ffffff;
   margin: 2rem 0 1rem 0;
   font-size: 1.3rem;
   border-bottom: 2px solid #4caf50;
@@ -66,6 +89,21 @@ h2 {
   margin-top: 1rem;
 }
 
+::ng-deep .clubs-grid .p-card {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .clubs-grid .p-card .p-card-header {
+  background: #333333;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .clubs-grid .p-card .p-card-body {
+  background: #2a2a2a;
+}
+
 .vote-stats {
   display: flex;
   flex-direction: column;
@@ -80,29 +118,29 @@ h2 {
 }
 
 .stat.yes {
-  background: #e8f5e9;
+  background: #2e7d32;
 }
 
 .stat.no {
-  background: #ffebee;
+  background: #c62828;
 }
 
 .stat.abstain {
-  background: #fff9c4;
+  background: #f57f17;
 }
 
 .stat.not-participating {
-  background: #f5f5f5;
+  background: #424242;
 }
 
 .stat .label {
   font-weight: 500;
-  color: #555;
+  color: #ffffff;
 }
 
 .stat .value {
   font-weight: bold;
-  color: #333;
+  color: #ffffff;
 }
 
 .individual-votes-section {
@@ -127,6 +165,77 @@ h2 {
 ::ng-deep .p-iconfield input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-iconfield input::placeholder {
+  color: #888888;
+}
+
+::ng-deep .p-table {
+  background: #2a2a2a;
+}
+
+::ng-deep .p-table .p-datatable-header {
+  background: #333333;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-table .p-datatable-thead > tr > th {
+  background: #333333;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-table .p-datatable-tbody > tr {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+::ng-deep .p-table .p-datatable-tbody > tr:hover {
+  background: #353535;
+}
+
+::ng-deep .p-table .p-datatable-tbody > tr > td {
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-paginator {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  color: #ffffff;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: #ffffff;
+}
+
+::ng-deep .p-dropdown {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: #3a3a3a;
+}
+
+::ng-deep .p-dropdown-panel {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  color: #ffffff;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: #353535;
 }
 
 .loading {
