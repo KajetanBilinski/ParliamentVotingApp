@@ -36,7 +36,107 @@
   <p-panel header="Temat">
     <p>{{ votingDetails()!.topic }}</p>
   </p-panel>
-  } @if (votingDetails()!.clubVotes && getClubNames().length > 0) {
+  }
+
+  <p-card styleClass="vote-chart-card">
+    <div class="vote-chart-header">
+      <h2>Rozkład głosów posłów</h2>
+      <span class="total-votes">Łącznie: {{ getVoteStatistics().total }} głosów</span>
+    </div>
+    <div class="vote-chart">
+      <div
+        class="vote-bar yes"
+        [style.width.%]="getBarWidth(getVoteStatistics().yes, getVoteStatistics().total)"
+        [title]="
+          'Za: ' +
+          getVoteStatistics().yes +
+          ' (' +
+          getPercentage(getVoteStatistics().yes, getVoteStatistics().total) +
+          '%)'
+        "
+      >
+        @if (getVoteStatistics().yes > 0 && shouldShowLabel(getVoteStatistics().yes,
+        getVoteStatistics().total)) {
+        <span class="vote-label">
+          {{ getPercentage(getVoteStatistics().yes, getVoteStatistics().total) }}%
+        </span>
+        }
+      </div>
+      <div
+        class="vote-bar no"
+        [style.width.%]="getBarWidth(getVoteStatistics().no, getVoteStatistics().total)"
+        [title]="
+          'Przeciw: ' +
+          getVoteStatistics().no +
+          ' (' +
+          getPercentage(getVoteStatistics().no, getVoteStatistics().total) +
+          '%)'
+        "
+      >
+        @if (getVoteStatistics().no > 0 && shouldShowLabel(getVoteStatistics().no,
+        getVoteStatistics().total)) {
+        <span class="vote-label">
+          {{ getPercentage(getVoteStatistics().no, getVoteStatistics().total) }}%
+        </span>
+        }
+      </div>
+      <div
+        class="vote-bar abstain"
+        [style.width.%]="getBarWidth(getVoteStatistics().abstain, getVoteStatistics().total)"
+        [title]="
+          'Wstrzymało się: ' +
+          getVoteStatistics().abstain +
+          ' (' +
+          getPercentage(getVoteStatistics().abstain, getVoteStatistics().total) +
+          '%)'
+        "
+      >
+        @if (getVoteStatistics().abstain > 0 && shouldShowLabel(getVoteStatistics().abstain,
+        getVoteStatistics().total)) {
+        <span class="vote-label">
+          {{ getPercentage(getVoteStatistics().abstain, getVoteStatistics().total) }}%
+        </span>
+        }
+      </div>
+      <div
+        class="vote-bar absent"
+        [style.width.%]="getBarWidth(getVoteStatistics().absent, getVoteStatistics().total)"
+        [title]="
+          'Nieobecni: ' +
+          getVoteStatistics().absent +
+          ' (' +
+          getPercentage(getVoteStatistics().absent, getVoteStatistics().total) +
+          '%)'
+        "
+      >
+        @if (getVoteStatistics().absent > 0 && shouldShowLabel(getVoteStatistics().absent,
+        getVoteStatistics().total)) {
+        <span class="vote-label">
+          {{ getPercentage(getVoteStatistics().absent, getVoteStatistics().total) }}%
+        </span>
+        }
+      </div>
+    </div>
+    <div class="vote-legend">
+      <div class="legend-item">
+        <div class="legend-color yes"></div>
+        <span>Za: {{ getVoteStatistics().yes }}</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color no"></div>
+        <span>Przeciw: {{ getVoteStatistics().no }}</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color abstain"></div>
+        <span>Wstrzymało się: {{ getVoteStatistics().abstain }}</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color absent"></div>
+        <span>Nieobecni: {{ getVoteStatistics().absent }}</span>
+      </div>
+    </div>
+  </p-card>
+  @if (votingDetails()!.clubVotes && getClubNames().length > 0) {
   <div class="club-votes-section">
     <h2>Głosy klubów</h2>
     <div class="clubs-grid">

@@ -112,4 +112,42 @@ export class VotingDetailsComponent {
     }
     return 'secondary';
   }
+
+  getVoteStatistics(): { yes: number; no: number; abstain: number; absent: number; total: number } {
+    const details = this.votingDetails();
+    if (!details || !details.votes) {
+      return { yes: 0, no: 0, abstain: 0, absent: 0, total: 0 };
+    }
+
+    const stats = { yes: 0, no: 0, abstain: 0, absent: 0, total: details.votes.length };
+
+    details.votes.forEach((vote) => {
+      const voteText = vote.vote.toLowerCase();
+      if (voteText.includes('za') || voteText.includes('yes')) {
+        stats.yes++;
+      } else if (voteText.includes('przeciw') || voteText.includes('no')) {
+        stats.no++;
+      } else if (voteText.includes('wstrzym') || voteText.includes('abstain')) {
+        stats.abstain++;
+      } else {
+        stats.absent++;
+      }
+    });
+
+    return stats;
+  }
+
+  getPercentage(value: number, total: number): number {
+    return total > 0 ? Math.round((value / total) * 100) : 0;
+  }
+
+  getBarWidth(value: number, total: number): number {
+    return this.getPercentage(value, total);
+  }
+
+  shouldShowLabel(value: number, total: number): boolean {
+    const percentage = this.getPercentage(value, total);
+    // Pokaż etykietę wewnątrz paska tylko jeśli jest wystarczająco szeroki
+    return percentage >= 8;
+  }
 }
