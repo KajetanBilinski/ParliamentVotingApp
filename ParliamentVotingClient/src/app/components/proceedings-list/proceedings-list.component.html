@@ -1,0 +1,24 @@
+<div class="proceedings-container">
+  <h1>Lista Posiedzeń Sejmu</h1>
+
+  <div class="proceedings-list">
+    @for (proceeding of proceedings(); track proceeding.proceedingNumber) {
+    <p-card
+      [header]="'Posiedzenie nr ' + proceeding.proceedingNumber"
+      styleClass="proceeding-card"
+      (dblclick)="openProceeding(proceeding.proceedingNumber)"
+    >
+      <p>{{ proceeding.title }}</p>
+    </p-card>
+    }
+  </div>
+
+  @if (loading()) {
+  <div class="loading">
+    <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
+    <p>Ładowanie...</p>
+  </div>
+  } @if (error()) {
+  <p-message severity="error" [text]="error()"></p-message>
+  }
+</div>

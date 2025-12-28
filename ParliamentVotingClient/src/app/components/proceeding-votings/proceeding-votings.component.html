@@ -1,0 +1,41 @@
+<div class="votings-container">
+  <p-button
+    label="Powrót do listy posiedzeń"
+    icon="pi pi-arrow-left"
+    (onClick)="goBack()"
+    severity="secondary"
+  ></p-button>
+
+  <h1>Głosowania - Posiedzenie nr {{ proceedingNumber() }}</h1>
+
+  <div class="votings-list">
+    @for (voting of votings(); track voting.votingNumber) {
+    <p-card styleClass="voting-card" (click)="openVotingDetails(voting)">
+      <ng-template pTemplate="header">
+        <div class="voting-header">
+          <span class="voting-number">Głosowanie nr {{ voting.votingNumber }}</span>
+          <p-tag
+            [value]="voting.adopted ? 'Przyjęte' : 'Odrzucone'"
+            [severity]="voting.adopted ? 'success' : 'danger'"
+          ></p-tag>
+        </div>
+      </ng-template>
+      <div class="voting-date">{{ formatDate(voting.date) }}</div>
+      <h3>{{ voting.title }}</h3>
+      <p class="description">{{ voting.description }}</p>
+      @if (voting.topic) {
+      <p class="topic"><strong>Temat:</strong> {{ voting.topic }}</p>
+      }
+    </p-card>
+    }
+  </div>
+
+  @if (loading()) {
+  <div class="loading">
+    <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
+    <p>Ładowanie głosowań...</p>
+  </div>
+  } @if (error()) {
+  <p-message severity="error" [text]="error()"></p-message>
+  }
+</div>

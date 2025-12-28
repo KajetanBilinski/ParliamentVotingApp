@@ -69,7 +69,8 @@ public class DatabaseManager : IDatabaseManager
 
         var response = new VotingDetailsResponse
         {
-            VotingNumber = voting.VotingNumber,
+            VotingNumber = votingNumber,
+            ProceedingNumber = proceedingNumber,
             Date = voting.Date,
             Title = voting.Title,
             Topic = voting.Topic,

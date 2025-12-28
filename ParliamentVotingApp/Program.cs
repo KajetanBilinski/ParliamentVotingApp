@@ -14,6 +14,13 @@ builder.Services.AddDbContext<ParliamentContext>(options =>
         new MySqlServerVersion(new Version(12, 1, 0))
     )
 );
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHttpClient<IPVBackendAPI, PVBackendAPI>();
 builder.Services.AddScoped<IXIntegrationService, XIntegrationService>();
@@ -24,6 +31,7 @@ builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(Dat
 builder.Services.AddControllers();
 var app = builder.Build();
 
+app.UseCors("AllowAll");
 app.UseRouting();
 app.MapControllers();
 
