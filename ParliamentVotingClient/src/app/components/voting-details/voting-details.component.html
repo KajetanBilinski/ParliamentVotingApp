@@ -1,0 +1,124 @@
+@if (!loading() && votingDetails()) {
+<div class="details-container">
+  <p-button
+    label="Powrót do głosowań"
+    icon="pi pi-arrow-left"
+    (onClick)="goBack()"
+    severity="secondary"
+  ></p-button>
+
+  <div class="header">
+    <h1>{{ votingDetails()!.title }}</h1>
+    <p-tag
+      [value]="votingDetails()!.adopted ? 'PRZYJĘTE' : 'ODRZUCONE'"
+      [severity]="votingDetails()!.adopted ? 'success' : 'danger'"
+      styleClass="text-lg"
+    ></p-tag>
+  </div>
+
+  <p-card styleClass="info-card">
+    <div class="info-grid">
+      <div class="info-item">
+        <strong>Posiedzenie:</strong> {{ votingDetails()!.proceedingNumber }}
+      </div>
+      <div class="info-item">
+        <strong>Głosowanie nr:</strong> {{ votingDetails()!.votingNumber }}
+      </div>
+      <div class="info-item"><strong>Data:</strong> {{ formatDate(votingDetails()!.date) }}</div>
+    </div>
+  </p-card>
+
+  @if (votingDetails()!.description) {
+  <p-panel header="Opis">
+    <p>{{ votingDetails()!.description }}</p>
+  </p-panel>
+  } @if (votingDetails()!.topic) {
+  <p-panel header="Temat">
+    <p>{{ votingDetails()!.topic }}</p>
+  </p-panel>
+  } @if (votingDetails()!.clubVotes && getClubNames().length > 0) {
+  <div class="club-votes-section">
+    <h2>Głosy klubów</h2>
+    <div class="clubs-grid">
+      @for (clubName of getClubNames(); track clubName) {
+      <p-card [header]="clubName">
+        <div class="vote-stats">
+          @if (votingDetails()!.clubVotes[clubName].YES) {
+          <div class="stat yes">
+            <span class="label">Za:</span>
+            <span class="value">{{ votingDetails()!.clubVotes[clubName].YES }}</span>
+          </div>
+          } @if (votingDetails()!.clubVotes[clubName].NO) {
+          <div class="stat no">
+            <span class="label">Przeciw:</span>
+            <span class="value">{{ votingDetails()!.clubVotes[clubName].NO }}</span>
+          </div>
+          } @if (votingDetails()!.clubVotes[clubName].ABSTAIN) {
+          <div class="stat abstain">
+            <span class="label">Wstrzymało się:</span>
+            <span class="value">{{ votingDetails()!.clubVotes[clubName].ABSTAIN }}</span>
+          </div>
+          } @if (votingDetails()!.clubVotes[clubName].ABSENT) {
+          <div class="stat not-participating">
+            <span class="label">Nieobecni:</span>
+            <span class="value">{{ votingDetails()!.clubVotes[clubName].ABSENT }}</span>
+          </div>
+          }
+        </div>
+      </p-card>
+      }
+    </div>
+  </div>
+  } @if (votingDetails()!.votes && votingDetails()!.votes.length > 0) {
+  <div class="individual-votes-section">
+    <div class="header-with-search">
+      <h2>Głosy posłów ({{ votingDetails()!.votes.length }})</h2>
+      <p-iconfield iconPosition="left">
+        <p-inputicon styleClass="pi pi-search"></p-inputicon>
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="searchValue"
+          (input)="onSearchChange($event)"
+          placeholder="Szukaj posła..."
+        />
+      </p-iconfield>
+    </div>
+    <p-table
+      #dt
+      [value]="votingDetails()!.votes"
+      [paginator]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[25, 50, 100]"
+      [showCurrentPageReport]="true"
+      [globalFilterFields]="['firstName', 'lastName', 'club']"
+      currentPageReportTemplate="Pokazywanie {first} do {last} z {totalRecords} wpisów"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Imię i nazwisko</th>
+          <th>Klub</th>
+          <th>Głos</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-vote>
+        <tr>
+          <td>{{ vote.firstName }} {{ vote.lastName }}</td>
+          <td>{{ vote.club }}</td>
+          <td>
+            <p-tag [value]="vote.vote" [severity]="getVoteSeverity(vote.vote)"></p-tag>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  }
+</div>
+} @if (loading()) {
+<div class="loading">
+  <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
+  <p>Ładowanie szczegółów głosowania...</p>
+</div>
+} @if (error()) {
+<p-message severity="error" [text]="error()"></p-message>
+}

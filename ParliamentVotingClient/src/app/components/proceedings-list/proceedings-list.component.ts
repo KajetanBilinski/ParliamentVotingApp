@@ -10,84 +10,8 @@ import { MessageModule } from 'primeng/message';
   selector: 'app-proceedings-list',
   standalone: true,
   imports: [CardModule, ProgressSpinnerModule, MessageModule],
-  template: `
-    <div class="proceedings-container">
-      <h1>Lista Posiedzeń Sejmu</h1>
-
-      <div class="proceedings-list">
-        @for (proceeding of proceedings(); track proceeding.proceedingNumber) {
-        <p-card
-          [header]="'Posiedzenie nr ' + proceeding.proceedingNumber"
-          styleClass="proceeding-card"
-          (dblclick)="openProceeding(proceeding.proceedingNumber)"
-        >
-          <p>{{ proceeding.title }}</p>
-        </p-card>
-        }
-      </div>
-
-      @if (loading()) {
-      <div class="loading">
-        <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
-        <p>Ładowanie...</p>
-      </div>
-      } @if (error()) {
-      <p-message severity="error" [text]="error()"></p-message>
-      }
-    </div>
-  `,
-  styles: [
-    `
-      .proceedings-container {
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-
-      h1 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 2rem;
-      }
-
-      .proceedings-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
-      }
-
-      ::ng-deep .proceeding-card {
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      ::ng-deep .proceeding-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      }
-
-      ::ng-deep .proceeding-card .p-card-header {
-        color: #4caf50;
-        font-size: 1.2rem;
-        font-weight: 600;
-      }
-
-      ::ng-deep .proceeding-card .p-card-body p {
-        color: #666;
-        margin: 0;
-        line-height: 1.5;
-      }
-
-      .loading {
-        text-align: center;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-      }
-    `,
-  ],
+  templateUrl: './proceedings-list.component.html',
+  styleUrl: './proceedings-list.component.scss',
 })
 export class ProceedingsListComponent {
   private apiService = inject(ParliamentApiService);
