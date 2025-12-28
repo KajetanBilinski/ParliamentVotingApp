@@ -19,6 +19,7 @@ export interface VotingDetails {
   title: string;
   description: string;
   topic: string;
+  printInfo: string;
   date: string;
   adopted: boolean;
   clubVotes: { [clubName: string]: ClubVoteCount };
