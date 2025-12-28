@@ -147,6 +147,7 @@ public class DatabaseManager : IDatabaseManager
             IdProceeding = proceeding.IdProceeding,
             Date = votingDetailsResponse.Date,
             Title = votingDetailsResponse.Title,
+            PrintInfo = votingDetailsResponse.PrintsInfo,
             Topic = votingDetailsResponse.Topic,
             Description = votingDetailsResponse.Description,
             YesVotesCount = votingDetailsResponse.YesVotesCount,

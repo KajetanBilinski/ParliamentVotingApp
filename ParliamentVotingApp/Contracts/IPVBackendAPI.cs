@@ -20,4 +20,6 @@ public interface IPVBackendAPI
         int proceedingNumber,
         int votingNumber
     );
+
+    Task<string?> GetPrintTitleForVoting(TermInfoResponse termInfoResponse, string printNumber);
 }

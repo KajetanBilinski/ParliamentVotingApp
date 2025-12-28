@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Net.Mime;
+using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using ParliamentVotingApp.Contracts;
 using ParliamentVotingApp.Enums;
@@ -38,9 +40,11 @@ public class PVBackendAPI : IPVBackendAPI
                 return null;
             return terms.FirstOrDefault(t => t.Current);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             _logger.LogError("Error during fetching current term");
+            _logger.LogError(ex.Message);
+            _logger.LogError(ex.StackTrace);
         }
         return null;
     }
@@ -92,6 +96,17 @@ public class PVBackendAPI : IPVBackendAPI
                         ? HandleClubVotes(votingDetail)
                         : HandleClubListVotes(votingDetail);
                 votingDetail.ProceedingNumber = proceedingNumber;
+                var printNumbers = ExtractPrintInfo(votingDetail.Title);
+                StringBuilder printsInfoBuilder = new StringBuilder();
+                foreach (var printNumber in printNumbers)
+                {
+                    var printTitle = await GetPrintTitleForVoting(termInfoResponse, printNumber);
+                    if (!string.IsNullOrEmpty(printTitle))
+                    {
+                        printsInfoBuilder.Append(printTitle).Append("\n");
+                    }
+                }
+                votingDetail.PrintsInfo = printsInfoBuilder.ToString();
                 votingDetails.Add(votingDetail);
             }
             if (votingDetails == null || votingDetails.Count == 0)
@@ -103,6 +118,57 @@ public class PVBackendAPI : IPVBackendAPI
             _logger.LogError("Error during fetching votings details for proceeding");
         }
         return null;
+    }
+
+    private List<string> ExtractPrintInfo(string? title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return new List<string>();
+        }
+
+        var prints = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        var groupPattern = new Regex(
+            @"(?i)\bdruk\w*\s+nr\b([^)]*)", 
+            RegexOptions.Compiled
+        );
+
+        var numberPattern = new Regex(
+            @"\b\d+(?:-[A-Za-z])?\b",
+            RegexOptions.Compiled
+        );
+
+        foreach (Match grp in groupPattern.Matches(title))
+        {
+            var segment = grp.Groups[1].Value;
+            foreach (Match num in numberPattern.Matches(segment))
+            {
+                prints.Add(num.Value);
+            }
+        }
+        if (prints.Count == 0)
+        {
+            var fallbackPattern = new Regex(
+                @"(?i)\bdruk\w*\s+nr\b.*?\b(\d+(?:-[A-Za-z])?)\b",
+                RegexOptions.Compiled
+            );
+
+            foreach (Match m in fallbackPattern.Matches(title))
+            {
+                if (m.Groups.Count > 1)
+                {
+                    prints.Add(m.Groups[1].Value);
+                }
+            }
+        }
+        return prints.Count == 0
+            ? new List<string>()
+            : prints
+                .Select(p => p.Trim())
+                .Where(p => p.Length > 0)
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
     }
 
     private VotingDetailsResponse HandleClubListVotes(VotingDetailsResponse votingDetail)
@@ -251,5 +317,14 @@ public class PVBackendAPI : IPVBackendAPI
                 : HandleClubListVotes(detailedVoting);
         detailedVoting.ProceedingNumber = proceedingNumber;
         return detailedVoting;
+    }
+
+    public async Task<string?> GetPrintTitleForVoting(TermInfoResponse termInfoResponse,string printNumber)
+    {
+        //https://api.sejm.gov.pl/sejm/term10/prints/226
+        var printInfo = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(
+            $"{_baseUrl}/term{termInfoResponse.Number}/prints/{printNumber}"
+        );
+        return printInfo?.Title;
     }
 }

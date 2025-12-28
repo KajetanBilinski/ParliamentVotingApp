@@ -30,7 +30,6 @@ public class Worker : BackgroundService
         {
             await _databaseManager.AddNewProceeding(p);
         }
-        return;
         foreach (var proceeding in proceedings!)
         {
             if (proceedingsAndVotingsDB.ContainsKey(proceeding.ProceedingNumber)) continue;
