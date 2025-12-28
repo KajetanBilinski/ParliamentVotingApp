@@ -37,8 +37,9 @@
     <p>{{ votingDetails()!.topic }}</p>
   </p-panel>
   } @if (votingDetails()!.printInfo) {
+
   <p-panel header="Szczegóły">
-    <p>{{ votingDetails()!.printInfo }}</p>
+    <p style="white-space: pre-line">{{ votingDetails()!.printInfo }}</p>
   </p-panel>
   }
 
