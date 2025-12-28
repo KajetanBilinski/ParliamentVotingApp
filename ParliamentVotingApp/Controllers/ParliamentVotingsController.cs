@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParliamentVotingApp.Contracts;
+using ParliamentVotingApp.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,6 +29,46 @@ public class ParliamentVotingsController : ControllerBase
             p.ProceedingNumber,
             p.Title
         }); 
+        return Ok(filtred);
+    }
+
+    [HttpGet("votings/{proceedingNumber}")]
+    public async Task<IActionResult> GetAllVotings(int proceedingNumber)
+    {
+        var proceedings = await _databaseManager.GetAllProceedings();
+        if(proceedings==null)return NotFound();
+        var votings = await _databaseManager.GetAllVotingsForProceeding(proceedingNumber);
+        if (votings == null) return NotFound();
+        var filtred = votings.Select(v => new
+        {
+            v.Date,
+            v.Title,
+            v.Description,
+            v.Topic,
+            v.VotingNumber,
+            ProceedingNumber=proceedingNumber,
+            v.Adopted
+        });
+        return Ok(filtred);
+    }
+
+    [HttpGet("details/{proceedingNumber}/{votingNumber}")]
+    public async Task<IActionResult> GetVotingDetails(int proceedingNumber, int votingNumber)
+    {
+        var voting = await _databaseManager.GetVotingDetails(proceedingNumber, votingNumber);
+        if(voting == null) return NotFound();
+        var filtred = new
+        {
+            voting.ProceedingNumber,
+            voting.VotingNumber,
+            voting.Title,
+            voting.Description,
+            voting.Topic,
+            voting.Date,
+            voting.Adopted,
+            voting.ClubVotes,
+            voting.Votes
+        };
         return Ok(filtred);
     }
 }

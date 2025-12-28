@@ -24,7 +24,6 @@ public class VotingDetail
     public string? MajorityType { get; set; }
     public int? MajorityVotes { get; set; }
     public bool Adopted { get; set; }
-
     public Proceeding Proceeding { get; set; } = null!;
     public ICollection<VotingOption> VotingOptions { get; set; } = new List<VotingOption>();
     public ICollection<ClubVote> ClubVotes { get; set; } = new List<ClubVote>();

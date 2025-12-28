@@ -44,6 +44,80 @@ public class DatabaseManager : IDatabaseManager
         return proceedings;
     }
 
+    public async Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber)
+    {
+        var votings = await _context.VotingDetails.Where(v => v.Proceeding.IdProceeding == proceedingNumber).ToListAsync();
+        if (votings == null || votings.Count == 0) return new List<VotingDetail>();
+        return votings;
+    }
+
+    public async Task<VotingDetailsResponse?> GetVotingDetails(int proceedingNumber, int votingNumber)
+    {
+        var voting = await _context.VotingDetails
+            .Include(v => v.Proceeding)
+            .Include(v => v.VotingOptions)
+            .Include(v => v.ClubVotes)
+            .Include(v => v.VoteResponses)
+            .Where(v =>
+                v.Proceeding.ProceedingNumber == proceedingNumber &&
+                v.VotingNumber == votingNumber
+            )
+            .FirstOrDefaultAsync();
+
+        if (voting == null)
+            return null;
+
+        var response = new VotingDetailsResponse
+        {
+            VotingNumber = voting.VotingNumber,
+            Date = voting.Date,
+            Title = voting.Title,
+            Topic = voting.Topic,
+            Description = voting.Description,
+
+            YesVotesCount = voting.YesVotesCount,
+            NoVotesCount = voting.NoVotesCount,
+            AbstainCount = voting.AbstainCount,
+            NotParticipatingCount = voting.NotParticipatingCount,
+            TotalVoted = voting.TotalVoted,
+
+            MajorityType = voting.MajorityType,
+            MajorityVotes = voting.MajorityVotes,
+
+            VotingOptions = voting.VotingOptions?
+                .Select(o => new VotingOptions
+                {
+                    OptionIndex = o.OptionIndex,
+                    OptionName = o.OptionName,
+                    VotesCount = o.VotesCount
+                })
+                .ToList(),
+
+            Votes = voting.VoteResponses?
+                .Select(vr => new VoteResponseDTO
+                {
+                    Club = vr.ClubName,
+                    FirstName = vr.FirstName,
+                    SecondName = vr.SecondName,
+                    LastName = vr.LastName,
+                    VoteType = vr.VoteType
+                })
+                .ToList(),
+
+            ClubVotes = voting.ClubVotes?
+                .GroupBy(cv => cv.ClubName)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.ToDictionary(
+                        x => x.VoteType,
+                        x => x.VoteCount
+                    )
+                ),
+        };
+        return response;
+    }
+
+
     public async Task AddNewProceeding(ProceedingResponse proceedingResponse)
     {
         var exist = await _context.Proceedings.FirstOrDefaultAsync(p=>p.ProceedingNumber == proceedingResponse.ProceedingNumber);
@@ -64,20 +138,12 @@ public class DatabaseManager : IDatabaseManager
 
         var proceeding = await _context.Proceedings
             .FirstOrDefaultAsync(p => p.ProceedingNumber == votingDetailsResponse.ProceedingNumber);
-        if(proceeding ==  null)
-        {
-            proceeding = new Proceeding
-            {
-                ProceedingNumber = votingDetailsResponse.ProceedingNumber,
-
-            };
-            _context.Proceedings.Add(proceeding);
-            await  _context.SaveChangesAsync();
-        }
+        if (proceeding == null)
+            throw new ArgumentNullException(nameof(proceeding));
         var votingDetail = new VotingDetail
         {
             VotingNumber = votingDetailsResponse.VotingNumber,
-
+            IdProceeding = proceeding.IdProceeding,
             Date = votingDetailsResponse.Date,
             Title = votingDetailsResponse.Title,
             Topic = votingDetailsResponse.Topic,
