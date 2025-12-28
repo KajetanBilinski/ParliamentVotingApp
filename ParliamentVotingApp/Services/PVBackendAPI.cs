@@ -101,9 +101,10 @@ public class PVBackendAPI : IPVBackendAPI
                 foreach (var printNumber in printNumbers)
                 {
                     var printTitle = await GetPrintTitleForVoting(termInfoResponse, printNumber);
-                    if (!string.IsNullOrEmpty(printTitle))
+                    if (!string.IsNullOrEmpty(printTitle) && !printsInfoBuilder.ToString().Contains(printTitle))
                     {
-                        printsInfoBuilder.Append(printTitle).Append("\n");
+                        printTitle = $"Druk {printNumber} - {printTitle}";
+                        printsInfoBuilder.AppendLine(printTitle);
                     }
                 }
                 votingDetail.PrintsInfo = printsInfoBuilder.ToString();

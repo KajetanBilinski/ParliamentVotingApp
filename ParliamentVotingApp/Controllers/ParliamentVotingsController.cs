@@ -68,7 +68,8 @@ public class ParliamentVotingsController : ControllerBase
             voting.Date,
             voting.Adopted,
             voting.ClubVotes,
-            voting.Votes
+            voting.Votes,
+            PrintInfo=voting.PrintsInfo
         };
         return Ok(filtred);
     }
