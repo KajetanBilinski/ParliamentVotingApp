@@ -1,6 +1,8 @@
 export interface Proceeding {
   proceedingNumber: number;
   title: string;
+  dates: string;
+  formattedDates?: string[];
 }
 
 export interface Voting {
