@@ -4,6 +4,7 @@ using ParliamentVotingApp.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ParliamentVotingApp.Controllers;
 
@@ -13,6 +14,21 @@ public class ParliamentVotingsController : ControllerBase
 {
     private readonly ILogger<ParliamentVotingsController> _logger;
     private readonly IDatabaseManager _databaseManager;
+    private static readonly Dictionary<string, int> MonthMap = new()
+    {
+        ["stycznia"] = 1,
+        ["lutego"] = 2,
+        ["marca"] = 3,
+        ["kwietnia"] = 4,
+        ["maja"] = 5,
+        ["czerwca"] = 6,
+        ["lipca"] = 7,
+        ["sierpnia"] = 8,
+        ["września"] = 9,
+        ["października"] = 10,
+        ["listopada"] = 11,
+        ["grudnia"] = 12
+    };
     public ParliamentVotingsController(ILogger<ParliamentVotingsController> logger,
         IDatabaseManager databaseManager)
     {
@@ -27,8 +43,9 @@ public class ParliamentVotingsController : ControllerBase
         var filtred = proceedings.Select(p => new
         {
             p.ProceedingNumber,
-            p.Title
-        }); 
+            p.Title,
+            p.Dates
+        });
         return Ok(filtred);
     }
 

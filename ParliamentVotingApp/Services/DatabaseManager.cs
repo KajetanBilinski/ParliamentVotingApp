@@ -4,6 +4,7 @@ using ParliamentVotingApp.Enums;
 using ParliamentVotingApp.Models.DB;
 using ParliamentVotingApp.Models.DTO;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace ParliamentVotingApp.Services;
 
@@ -46,7 +47,7 @@ public class DatabaseManager : IDatabaseManager
 
     public async Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber)
     {
-        var votings = await _context.VotingDetails.Where(v => v.Proceeding.IdProceeding == proceedingNumber).ToListAsync();
+        var votings = await _context.VotingDetails.Where(v => v.Proceeding.ProceedingNumber == proceedingNumber).ToListAsync();
         if (votings == null || votings.Count == 0) return new List<VotingDetail>();
         return votings;
     }
@@ -124,10 +125,13 @@ public class DatabaseManager : IDatabaseManager
     {
         var exist = await _context.Proceedings.FirstOrDefaultAsync(p=>p.ProceedingNumber == proceedingResponse.ProceedingNumber);
         if (exist != null) return;
+        StringBuilder datesBuilder = new StringBuilder();
+        proceedingResponse?.Dates?.ForEach(d => datesBuilder.Append(d.ToString("MM-dd-yyyy")).Append(" "));
         var proceeding = new Proceeding
         {
             ProceedingNumber = proceedingResponse.ProceedingNumber,
             Title = proceedingResponse.Title,
+            Dates = datesBuilder.ToString()
         };
         _context.Proceedings.Add(proceeding);
         await _context.SaveChangesAsync();
