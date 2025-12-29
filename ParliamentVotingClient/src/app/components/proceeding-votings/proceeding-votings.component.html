@@ -9,26 +9,58 @@
   <h1>Głosowania - Posiedzenie nr {{ proceedingNumber() }}</h1>
 
   <div class="votings-list">
-    @for (voting of votings(); track voting.votingNumber) {
+    @for (voting of paginatedVotings(); track voting.votingNumber) {
     <p-card styleClass="voting-card" (click)="openVotingDetails(voting)">
       <ng-template pTemplate="header">
-        <div class="voting-header">
-          <span class="voting-number">Głosowanie nr {{ voting.votingNumber }}</span>
-          <p-tag
-            [value]="voting.adopted ? 'Przyjęte' : 'Odrzucone'"
-            [severity]="voting.adopted ? 'success' : 'danger'"
-          ></p-tag>
+        <div class="card-header">
+          <div class="header-left">Głosowanie nr {{ voting.votingNumber }}</div>
+          <div class="header-right">
+            <p-tag
+              [value]="voting.adopted ? 'Przyjęte' : 'Odrzucone'"
+              [severity]="voting.adopted ? 'success' : 'danger'"
+            ></p-tag>
+          </div>
         </div>
       </ng-template>
-      <div class="voting-date">{{ formatDate(voting.date) }}</div>
-      <h3>{{ voting.title }}</h3>
-      <p class="description">{{ voting.description }}</p>
-      @if (voting.topic) {
-      <p class="topic"><strong>Temat:</strong> {{ voting.topic }}</p>
-      }
+
+      <div class="card-body">
+        <div class="voting-date">
+          <i class="pi pi-calendar"></i>
+          <span>{{ formatDate(voting.date) }}</span>
+        </div>
+
+        <div class="content-wrapper">
+          <div class="content-section title-section">
+            <div class="section-label">Tytuł</div>
+            <div class="section-content title-content">{{ voting.title }}</div>
+          </div>
+
+          <div class="content-section description-section">
+            <div class="section-label">Szczegóły</div>
+            <div class="section-content">
+              {{ voting.description || 'Brak' }}
+            </div>
+          </div>
+
+          <div class="content-section topic-section">
+            <div class="section-label">Temat</div>
+            <div class="section-content">
+              {{ voting.topic || 'Brak' }}
+            </div>
+          </div>
+        </div>
+      </div>
     </p-card>
     }
   </div>
+
+  <p-paginator
+    [rows]="itemsPerPage()"
+    [totalRecords]="votings().length"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    (onPageChange)="onPageChange($event)"
+    styleClass="voting-paginator"
+  ></p-paginator>
 
   @if (loading()) {
   <div class="loading">
