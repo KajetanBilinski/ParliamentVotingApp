@@ -14,21 +14,6 @@ public class ParliamentVotingsController : ControllerBase
 {
     private readonly ILogger<ParliamentVotingsController> _logger;
     private readonly IDatabaseManager _databaseManager;
-    private static readonly Dictionary<string, int> MonthMap = new()
-    {
-        ["stycznia"] = 1,
-        ["lutego"] = 2,
-        ["marca"] = 3,
-        ["kwietnia"] = 4,
-        ["maja"] = 5,
-        ["czerwca"] = 6,
-        ["lipca"] = 7,
-        ["sierpnia"] = 8,
-        ["września"] = 9,
-        ["października"] = 10,
-        ["listopada"] = 11,
-        ["grudnia"] = 12
-    };
     public ParliamentVotingsController(ILogger<ParliamentVotingsController> logger,
         IDatabaseManager databaseManager)
     {
@@ -45,7 +30,7 @@ public class ParliamentVotingsController : ControllerBase
             p.ProceedingNumber,
             p.Title,
             p.Dates
-        });
+        }).OrderByDescending(p=>p.ProceedingNumber);
         return Ok(filtred);
     }
 
@@ -86,7 +71,9 @@ public class ParliamentVotingsController : ControllerBase
             voting.Adopted,
             voting.ClubVotes,
             voting.Votes,
-            PrintInfo=voting.PrintsInfo
+            voting.TotalVoted,
+            PrintInfo =voting.PrintsInfo,
+
         };
         return Ok(filtred);
     }
