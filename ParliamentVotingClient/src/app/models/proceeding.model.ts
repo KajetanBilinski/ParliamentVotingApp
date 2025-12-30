@@ -26,6 +26,7 @@ export interface VotingDetails {
   adopted: boolean;
   clubVotes: { [clubName: string]: ClubVoteCount };
   votes: VoteResponse[];
+  totalVoted: number;
 }
 
 export interface ClubVoteCount {
@@ -33,6 +34,10 @@ export interface ClubVoteCount {
   NO?: number;
   ABSENT?: number;
   ABSTAIN?: number;
+  NO_VOTE?: number;
+  VOTE_VALID?: number;
+  VOTE_INVALID?: number;
+  PRESENT?: number;
 }
 
 export interface VoteResponse {
