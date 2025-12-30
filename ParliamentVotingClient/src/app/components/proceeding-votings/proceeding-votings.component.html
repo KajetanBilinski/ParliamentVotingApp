@@ -8,9 +8,32 @@
 
   <h1>Głosowania - Posiedzenie nr {{ proceedingNumber() }}</h1>
 
+  <div class="filters-section">
+    <p-select
+      [(ngModel)]="selectedStatus"
+      [options]="statusOptions"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Status głosowania"
+      (onChange)="onFilterChange()"
+      [style]="{ width: '220px' }"
+    ></p-select>
+
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchText"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Szukaj w treści..."
+      />
+    </p-iconfield>
+  </div>
+
   <div class="votings-list">
     @for (voting of paginatedVotings(); track voting.votingNumber) {
-    <p-card styleClass="voting-card" (click)="openVotingDetails(voting)">
+    <p-card class="voting-card" (click)="openVotingDetails(voting)">
       <ng-template pTemplate="header">
         <div class="card-header">
           <div class="header-left">Głosowanie nr {{ voting.votingNumber }}</div>
@@ -34,18 +57,16 @@
             <div class="section-label">Tytuł</div>
             <div class="section-content title-content">{{ voting.title }}</div>
           </div>
-
-          <div class="content-section description-section">
-            <div class="section-label">Szczegóły</div>
-            <div class="section-content">
-              {{ voting.description || 'Brak' }}
-            </div>
-          </div>
-
           <div class="content-section topic-section">
             <div class="section-label">Temat</div>
             <div class="section-content">
-              {{ voting.topic || 'Brak' }}
+              {{ capitalize(voting.topic) || 'Brak' }}
+            </div>
+          </div>
+          <div class="content-section description-section">
+            <div class="section-label">Szczegóły</div>
+            <div class="section-content">
+              {{ capitalize(voting.description) || 'Brak' }}
             </div>
           </div>
         </div>
@@ -56,10 +77,10 @@
 
   <p-paginator
     [rows]="itemsPerPage()"
-    [totalRecords]="votings().length"
+    [totalRecords]="filteredVotings().length"
     [rowsPerPageOptions]="[10, 20, 50]"
     (onPageChange)="onPageChange($event)"
-    styleClass="voting-paginator"
+    class="voting-paginator"
   ></p-paginator>
 
   @if (loading()) {
