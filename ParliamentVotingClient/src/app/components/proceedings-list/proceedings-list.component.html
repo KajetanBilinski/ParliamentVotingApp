@@ -16,8 +16,7 @@
     <p-card class="proceeding-card" (dblclick)="openProceeding(proceeding.proceedingNumber)">
       <ng-template pTemplate="header">
         <div class="card-header">
-          <div class="header-left">Posiedzenie</div>
-          <div class="header-right">nr {{ proceeding.proceedingNumber }}</div>
+          <div class="header-left">{{proceeding.proceedingNumber==0?"Planowane posiedzenie":"Posiedzenie nr. "+proceeding.proceedingNumber}}</div>
         </div>
       </ng-template>
 
@@ -29,15 +28,7 @@
             }
           </ul>
         </div>
-      </div>
-
-      <ng-template pTemplate="footer">
-        <div class="card-footer">
-          <button class="open-btn" (click)="openProceeding(proceeding.proceedingNumber)">
-            Otwórz
-          </button>
-        </div>
-      </ng-template>
+      </div> 
     </p-card>
     }
   </div>
