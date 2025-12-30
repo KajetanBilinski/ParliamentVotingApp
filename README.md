@@ -1,8 +1,8 @@
-# ParliamentVotingApp 🏛️
+# ParliamentVotingApp
 
 A web application for browsing and analyzing votings of the Polish Parliament (Sejm). The system consists of an ASP.NET Core backend and an Angular frontend application using the PrimeNG library.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Description](#-project-description)
 - [Architecture](#-architecture)
@@ -14,11 +14,11 @@ A web application for browsing and analyzing votings of the Polish Parliament (S
 - [User Interface](#-user-interface)
 - [Installation and Setup](#-installation-and-setup)
 
-## 🎯 Project Description
+## Project Description
 
 ParliamentVotingApp is a web application that enables browsing and analyzing parliamentary votings. The system automatically fetches data from the public Sejm API (`api.sejm.gov.pl`), stores it in a MySQL database, and provides access through its own REST API and responsive user interface.
 
-## 🏗️ Architecture
+## Architecture
 
 The system consists of three main components:
 
@@ -47,7 +47,7 @@ The system consists of three main components:
 └─────────────────────┘
 ```
 
-## 🛠️ Technologies
+## Technologies
 
 ### Backend
 - **.NET 10.0**
@@ -60,32 +60,32 @@ The system consists of three main components:
 - **PrimeNG 21.0.2** 
 - **PrimeIcons 7.0.0** 
 
-## ✨ Features
+## Features
 
 ### Backend
 
-#### 🔄 Background Worker
+#### Background Worker
 - Automatic data fetching from Sejm API in the background
 - Synchronization of proceedings and votings
 
-#### 📡 REST API
+#### REST API
 `ParliamentVotingsController` provides the following endpoints:
 
 - `GET /api/proceedings` - List of all proceedings
 - `GET /api/votings/{proceedingNumber}` - Votings for a specific proceeding
 - `GET /api/voting/{proceedingNumber}/{votingNumber}` - Details of a single voting
 
-#### 🗄️ Data Management
+#### Data Management
 - **DatabaseManager**
 - **PVBackendAPI** 
 
 ### Frontend
 
-#### 📋 Proceedings List (`ProceedingsListComponent`)
+#### Proceedings List (`ProceedingsListComponent`)
 - Display of all Sejm proceedings
 - Filter proceedings by date range
 
-#### 🗳️ Proceeding Votings (`ProceedingVotingsComponent`)
+#### Proceeding Votings (`ProceedingVotingsComponent`)
 - List of all votings from a specific proceeding
 - Information about each voting:
   - Voting number
@@ -93,16 +93,14 @@ The system consists of three main components:
   - Topic
   - Date
 
-#### 📊 Voting Details (`VotingDetailsComponent`)
+#### Voting Details (`VotingDetailsComponent`)
 - Table with voting results of MPs/clubs
 - **Advanced filtering:**
   - Text search
   - Filter by vote type
   - Filter by club and vote type
 
-## 📁 Project Structure
-
-## 🗄️ Database
+## Database
 
 ### Data Model
 
@@ -145,7 +143,7 @@ The system uses MariaDB with the following tables:
 - `IdVotingOption` (PK) - Identifier
 - `IdVotingDetail` (FK) - Reference to voting
 
-## 🚀 Installation and Setup
+## Installation and Setup
 
 ### Requirements
 - **.NET 10.0 SDK**
