@@ -1,5 +1,6 @@
-import { Component, signal, inject, effect } from '@angular/core';
+import { Component, signal, inject, effect, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { ParliamentApiService } from '../../services/parliament-api.service';
 import { Voting } from '../../models/proceeding.model';
 import { CardModule } from 'primeng/card';
@@ -7,11 +8,29 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
+import { PaginatorModule } from 'primeng/paginator';
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { SelectModule } from 'primeng/select';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-proceeding-votings',
   standalone: true,
-  imports: [CardModule, ButtonModule, TagModule, ProgressSpinnerModule, MessageModule],
+  imports: [
+    FormsModule,
+    CardModule,
+    ButtonModule,
+    TagModule,
+    ProgressSpinnerModule,
+    MessageModule,
+    PaginatorModule,
+    InputTextModule,
+    IconFieldModule,
+    InputIconModule,
+    SelectModule,
+  ],
   templateUrl: './proceeding-votings.component.html',
   styleUrl: './proceeding-votings.component.scss',
 })
@@ -24,6 +43,52 @@ export class ProceedingVotingsComponent {
   votings = signal<Voting[]>([]);
   loading = signal(false);
   error = signal('');
+
+  // Filters
+  searchText = signal<string>('');
+  selectedStatus = signal<boolean | null>(null);
+
+  statusOptions = [
+    { label: 'Wszystkie', value: null },
+    { label: 'Przyjęte', value: true },
+    { label: 'Odrzucone', value: false },
+  ];
+
+  // Filtered votings
+  filteredVotings = computed(() => {
+    let filtered = this.votings();
+
+    // Filter by status
+    const status = this.selectedStatus();
+    if (status !== null) {
+      filtered = filtered.filter((v) => v.adopted === status);
+    }
+
+    // Filter by search text
+    const search = this.searchText().toLowerCase();
+    if (search) {
+      filtered = filtered.filter(
+        (v) =>
+          v.title?.toLowerCase().includes(search) ||
+          v.description?.toLowerCase().includes(search) ||
+          v.topic?.toLowerCase().includes(search)
+      );
+    }
+
+    return filtered;
+  });
+
+  // Pagination
+  currentPage = signal(0);
+  itemsPerPage = signal(10);
+
+  paginatedVotings = computed(() => {
+    const all = this.filteredVotings();
+    const page = this.currentPage();
+    const perPage = this.itemsPerPage();
+    const start = page * perPage;
+    return all.slice(start, start + perPage);
+  });
 
   constructor() {
     this.route.params.subscribe((params) => {
@@ -54,8 +119,31 @@ export class ProceedingVotingsComponent {
     this.router.navigate(['/voting', this.proceedingNumber(), voting.votingNumber]);
   }
 
+  capitalize(text?: string): string {
+    if (!text) return '';
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  }
+
+  toTitleCase(text?: string): string {
+    if (!text) return '';
+    return text
+      .toLowerCase()
+      .split(/\s+/)
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
+  }
+
   goBack(): void {
     this.router.navigate(['/']);
+  }
+
+  onPageChange(event: any): void {
+    this.currentPage.set(event.page);
+    this.itemsPerPage.set(event.rows);
+  }
+
+  onFilterChange(): void {
+    this.currentPage.set(0);
   }
 
   formatDate(dateString: string): string {

@@ -1,14 +1,34 @@
 <div class="proceedings-container">
   <h1>Lista Posiedzeń Sejmu</h1>
 
+  <div class="search-row">
+    <label class="search-label">Filtruj po zakresie dat:</label>
+    <p-datepicker
+      [inputStyle]="{ width: '250px' }"
+      selectionMode="range"
+      [(ngModel)]="dateRange"
+      [showClear]="true"
+    ></p-datepicker>
+  </div>
+
   <div class="proceedings-list">
-    @for (proceeding of proceedings(); track proceeding.proceedingNumber) {
-    <p-card
-      [header]="'Posiedzenie nr ' + proceeding.proceedingNumber"
-      styleClass="proceeding-card"
-      (dblclick)="openProceeding(proceeding.proceedingNumber)"
-    >
-      <p>{{ proceeding.title }}</p>
+    @for (proceeding of filteredProceedings(); track proceeding.proceedingNumber) {
+    <p-card class="proceeding-card" (dblclick)="openProceeding(proceeding.proceedingNumber)">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <div class="header-left">{{proceeding.proceedingNumber==0?"Planowane posiedzenie":"Posiedzenie nr. "+proceeding.proceedingNumber}}</div>
+        </div>
+      </ng-template>
+
+      <div class="card-body">
+        <div class="dates-block">
+          <ul class="dates-list">
+            @for (d of proceeding.formattedDates; track d) {
+            <p-chip class="date-chip">{{ formatDate(d) }}</p-chip>
+            }
+          </ul>
+        </div>
+      </div> 
     </p-card>
     }
   </div>

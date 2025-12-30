@@ -7,37 +7,144 @@
 h1 {
   text-align: center;
   color: #ffffff;
-  margin: 1.5rem 0 2rem 0;
+  margin: 1.5rem 0 2.5rem 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.filters-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem;
+  background: #18181b;
+  border-radius: 12px;
+  border: 1px solid #3a3a3a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  align-items: center;
+}
+
+::ng-deep .filters-section .p-select {
+  min-width: 220px;
+}
+
+::ng-deep .filters-section .p-select .p-select-label {
+  padding: 0.85rem 1rem;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid #3a3a3a;
+}
+
+::ng-deep .filters-section .p-select:not(.p-disabled):hover .p-select-label {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .filters-section .p-iconfield {
+  flex: 1;
+  max-width: 400px;
+}
+
+::ng-deep .filters-section .p-iconfield input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.75rem;
+  color: #ffffff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .filters-section .p-iconfield input:focus {
+  border-color: #64B5F6;
+  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+  outline: none;
+}
+
+::ng-deep .filters-section .p-iconfield input::placeholder {
+  color: #888888;
+}
+
+::ng-deep .filters-section .p-iconfield .p-inputicon {
+  color: #64B5F6;
+}
+
+.voting-paginator {
+  margin-top: 1.5rem;
 }
 
 .votings-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-::ng-deep .voting-card {
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 1.5rem;
+  align-items: stretch;
 }
 
 ::ng-deep .voting-card:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-::ng-deep .voting-card {
-  background: #2a2a2a;
-  border-color: #3a3a3a;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border-color: #64B5F6;
+  cursor: pointer;
 }
 
 ::ng-deep .voting-card .p-card-header {
-  padding: 1rem 1.5rem;
-  background: #333333;
+  background: linear-gradient(90deg, #2f2f2f, #242424);
+  color: #64B5F6;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 1rem 1.25rem;
 }
 
 ::ng-deep .voting-card .p-card-body {
-  background: #2a2a2a;
+  background: transparent;
+  padding: 1.25rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.voting-title {
+  color: #ffffff;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.description {
+  color: #cfcfcf;
+  margin: 0;
+  line-height: 1.6;
+  max-height: 3.6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(90deg, #1f1f1f, #161616);
+  border-top: 1px solid #3a3a3a;
+}
+
+.open-btn {
+  background: linear-gradient(135deg, #64B5F6, #42A5F5);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3);
+}
+
+.open-btn:hover {
+  background: linear-gradient(135deg, #42A5F5, #2196F3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
 }
 
 .voting-header {
@@ -45,43 +152,161 @@ h1 {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .voting-number {
-  font-weight: bold;
-  color: #b0b0b0;
-  font-size: 0.9rem;
+  font-weight: 700;
+  color: #64B5F6;
+  font-size: 1rem;
+  background: rgba(100, 181, 246, 0.15);
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(100, 181, 246, 0.3);
 }
 
 .voting-date {
-  color: #999999;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  background: rgba(100, 181, 246, 0.15);
+  border-radius: 6px;
+  width: fit-content;
+  border: 1px solid rgba(100, 181, 246, 0.3);
+  transition: all 0.3s ease;
+}
+
+.voting-date:hover {
+  background: rgba(100, 181, 246, 0.25);
+}
+
+.voting-date i {
+  font-size: 0.95rem;
+  color: #64B5F6;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1 1 auto;
+}
+
+.content-section {
+  background: rgba(100, 181, 246, 0.05);
+  padding: 0.75rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  border-left: 3px solid #64B5F6;
+  transition: all 0.3s ease;
+}
+
+.content-section:hover {
+  background: rgba(100, 181, 246, 0.1);
+  transform: translateX(4px);
+}
+
+.section-label {
+  color: #64B5F6;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.section-content {
+  color: #e8e8e8;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  word-break: break-word;
+  flex: 1;
+}
+
+.title-content {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.voting-card {
+  min-height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-body {
+  padding: 1.25rem;
+  background: transparent;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(90deg, #2f2f2f, #242424);
+  color: #64B5F6;
+  font-weight: 700;
+}
+
+.card-header .header-right {
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #ffffff;
+}
+
+.proceeding-title {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
   margin-bottom: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 ::ng-deep .voting-card h3 {
   color: #ffffff;
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-}
-
-.description {
-  color: #cccccc;
-  margin: 0.5rem 0;
-  line-height: 1.5;
+  margin: 0.75rem 0;
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 .topic {
   color: #b0b0b0;
-  margin: 0.5rem 0 0 0;
+  margin: 0.75rem 0 0 0;
   font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .loading {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
+}
+
+.loading p {
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+::ng-deep .p-message {
+  margin: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }

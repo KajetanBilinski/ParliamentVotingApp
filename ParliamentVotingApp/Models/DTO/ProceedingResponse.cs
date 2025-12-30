@@ -8,4 +8,6 @@ public class ProceedingResponse
     public int ProceedingNumber { get; set; }
     [JsonPropertyName("title")]
     public string? Title { get; set; }
+    [JsonPropertyName("dates")]
+    public List<DateTime>? Dates { get; set; }
 }

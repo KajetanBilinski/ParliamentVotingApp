@@ -4,6 +4,7 @@ using ParliamentVotingApp.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ParliamentVotingApp.Controllers;
 
@@ -27,8 +28,9 @@ public class ParliamentVotingsController : ControllerBase
         var filtred = proceedings.Select(p => new
         {
             p.ProceedingNumber,
-            p.Title
-        }); 
+            p.Title,
+            p.Dates
+        }).OrderByDescending(p=>p.ProceedingNumber);
         return Ok(filtred);
     }
 
@@ -69,7 +71,9 @@ public class ParliamentVotingsController : ControllerBase
             voting.Adopted,
             voting.ClubVotes,
             voting.Votes,
-            PrintInfo=voting.PrintsInfo
+            voting.TotalVoted,
+            PrintInfo =voting.PrintsInfo,
+
         };
         return Ok(filtred);
     }

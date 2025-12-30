@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ParliamentVotingApp.Models.DB;
 
@@ -12,6 +9,7 @@ public class Proceeding
 
     public int ProceedingNumber { get; set; }
     public string? Title { get; set; }
+    public string? Dates { get; set; }
 
     public ICollection<VotingDetail> VotingDetails { get; set; } = new List<VotingDetail>();
 }
