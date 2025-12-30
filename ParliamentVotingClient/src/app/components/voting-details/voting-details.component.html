@@ -12,11 +12,11 @@
     <p-tag
       [value]="votingDetails()!.adopted ? 'PRZYJĘTE' : 'ODRZUCONE'"
       [severity]="votingDetails()!.adopted ? 'success' : 'danger'"
-      styleClass="text-lg"
+      class="text-lg"
     ></p-tag>
   </div>
 
-  <p-card styleClass="info-card">
+  <p-card class="info-card">
     <div class="info-grid">
       <div class="info-item">
         <strong>Posiedzenie:</strong> {{ votingDetails()!.proceedingNumber }}
@@ -43,9 +43,9 @@
   </p-panel>
   }
 
-  <p-card styleClass="vote-chart-card">
+  <p-card class="vote-chart-card">
     <div class="vote-chart-header">
-      <h2>Rozkład głosów posłów</h2>
+      <h2>Rozkład głosów</h2>
       <span class="total-votes">Łącznie: {{ getVoteStatistics().total }} głosów</span>
     </div>
     <div class="vote-chart">
@@ -149,22 +149,38 @@
       <p-card [header]="clubName">
         <div class="vote-stats">
           @if (votingDetails()!.clubVotes[clubName].YES) {
-          <div class="stat yes">
+          <div
+            class="stat yes"
+            [class.active]="isFilterActive(clubName, 'YES')"
+            (click)="filterByClubVote(clubName, 'YES')"
+          >
             <span class="label">Za:</span>
             <span class="value">{{ votingDetails()!.clubVotes[clubName].YES }}</span>
           </div>
           } @if (votingDetails()!.clubVotes[clubName].NO) {
-          <div class="stat no">
+          <div
+            class="stat no"
+            [class.active]="isFilterActive(clubName, 'NO')"
+            (click)="filterByClubVote(clubName, 'NO')"
+          >
             <span class="label">Przeciw:</span>
             <span class="value">{{ votingDetails()!.clubVotes[clubName].NO }}</span>
           </div>
           } @if (votingDetails()!.clubVotes[clubName].ABSTAIN) {
-          <div class="stat abstain">
+          <div
+            class="stat abstain"
+            [class.active]="isFilterActive(clubName, 'ABSTAIN')"
+            (click)="filterByClubVote(clubName, 'ABSTAIN')"
+          >
             <span class="label">Wstrzymało się:</span>
             <span class="value">{{ votingDetails()!.clubVotes[clubName].ABSTAIN }}</span>
           </div>
           } @if (votingDetails()!.clubVotes[clubName].ABSENT) {
-          <div class="stat not-participating">
+          <div
+            class="stat not-participating"
+            [class.active]="isFilterActive(clubName, 'ABSENT')"
+            (click)="filterByClubVote(clubName, 'ABSENT')"
+          >
             <span class="label">Nieobecni:</span>
             <span class="value">{{ votingDetails()!.clubVotes[clubName].ABSENT }}</span>
           </div>
@@ -177,21 +193,31 @@
   } @if (votingDetails()!.votes && votingDetails()!.votes.length > 0) {
   <div class="individual-votes-section">
     <div class="header-with-search">
-      <h2>Głosy posłów ({{ votingDetails()!.votes.length }})</h2>
-      <p-iconfield iconPosition="left">
-        <p-inputicon styleClass="pi pi-search"></p-inputicon>
-        <input
-          pInputText
-          type="text"
-          [(ngModel)]="searchValue"
-          (input)="onSearchChange($event)"
-          placeholder="Szukaj posła..."
-        />
-      </p-iconfield>
+      <h2>Głosy posłów ({{ getFilteredVotes().length }})</h2>
+      <div class="filters">
+        <p-select
+          [(ngModel)]="selectedVoteType"
+          [options]="voteTypeOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Filtruj po głosie"
+          [style]="{ width: '200px' }"
+        ></p-select>
+        <p-iconfield iconPosition="left">
+          <p-inputicon class="pi pi-search"></p-inputicon>
+          <input
+            pInputText
+            type="text"
+            [(ngModel)]="searchValue"
+            (input)="onSearchChange($event)"
+            placeholder="Szukaj posła..."
+          />
+        </p-iconfield>
+      </div>
     </div>
     <p-table
       #dt
-      [value]="votingDetails()!.votes"
+      [value]="getFilteredVotes()"
       [paginator]="true"
       [rows]="50"
       [rowsPerPageOptions]="[25, 50, 100]"
@@ -199,11 +225,18 @@
       [globalFilterFields]="['firstName', 'lastName', 'club']"
       currentPageReportTemplate="Pokazywanie {first} do {last} z {totalRecords} wpisów"
     >
+      <ng-template pTemplate="colgroup">
+        <colgroup>
+          <col style="width: 50%" />
+          <col style="width: 25%" />
+          <col style="width: 25%" />
+        </colgroup>
+      </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th>Imię i nazwisko</th>
-          <th>Klub</th>
-          <th>Głos</th>
+          <th style="width: 50%">Imię i nazwisko</th>
+          <th style="width: 25%">Klub</th>
+          <th style="width: 25%">Głos</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-vote>
