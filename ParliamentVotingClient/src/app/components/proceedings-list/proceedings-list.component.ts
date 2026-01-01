@@ -8,6 +8,10 @@ import { MessageModule } from 'primeng/message';
 import { DatePickerModule } from 'primeng/datepicker';
 import { ChipModule } from 'primeng/chip';
 import { FormsModule } from '@angular/forms';
+import { PaginatorModule } from 'primeng/paginator';
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 @Component({
   selector: 'app-proceedings-list',
@@ -19,6 +23,10 @@ import { FormsModule } from '@angular/forms';
     MessageModule,
     ChipModule,
     DatePickerModule,
+    PaginatorModule,
+    InputTextModule,
+    IconFieldModule,
+    InputIconModule,
   ],
   templateUrl: './proceedings-list.component.html',
   styleUrl: './proceedings-list.component.scss',
@@ -31,6 +39,9 @@ export class ProceedingsListComponent {
   loading = signal(false);
   error = signal('');
   dateRange = signal<Date[]>([]);
+  searchNumber = signal('');
+  first = signal(0);
+  rows = signal(10);
 
   constructor() {
     this.loadProceedings();
@@ -38,20 +49,53 @@ export class ProceedingsListComponent {
 
   filteredProceedings(): Proceeding[] {
     const range = this.dateRange();
-    if (!range || range.length === 0) return this.proceedings();
-    const start = new Date(range[0]);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(range[1] ?? range[0]);
-    end.setHours(23, 59, 59, 999);
+    const searchNum = this.searchNumber().trim();
+    let filtered: Proceeding[];
 
-    return this.proceedings().filter((p) => {
-      const dates = p.formattedDates || [];
-      return dates.some((ds) => {
-        const d = new Date(ds);
-        if (isNaN(d.getTime())) return false;
-        return d.getTime() >= start.getTime() && d.getTime() <= end.getTime();
+    if (!range || range.length === 0) {
+      filtered = this.proceedings();
+    } else {
+      const start = new Date(range[0]);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(range[1] ?? range[0]);
+      end.setHours(23, 59, 59, 999);
+
+      filtered = this.proceedings().filter((p) => {
+        const dates = p.formattedDates || [];
+        return dates.some((ds) => {
+          const d = new Date(ds);
+          if (isNaN(d.getTime())) return false;
+          return d.getTime() >= start.getTime() && d.getTime() <= end.getTime();
+        });
       });
-    });
+    }
+
+    // Filter by proceeding number if search term is provided
+    if (searchNum) {
+      filtered = filtered.filter((p) => p.proceedingNumber.toString() === searchNum);
+    }
+
+    return filtered;
+  }
+
+  onFilterChange(): void {
+    this.first.set(0);
+  }
+
+  paginatedProceedings(): Proceeding[] {
+    const filtered = this.filteredProceedings();
+    const startIndex = this.first();
+    const endIndex = startIndex + this.rows();
+    return filtered.slice(startIndex, endIndex);
+  }
+
+  getTotalRecords(): number {
+    return this.filteredProceedings().length;
+  }
+
+  onPageChange(event: any): void {
+    this.first.set(event.first);
+    this.rows.set(event.rows);
   }
 
   loadProceedings(): void {

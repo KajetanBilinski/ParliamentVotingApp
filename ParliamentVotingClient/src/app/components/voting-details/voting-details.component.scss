@@ -458,7 +458,7 @@ h2 {
   align-items: center;
   margin-bottom: 1.5rem;
   padding: 1.25rem;
-  background: #18181b;
+  background: #2a2a2a;
   border-radius: 12px;
   border: 1px solid #3a3a3a;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -476,48 +476,62 @@ h2 {
   align-items: center;
 }
 
-::ng-deep .p-select {
+::ng-deep .filters .p-select {
   min-width: 200px;
 }
 
-::ng-deep .p-select .p-select-label {
-  padding: 0.85rem 1rem;
+::ng-deep .filters .p-select .p-select-label {
+  padding: 0.75rem 1rem;
   color: #ffffff;
-  background: rgba(0, 0, 0, 0.4);
+  background: #1f1f1f;
   border-radius: 8px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   border: 1px solid #3a3a3a;
 }
 
-::ng-deep .p-select:not(.p-disabled):hover .p-select-label {
-  background: rgba(0, 0, 0, 0.3);
+::ng-deep .filters .p-select:not(.p-disabled):hover .p-select-label {
+  border-color: #64B5F6;
 }
 
-::ng-deep .p-iconfield {
-  width: 320px;
-}
-
-::ng-deep .p-iconfield input {
-  width: 100%;
-  padding: 0.85rem 1rem 0.85rem 2.75rem;
-  color: #ffffff;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-::ng-deep .p-iconfield input:focus {
+::ng-deep .filters .p-select:not(.p-disabled).p-focus .p-select-label {
   border-color: #64B5F6;
   box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
   outline: none;
 }
 
-::ng-deep .p-iconfield input::placeholder {
+::ng-deep .filters .p-select .p-select-dropdown {
+  background: #1f1f1f;
+  color: #64B5F6;
+  border-left: 1px solid #3a3a3a;
+}
+
+::ng-deep .filters .p-iconfield {
+  width: 320px;
+}
+
+::ng-deep .filters .p-iconfield input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  color: #ffffff;
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .filters .p-iconfield input:focus {
+  border-color: #64B5F6;
+  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+  outline: none;
+}
+
+::ng-deep .filters .p-iconfield input::placeholder {
   color: #888888;
 }
 
-::ng-deep .p-iconfield .p-inputicon {
+::ng-deep .filters .p-iconfield .p-inputicon {
   color: #64B5F6;
 }
 

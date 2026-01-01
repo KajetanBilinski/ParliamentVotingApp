@@ -2,37 +2,68 @@
   <h1>Lista Posiedzeń Sejmu</h1>
 
   <div class="search-row">
-    <label class="search-label">Filtruj po zakresie dat:</label>
-    <p-datepicker
-      [inputStyle]="{ width: '250px' }"
-      selectionMode="range"
-      [(ngModel)]="dateRange"
-      [showClear]="true"
-    ></p-datepicker>
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchNumber"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Szukaj numeru posiedzenia..."
+      />
+    </p-iconfield>
+
+    <div class="filter-group">
+      <label class="search-label">Filtruj po zakresie dat:</label>
+      <p-datepicker
+        [inputStyle]="{ width: '250px' }"
+        selectionMode="range"
+        [(ngModel)]="dateRange"
+        [showClear]="true"
+        (onClear)="onFilterChange()"
+        (onSelect)="onFilterChange()"
+      ></p-datepicker>
+    </div>
   </div>
 
   <div class="proceedings-list">
-    @for (proceeding of filteredProceedings(); track proceeding.proceedingNumber) {
+    @for (proceeding of paginatedProceedings(); track proceeding.proceedingNumber) {
     <p-card class="proceeding-card" (dblclick)="openProceeding(proceeding.proceedingNumber)">
       <ng-template pTemplate="header">
         <div class="card-header">
-          <div class="header-left">{{proceeding.proceedingNumber==0?"Planowane posiedzenie":"Posiedzenie nr. "+proceeding.proceedingNumber}}</div>
+          <div class="header-left">
+            {{
+              proceeding.proceedingNumber == 0
+                ? 'Planowane posiedzenie'
+                : 'Posiedzenie nr. ' + proceeding.proceedingNumber
+            }}
+          </div>
         </div>
       </ng-template>
 
       <div class="card-body">
-        <div class="dates-block">
-          <ul class="dates-list">
+        <div class="dates-section">
+          <div class="dates-header">
+            <i class="pi pi-calendar"></i>
+            <span class="dates-label">Terminy posiedzeń:</span>
+          </div>
+          <div class="dates-grid">
             @for (d of proceeding.formattedDates; track d) {
-            <p-chip class="date-chip">{{ formatDate(d) }}</p-chip>
+            <div class="date-item">{{ formatDate(d) }}</div>
             }
-          </ul>
+          </div>
         </div>
-      </div> 
+      </div>
     </p-card>
     }
   </div>
-
+  <p-paginator
+    [first]="first()"
+    [rows]="rows()"
+    [totalRecords]="getTotalRecords()"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    (onPageChange)="onPageChange($event)"
+  ></p-paginator>
   @if (loading()) {
   <div class="loading">
     <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
