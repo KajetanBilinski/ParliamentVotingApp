@@ -23,7 +23,7 @@ public class DatabaseManager : IDatabaseManager
             .Include(v => v.Proceeding) 
             .Select(v => new
             {
-                ProceedingNumber = v.Proceeding.ProceedingNumber,
+                v.Proceeding.ProceedingNumber,
                 v.VotingNumber
             })
             .ToListAsync();
@@ -47,7 +47,7 @@ public class DatabaseManager : IDatabaseManager
 
     public async Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber)
     {
-        var votings = await _context.VotingDetails.Where(v => v.Proceeding.ProceedingNumber == proceedingNumber).ToListAsync();
+        var votings = await _context.VotingDetails.Include(v => v.VotingOptions).Where(v => v.Proceeding.ProceedingNumber == proceedingNumber).ToListAsync();
         if (votings == null || votings.Count == 0) return new List<VotingDetail>();
         return votings;
     }
@@ -67,6 +67,84 @@ public class DatabaseManager : IDatabaseManager
 
         if (voting == null)
             return null;
+
+        // Build option index -> option name mapping
+        var optionIndexNameMap = (voting.VotingOptions ?? Enumerable.Empty<VotingOption>())
+            .ToDictionary(o => o.OptionIndex, o => o.OptionName);
+
+        // Reconstruct VoteResponseDTOs with ListVotes
+        var voteResponsesDb = voting.VoteResponses ?? Enumerable.Empty<VoteResponse>();
+        
+        var groupedByMp = voteResponsesDb
+            .GroupBy(vr => new { vr.ClubName, vr.FirstName, vr.SecondName, vr.LastName });
+
+        var votesDto = new List<VoteResponseDTO>();
+        foreach (var grp in groupedByMp)
+        {
+            var club = grp.Key.ClubName;
+            var first = grp.Key.FirstName;
+            var second = grp.Key.SecondName;
+            var last = grp.Key.LastName;
+
+            // Entries with OptionIndex (list votes)
+            var listEntries = grp.Where(x => x.OptionIndex != null).ToList();
+            // Entry without OptionIndex (single vote)
+            var singleEntry = grp.FirstOrDefault(x => x.OptionIndex == null);
+
+            Dictionary<string, VoteType>? listVotes = null;
+            if (listEntries.Count > 0)
+            {
+                listVotes = listEntries
+                    .GroupBy(x => x.OptionIndex!.Value)
+                    .ToDictionary(
+                        g => voting.VotingOptions!.SingleOrDefault(vo=>vo.OptionIndex==g.Key)!.OptionName,
+                        g => g.First().VoteType
+                    );
+            }
+            var mainVoteType = singleEntry != null
+                ? singleEntry.VoteType
+                : (listVotes != null && listVotes.Count > 0 ? VoteType.VOTE_VALID : VoteType.NO_VOTE);
+
+            votesDto.Add(new VoteResponseDTO
+            {
+                Club = club,
+                FirstName = first,
+                SecondName = second,
+                LastName = last,
+                VoteType = mainVoteType,
+                ListVotes = listVotes
+            });
+        }
+
+        // Build ClubListVotes: Club -> (OptionName -> (VoteType -> count))
+        Dictionary<string, Dictionary<string, Dictionary<VoteType, int>>>? clubListVotes = null;
+
+        var votesWithListVotes = voteResponsesDb.Where(vr => vr.OptionIndex != null).ToList();
+        if (votesWithListVotes.Count > 0)
+        {
+            clubListVotes = votesWithListVotes
+                .GroupBy(vr => vr.ClubName)
+                .ToDictionary(
+                    clubGroup => clubGroup.Key,
+                    clubGroup => clubGroup
+                        .GroupBy(vr =>
+                        {
+                            // Map OptionIndex to OptionName, fallback to index as string
+                            if (optionIndexNameMap.TryGetValue(vr.OptionIndex!.Value, out var name))
+                                return name;
+                            return vr.OptionIndex!.Value.ToString();
+                        })
+                        .ToDictionary(
+                            optionGroup => optionGroup.Key,
+                            optionGroup => optionGroup
+                                .GroupBy(vr => vr.VoteType)
+                                .ToDictionary(
+                                    voteGroup => voteGroup.Key,
+                                    voteGroup => voteGroup.Count()
+                                )
+                        )
+                );
+        }
 
         var response = new VotingDetailsResponse
         {
@@ -96,16 +174,7 @@ public class DatabaseManager : IDatabaseManager
                 })
                 .ToList(),
 
-            Votes = voting.VoteResponses?
-                .Select(vr => new VoteResponseDTO
-                {
-                    Club = vr.ClubName,
-                    FirstName = vr.FirstName,
-                    SecondName = vr.SecondName,
-                    LastName = vr.LastName,
-                    VoteType = vr.VoteType
-                })
-                .ToList(),
+            Votes = votesDto,
 
             ClubVotes = voting.ClubVotes?
                 .GroupBy(cv => cv.ClubName)
@@ -116,7 +185,10 @@ public class DatabaseManager : IDatabaseManager
                         x => x.VoteCount
                     )
                 ),
+
+            ClubListVotes = clubListVotes
         };
+        
         return response;
     }
 
@@ -146,6 +218,7 @@ public class DatabaseManager : IDatabaseManager
             .FirstOrDefaultAsync(p => p.ProceedingNumber == votingDetailsResponse.ProceedingNumber);
         if (proceeding == null)
             throw new ArgumentNullException(nameof(proceeding));
+
         var votingDetail = new VotingDetail
         {
             VotingNumber = votingDetailsResponse.VotingNumber,
@@ -184,19 +257,64 @@ public class DatabaseManager : IDatabaseManager
             _context.ClubVotes.AddRange(clubVotes);
         }
 
+        if (votingDetailsResponse.VotingOptions != null)
+        {
+            var votingOptions = votingDetailsResponse.VotingOptions
+                .Select(option => new VotingOption
+                {
+                    IdVotingDetail = votingDetail.IdVotingDetail,
+                    OptionIndex = option.OptionIndex,
+                    OptionName = option.OptionName,
+                    VotesCount = option.VotesCount
+                })
+                .ToList();
+            _context.VotingOptions.AddRange(votingOptions);
+        }
+
         if (votingDetailsResponse.Votes != null)
         {
-            var voteResponses = votingDetailsResponse.Votes.Select(vote => new VoteResponse
+            var voteResponses = new List<VoteResponse>();
+            var hasOptions = votingDetailsResponse.VotingOptions != null && votingDetailsResponse.VotingOptions.Count > 0;
+            foreach (var vote in votingDetailsResponse.Votes)
             {
-                IdVotingDetail = votingDetail.IdVotingDetail,
-                ClubName = vote.Club,
-                FirstName = vote.FirstName,
-                SecondName = vote.SecondName,
-                LastName = vote.LastName,
-                VoteType = vote.VoteType
-            }).ToList();
+                if (hasOptions && vote.ListVotes != null && vote.ListVotes.Count > 0)
+                {
+                    foreach (var kvp in vote.ListVotes)
+                    {
+                        if (!int.TryParse(kvp.Key, out var optionIndex))
+                        {
+                            continue;
+                        }
+                        voteResponses.Add(new VoteResponse
+                        {
+                            IdVotingDetail = votingDetail.IdVotingDetail,
+                            ClubName = vote.Club,
+                            FirstName = vote.FirstName,
+                            SecondName = vote.SecondName,
+                            LastName = vote.LastName,
+                            OptionIndex = optionIndex,
+                            VoteType = kvp.Value
+                        });
+                    }
+                }
+                else
+                {
 
-            _context.VoteResponses.AddRange(voteResponses);
+                    voteResponses.Add(new VoteResponse
+                    {
+                        IdVotingDetail = votingDetail.IdVotingDetail,
+                        ClubName = vote.Club,
+                        FirstName = vote.FirstName,
+                        SecondName = vote.SecondName,
+                        LastName = vote.LastName,
+                        OptionIndex = null,
+                        VoteType = vote.VoteType
+                    });
+                }
+            }
+
+            if (voteResponses.Count > 0)
+                _context.VoteResponses.AddRange(voteResponses);
         }
 
         await _context.SaveChangesAsync();

@@ -20,5 +20,6 @@ public class VoteResponse
     public string FirstName { get; set; } = null!;
     public string? SecondName { get; set; }
     public string LastName { get; set; } = null!;
+    public int? OptionIndex{ get; set; }
     public VoteType VoteType { get; set; }
 }

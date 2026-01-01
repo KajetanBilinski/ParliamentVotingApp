@@ -97,6 +97,9 @@ public class PVBackendAPI : IPVBackendAPI
                         : HandleClubListVotes(votingDetail);
                 votingDetail.ProceedingNumber = proceedingNumber;
                 var printNumbers = ExtractPrintInfo(votingDetail.Title);
+                if (printNumbers == null || printNumbers.Count == 0)
+                    printNumbers = ExtractPrintInfo(votingDetail.Topic);
+
                 StringBuilder printsInfoBuilder = new StringBuilder();
                 foreach (var printNumber in printNumbers)
                 {
@@ -130,28 +133,53 @@ public class PVBackendAPI : IPVBackendAPI
 
         var prints = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        var groupPattern = new Regex(
-            @"(?i)\bdruk\w*\s+nr\b([^)]*)", 
-            RegexOptions.Compiled
-        );
-
+        // Pattern for numbers (with optional suffix like -A)
         var numberPattern = new Regex(
             @"\b\d+(?:-[A-Za-z])?\b",
             RegexOptions.Compiled
         );
 
-        foreach (Match grp in groupPattern.Matches(title))
+        // Pattern 1: Comprehensive pattern that captures everything after "druk*/nr" until closing parenthesis or end of logical segment
+        // Handles: (druki nr 12, 13, 14, 15, 16, 17, 18 i 19)
+        // Updated to capture all content including "i" before the closing parenthesis
+        var comprehensivePattern = new Regex(
+            @"(?i)\bdruk\w*\s+nr\s+([^)]+?)(?=\s*\))",
+            RegexOptions.Compiled
+        );
+
+        // Try comprehensive pattern first (most greedy, captures entire sequences in parentheses)
+        foreach (Match match in comprehensivePattern.Matches(title))
         {
-            var segment = grp.Groups[1].Value;
+            var segment = match.Groups[1].Value;
             foreach (Match num in numberPattern.Matches(segment))
             {
                 prints.Add(num.Value);
             }
         }
+
+        // Pattern 2: Fallback for sequences without closing parenthesis
+        if (prints.Count == 0)
+        {
+            var rangePattern = new Regex(
+                @"(?i)\bdruk\w*\s+nr\s+((?:\d+(?:-[A-Za-z])?(?:[,\s]|(?:\s+i\s+)|(?:\s+oraz\s+))+)+\d+(?:-[A-Za-z])?)",
+                RegexOptions.Compiled
+            );
+
+            foreach (Match rangeMatch in rangePattern.Matches(title))
+            {
+                var segment = rangeMatch.Groups[1].Value;
+                foreach (Match num in numberPattern.Matches(segment))
+                {
+                    prints.Add(num.Value);
+                }
+            }
+        }
+
+        // Pattern 3: Generic fallback - any number after "druk nr"
         if (prints.Count == 0)
         {
             var fallbackPattern = new Regex(
-                @"(?i)\bdruk\w*\s+nr\b.*?\b(\d+(?:-[A-Za-z])?)\b",
+                @"(?i)\bdruk\w*\s+nr\b[^\d]*(\d+(?:-[A-Za-z])?)",
                 RegexOptions.Compiled
             );
 
@@ -163,12 +191,14 @@ public class PVBackendAPI : IPVBackendAPI
                 }
             }
         }
+
         return prints.Count == 0
             ? new List<string>()
             : prints
                 .Select(p => p.Trim())
                 .Where(p => p.Length > 0)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(p => p, StringComparer.OrdinalIgnoreCase)
                 .ToList();
     }
 
@@ -305,7 +335,7 @@ public class PVBackendAPI : IPVBackendAPI
         return lastDetailedVoting;
     }
 
-    public async Task<VotingDetailsResponse?> GetVotingForProceeding(TermInfoResponse termInfoResponse, 
+    public async Task<VotingDetailsResponse?> GetVotingForProceeding(TermInfoResponse termInfoResponse,
         int proceedingNumber, int votingNumber)
     {
         var detailedVoting = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(
@@ -320,7 +350,7 @@ public class PVBackendAPI : IPVBackendAPI
         return detailedVoting;
     }
 
-    public async Task<string?> GetPrintTitleForVoting(TermInfoResponse termInfoResponse,string printNumber)
+    public async Task<string?> GetPrintTitleForVoting(TermInfoResponse termInfoResponse, string printNumber)
     {
         //https://api.sejm.gov.pl/sejm/term10/prints/226
         var printInfo = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(

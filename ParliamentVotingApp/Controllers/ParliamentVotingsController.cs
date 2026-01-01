@@ -49,8 +49,9 @@ public class ParliamentVotingsController : ControllerBase
             v.Topic,
             v.VotingNumber,
             ProceedingNumber=proceedingNumber,
-            v.Adopted
-        });
+            v.Adopted,
+            ShowAdopted = v.VotingOptions.Count==0,
+        }).OrderBy(v=>v.VotingNumber);
         return Ok(filtred);
     }
 
@@ -70,6 +71,8 @@ public class ParliamentVotingsController : ControllerBase
             voting.Date,
             voting.Adopted,
             voting.ClubVotes,
+            voting.ClubListVotes,
+            voting.VotingOptions,
             voting.Votes,
             voting.TotalVoted,
             PrintInfo =voting.PrintsInfo,
