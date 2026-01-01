@@ -35,6 +35,7 @@ export interface VotingDetails {
   clubListVotes?: { [clubName: string]: { [optionName: string]: ClubVoteCount } };
   votes: VoteResponse[];
   votingOptions?: VotingOptions[];
+  adoptedList?: { [optionName: string]: boolean };
   totalVoted: number;
 }
 

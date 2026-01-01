@@ -9,11 +9,15 @@
 
   <div class="header">
     <h1>{{ votingDetails()!.title }}</h1>
+    @if(votingDetails()?.votingOptions == null) {
     <p-tag
       [value]="votingDetails()!.adopted ? 'PRZYJĘTE' : 'ODRZUCONE'"
       [severity]="votingDetails()!.adopted ? 'success' : 'danger'"
       class="text-lg"
     ></p-tag>
+    } @else {
+    <p-tag [value]="'GŁOSOWANIE WIELOKROTNE'" [severity]="'warn'" class="text-lg"></p-tag>
+    }
   </div>
 
   <p-card class="info-card">
@@ -149,9 +153,13 @@
     <div class="option-chart-section">
       <h3 class="option-title">{{ option }}</h3>
       <div class="option-votes-summary">
-        <span class="total-votes"
-          >Łącznie: {{ getVoteStatisticsForOption(option).total }} głosów</span
-        >
+        @if(votingDetails()?.adoptedList !== undefined) {
+        <p-tag
+          [value]="(votingDetails()?.adoptedList)![option] ? 'PRZYJĘTE' : 'ODRZUCONE'"
+          [severity]="(votingDetails()?.adoptedList)![option] ? 'success' : 'danger'"
+          class="text-lg"
+        ></p-tag>
+        }
       </div>
       <div class="vote-chart">
         <div

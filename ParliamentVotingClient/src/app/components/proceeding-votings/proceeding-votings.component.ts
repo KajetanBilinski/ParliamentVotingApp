@@ -44,12 +44,13 @@ export class ProceedingVotingsComponent {
   error = signal('');
 
   searchText = signal<string>('');
-  selectedStatus = signal<boolean | null>(null);
+  selectedStatus = signal<string | null>(null);
 
   statusOptions = [
     { label: 'Wszystkie', value: null },
-    { label: 'Przyjęte', value: true },
-    { label: 'Odrzucone', value: false },
+    { label: 'Przyjęte', value: 'true' },
+    { label: 'Odrzucone', value: 'false' },
+    { label: 'Wielokrotne', value: 'multiple' },
   ];
 
   filteredVotings = computed(() => {
@@ -57,7 +58,13 @@ export class ProceedingVotingsComponent {
 
     const status = this.selectedStatus();
     if (status !== null) {
-      filtered = filtered.filter((v) => v.adopted === status);
+      if (status === 'multiple') {
+        filtered = filtered.filter((v) => v.showAdopted === false);
+      } else if (status === 'true') {
+        filtered = filtered.filter((v) => v.adopted === true);
+      } else if (status === 'false') {
+        filtered = filtered.filter((v) => v.adopted === false);
+      }
     }
 
     const search = this.searchText().toLowerCase();
