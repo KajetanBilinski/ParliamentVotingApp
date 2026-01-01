@@ -41,6 +41,10 @@ h1 {
 
 ::ng-deep .filters-section .p-select:not(.p-disabled):hover .p-select-label {
   background: rgba(0, 0, 0, 0.3); 
+} 
+
+::ng-deep .test{
+  color: red;
 }
 
 ::ng-deep .filters-section .p-iconfield {
