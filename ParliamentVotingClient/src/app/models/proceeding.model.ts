@@ -13,6 +13,13 @@ export interface Voting {
   votingNumber: number;
   proceedingNumber: number;
   adopted: boolean;
+  showAdopted: boolean;
+}
+
+export interface VotingOptions {
+  optionIndex: number;
+  optionName: string;
+  votesCount: number;
 }
 
 export interface VotingDetails {
@@ -24,8 +31,11 @@ export interface VotingDetails {
   printInfo: string;
   date: string;
   adopted: boolean;
-  clubVotes: { [clubName: string]: ClubVoteCount };
+  clubVotes?: { [clubName: string]: ClubVoteCount };
+  clubListVotes?: { [clubName: string]: { [optionName: string]: ClubVoteCount } };
   votes: VoteResponse[];
+  votingOptions?: VotingOptions[];
+  adoptedList?: { [optionName: string]: boolean };
   totalVoted: number;
 }
 
@@ -45,4 +55,5 @@ export interface VoteResponse {
   lastName: string;
   club: string;
   vote: string;
+  listVotes?: { [optionName: string]: string };
 }

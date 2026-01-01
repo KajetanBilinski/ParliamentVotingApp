@@ -32,13 +32,11 @@ public class Worker : BackgroundService
         }
         foreach (var proceeding in proceedings!)
         {
-            if (proceedingsAndVotingsDB.ContainsKey(proceeding.ProceedingNumber)) continue;
-                var votings = await _pvBackendAPI.GetVotingsForProceeding(term!, proceeding.ProceedingNumber);
+            var votings = await _pvBackendAPI.GetVotingsForProceeding(term!, proceeding.ProceedingNumber);
             if (votings != null)
             {
                 foreach (var voting in votings)
                 {
-                    if (voting.VotingOptions != null) continue;
                     if (proceedingsAndVotingsDB.TryGetValue(proceeding.ProceedingNumber, out var votingNumbers))
                     {
                         if (votingNumbers.Contains(voting.VotingNumber))
