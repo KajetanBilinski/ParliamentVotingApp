@@ -13,7 +13,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SelectModule } from 'primeng/select';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-proceeding-votings',
@@ -44,27 +43,30 @@ export class ProceedingVotingsComponent {
   loading = signal(false);
   error = signal('');
 
-  // Filters
   searchText = signal<string>('');
-  selectedStatus = signal<boolean | null>(null);
+  selectedStatus = signal<string | null>(null);
 
   statusOptions = [
     { label: 'Wszystkie', value: null },
-    { label: 'Przyjęte', value: true },
-    { label: 'Odrzucone', value: false },
+    { label: 'Przyjęte', value: 'true' },
+    { label: 'Odrzucone', value: 'false' },
+    { label: 'Wielokrotne', value: 'multiple' },
   ];
 
-  // Filtered votings
   filteredVotings = computed(() => {
     let filtered = this.votings();
 
-    // Filter by status
     const status = this.selectedStatus();
     if (status !== null) {
-      filtered = filtered.filter((v) => v.adopted === status);
+      if (status === 'multiple') {
+        filtered = filtered.filter((v) => v.showAdopted === false);
+      } else if (status === 'true') {
+        filtered = filtered.filter((v) => v.adopted === true);
+      } else if (status === 'false') {
+        filtered = filtered.filter((v) => v.adopted === false);
+      }
     }
 
-    // Filter by search text
     const search = this.searchText().toLowerCase();
     if (search) {
       filtered = filtered.filter(
@@ -78,7 +80,6 @@ export class ProceedingVotingsComponent {
     return filtered;
   });
 
-  // Pagination
   currentPage = signal(0);
   itemsPerPage = signal(10);
 
@@ -130,7 +131,7 @@ export class ProceedingVotingsComponent {
       .toLowerCase()
       .split(/\s+/)
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
+      .join(' '); 
   }
 
   goBack(): void {

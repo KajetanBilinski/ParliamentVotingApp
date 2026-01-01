@@ -60,7 +60,6 @@ export class ProceedingsListComponent {
       next: (data) => {
         this.proceedings.set(data);
         this.proceedings().forEach((p) => {
-          // Split on any whitespace and remove empty entries
           p.formattedDates = String(p.dates || '')
             .split(/\s+/)
             .filter(Boolean);
