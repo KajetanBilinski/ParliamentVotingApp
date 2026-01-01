@@ -41,8 +41,7 @@
   <p-panel header="Szczegóły">
     <p style="white-space: pre-line">{{ votingDetails()!.printInfo }}</p>
   </p-panel>
-  }
-
+  } @if (!hasVoteList()) {
   <p-card class="vote-chart-card">
     <div class="vote-chart-header">
       <h2>Rozkład głosów</h2>
@@ -141,51 +140,277 @@
       </div>
     </div>
   </p-card>
-  @if (votingDetails()!.clubVotes && getClubNames().length > 0) {
+  } @else {
+  <p-card class="vote-chart-card">
+    <div class="vote-chart-header">
+      <h2>Rozkład głosów według opcji</h2>
+    </div>
+    @for (option of getAllVotingOptions(); track option) {
+    <div class="option-chart-section">
+      <h3 class="option-title">{{ option }}</h3>
+      <div class="option-votes-summary">
+        <span class="total-votes"
+          >Łącznie: {{ getVoteStatisticsForOption(option).total }} głosów</span
+        >
+      </div>
+      <div class="vote-chart">
+        <div
+          class="vote-bar yes"
+          [style.width.%]="
+            getBarWidth(
+              getVoteStatisticsForOption(option).yes,
+              getVoteStatisticsForOption(option).total
+            )
+          "
+          [title]="
+            'Za: ' +
+            getVoteStatisticsForOption(option).yes +
+            ' (' +
+            getPercentage(
+              getVoteStatisticsForOption(option).yes,
+              getVoteStatisticsForOption(option).total
+            ) +
+            '%)'
+          "
+        >
+          @if (getVoteStatisticsForOption(option).yes > 0 &&
+          shouldShowLabel(getVoteStatisticsForOption(option).yes,
+          getVoteStatisticsForOption(option).total)) {
+          <span class="vote-label">
+            {{
+              getPercentage(
+                getVoteStatisticsForOption(option).yes,
+                getVoteStatisticsForOption(option).total
+              )
+            }}%
+          </span>
+          }
+        </div>
+        <div
+          class="vote-bar no"
+          [style.width.%]="
+            getBarWidth(
+              getVoteStatisticsForOption(option).no,
+              getVoteStatisticsForOption(option).total
+            )
+          "
+          [title]="
+            'Przeciw: ' +
+            getVoteStatisticsForOption(option).no +
+            ' (' +
+            getPercentage(
+              getVoteStatisticsForOption(option).no,
+              getVoteStatisticsForOption(option).total
+            ) +
+            '%)'
+          "
+        >
+          @if (getVoteStatisticsForOption(option).no > 0 &&
+          shouldShowLabel(getVoteStatisticsForOption(option).no,
+          getVoteStatisticsForOption(option).total)) {
+          <span class="vote-label">
+            {{
+              getPercentage(
+                getVoteStatisticsForOption(option).no,
+                getVoteStatisticsForOption(option).total
+              )
+            }}%
+          </span>
+          }
+        </div>
+        <div
+          class="vote-bar abstain"
+          [style.width.%]="
+            getBarWidth(
+              getVoteStatisticsForOption(option).abstain,
+              getVoteStatisticsForOption(option).total
+            )
+          "
+          [title]="
+            'Wstrzymało się: ' +
+            getVoteStatisticsForOption(option).abstain +
+            ' (' +
+            getPercentage(
+              getVoteStatisticsForOption(option).abstain,
+              getVoteStatisticsForOption(option).total
+            ) +
+            '%)'
+          "
+        >
+          @if (getVoteStatisticsForOption(option).abstain > 0 &&
+          shouldShowLabel(getVoteStatisticsForOption(option).abstain,
+          getVoteStatisticsForOption(option).total)) {
+          <span class="vote-label">
+            {{
+              getPercentage(
+                getVoteStatisticsForOption(option).abstain,
+                getVoteStatisticsForOption(option).total
+              )
+            }}%
+          </span>
+          }
+        </div>
+        <div
+          class="vote-bar absent"
+          [style.width.%]="
+            getBarWidth(
+              getVoteStatisticsForOption(option).absent,
+              getVoteStatisticsForOption(option).total
+            )
+          "
+          [title]="
+            'Nieobecni: ' +
+            getVoteStatisticsForOption(option).absent +
+            ' (' +
+            getPercentage(
+              getVoteStatisticsForOption(option).absent,
+              getVoteStatisticsForOption(option).total
+            ) +
+            '%)'
+          "
+        >
+          @if (getVoteStatisticsForOption(option).absent > 0 &&
+          shouldShowLabel(getVoteStatisticsForOption(option).absent,
+          getVoteStatisticsForOption(option).total)) {
+          <span class="vote-label">
+            {{
+              getPercentage(
+                getVoteStatisticsForOption(option).absent,
+                getVoteStatisticsForOption(option).total
+              )
+            }}%
+          </span>
+          }
+        </div>
+      </div>
+      <div class="vote-legend">
+        <div class="legend-item">
+          <div class="legend-color yes"></div>
+          <span>Za: {{ getVoteStatisticsForOption(option).yes }}</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color no"></div>
+          <span>Przeciw: {{ getVoteStatisticsForOption(option).no }}</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color abstain"></div>
+          <span>Wstrzymało się: {{ getVoteStatisticsForOption(option).abstain }}</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color absent"></div>
+          <span>Nieobecni: {{ getVoteStatisticsForOption(option).absent }}</span>
+        </div>
+      </div>
+    </div>
+    }
+  </p-card>
+  } @if (votingDetails()!.clubVotes && getClubNames().length > 0) {
   <div class="club-votes-section">
     <h2>Głosy klubów</h2>
     <div class="clubs-grid">
       @for (clubName of getClubNames(); track clubName) {
       <p-card [header]="clubName">
         <div class="vote-stats">
-          @if (votingDetails()!.clubVotes[clubName].YES) {
+          @if (votingDetails()!.clubVotes![clubName].YES) {
           <div
             class="stat yes"
             [class.active]="isFilterActive(clubName, 'YES')"
             (click)="filterByClubVote(clubName, 'YES')"
           >
             <span class="label">Za:</span>
-            <span class="value">{{ votingDetails()!.clubVotes[clubName].YES }}</span>
+            <span class="value">{{ votingDetails()!.clubVotes![clubName].YES }}</span>
           </div>
-          } @if (votingDetails()!.clubVotes[clubName].NO) {
+          } @if (votingDetails()!.clubVotes![clubName].NO) {
           <div
             class="stat no"
             [class.active]="isFilterActive(clubName, 'NO')"
             (click)="filterByClubVote(clubName, 'NO')"
           >
             <span class="label">Przeciw:</span>
-            <span class="value">{{ votingDetails()!.clubVotes[clubName].NO }}</span>
+            <span class="value">{{ votingDetails()!.clubVotes![clubName].NO }}</span>
           </div>
-          } @if (votingDetails()!.clubVotes[clubName].ABSTAIN) {
+          } @if (votingDetails()!.clubVotes![clubName].ABSTAIN) {
           <div
             class="stat abstain"
             [class.active]="isFilterActive(clubName, 'ABSTAIN')"
             (click)="filterByClubVote(clubName, 'ABSTAIN')"
           >
             <span class="label">Wstrzymało się:</span>
-            <span class="value">{{ votingDetails()!.clubVotes[clubName].ABSTAIN }}</span>
+            <span class="value">{{ votingDetails()!.clubVotes![clubName].ABSTAIN }}</span>
           </div>
-          } @if (votingDetails()!.clubVotes[clubName].ABSENT) {
+          } @if (votingDetails()!.clubVotes![clubName].ABSENT) {
           <div
             class="stat not-participating"
             [class.active]="isFilterActive(clubName, 'ABSENT')"
             (click)="filterByClubVote(clubName, 'ABSENT')"
           >
             <span class="label">Nieobecni:</span>
-            <span class="value">{{ votingDetails()!.clubVotes[clubName].ABSENT }}</span>
+            <span class="value">{{ votingDetails()!.clubVotes![clubName].ABSENT }}</span>
           </div>
           }
         </div>
+      </p-card>
+      }
+    </div>
+  </div>
+  } @if (votingDetails()!.clubListVotes && getClubListNames().length > 0) {
+  <div class="club-votes-section">
+    <h2>Głosy klubów według opcji</h2>
+    <div class="clubs-grid">
+      @for (clubName of getClubListNames(); track clubName) {
+      <p-card [header]="clubName">
+        @for (optionName of getOptionNamesForClub(clubName); track optionName) {
+        <div class="option-group">
+          <h4>{{ optionName }}</h4>
+          <div class="vote-stats">
+            @if (votingDetails()!.clubListVotes![clubName][optionName].YES) {
+            <div
+              class="stat yes"
+              [class.active]="isFilterActive(clubName, 'YES', optionName)"
+              (click)="filterByClubVote(clubName, 'YES', optionName)"
+            >
+              <span class="label">Za:</span>
+              <span class="value">{{
+                votingDetails()!.clubListVotes![clubName][optionName].YES
+              }}</span>
+            </div>
+            } @if (votingDetails()!.clubListVotes![clubName][optionName].NO) {
+            <div
+              class="stat no"
+              [class.active]="isFilterActive(clubName, 'NO', optionName)"
+              (click)="filterByClubVote(clubName, 'NO', optionName)"
+            >
+              <span class="label">Przeciw:</span>
+              <span class="value">{{
+                votingDetails()!.clubListVotes![clubName][optionName].NO
+              }}</span>
+            </div>
+            } @if (votingDetails()!.clubListVotes![clubName][optionName].ABSTAIN) {
+            <div
+              class="stat abstain"
+              [class.active]="isFilterActive(clubName, 'ABSTAIN', optionName)"
+              (click)="filterByClubVote(clubName, 'ABSTAIN', optionName)"
+            >
+              <span class="label">Wstrzymało się:</span>
+              <span class="value">{{
+                votingDetails()!.clubListVotes![clubName][optionName].ABSTAIN
+              }}</span>
+            </div>
+            } @if (votingDetails()!.clubListVotes![clubName][optionName].ABSENT) {
+            <div
+              class="stat not-participating"
+              [class.active]="isFilterActive(clubName, 'ABSENT', optionName)"
+              (click)="filterByClubVote(clubName, 'ABSENT', optionName)"
+            >
+              <span class="label">Nieobecni:</span>
+              <span class="value">{{
+                votingDetails()!.clubListVotes![clubName][optionName].ABSENT
+              }}</span>
+            </div>
+            }
+          </div>
+        </div>
+        }
       </p-card>
       }
     </div>
@@ -225,6 +450,7 @@
       [globalFilterFields]="['firstName', 'lastName', 'club']"
       currentPageReportTemplate="Pokazywanie {first} do {last} z {totalRecords} wpisów"
     >
+      @if (!hasVoteList()) {
       <ng-template pTemplate="colgroup">
         <colgroup>
           <col style="width: 50%" />
@@ -248,6 +474,31 @@
           </td>
         </tr>
       </ng-template>
+      } @else {
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 30%">Imię i nazwisko</th>
+          <th style="width: 20%">Klub</th>
+          @for (option of getAllVotingOptions(); track option) {
+          <th>{{ option }}</th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-vote>
+        <tr>
+          <td>{{ vote.firstName }} {{ vote.lastName }}</td>
+          <td>{{ vote.club }}</td>
+          @for (option of getAllVotingOptions(); track option) {
+          <td>
+            <p-tag
+              [value]="getVoteForOption(vote, option)"
+              [severity]="getVoteSeverity(getVoteForOption(vote, option))"
+            ></p-tag>
+          </td>
+          }
+        </tr>
+      </ng-template>
+      }
     </p-table>
   </div>
   }

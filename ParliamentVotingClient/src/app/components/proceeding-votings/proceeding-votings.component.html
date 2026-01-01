@@ -37,12 +37,14 @@
       <ng-template pTemplate="header">
         <div class="card-header">
           <div class="header-left">Głosowanie nr {{ voting.votingNumber }}</div>
+          @if (voting.showAdopted) {
           <div class="header-right">
             <p-tag
               [value]="voting.adopted ? 'Przyjęte' : 'Odrzucone'"
               [severity]="voting.adopted ? 'success' : 'danger'"
             ></p-tag>
           </div>
+          }
         </div>
       </ng-template>
 

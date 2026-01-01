@@ -13,7 +13,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { SelectModule } from 'primeng/select';
-import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-proceeding-votings',
@@ -44,7 +43,6 @@ export class ProceedingVotingsComponent {
   loading = signal(false);
   error = signal('');
 
-  // Filters
   searchText = signal<string>('');
   selectedStatus = signal<boolean | null>(null);
 
@@ -54,17 +52,14 @@ export class ProceedingVotingsComponent {
     { label: 'Odrzucone', value: false },
   ];
 
-  // Filtered votings
   filteredVotings = computed(() => {
     let filtered = this.votings();
 
-    // Filter by status
     const status = this.selectedStatus();
     if (status !== null) {
       filtered = filtered.filter((v) => v.adopted === status);
     }
 
-    // Filter by search text
     const search = this.searchText().toLowerCase();
     if (search) {
       filtered = filtered.filter(
@@ -78,7 +73,6 @@ export class ProceedingVotingsComponent {
     return filtered;
   });
 
-  // Pagination
   currentPage = signal(0);
   itemsPerPage = signal(10);
 

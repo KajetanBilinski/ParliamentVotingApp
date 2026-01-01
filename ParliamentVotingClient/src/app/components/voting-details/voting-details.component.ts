@@ -47,7 +47,7 @@ export class VotingDetailsComponent {
   error = signal('');
   searchValue = '';
   selectedVoteType: string | null = null;
-  selectedClubFilter = signal<{ club: string; voteType: string } | null>(null);
+  selectedClubFilter = signal<{ club: string; voteType: string; optionName?: string } | null>(null);
 
   get voteTypeOptions(): { label: string; value: string | null }[] {
     const details = this.votingDetails();
@@ -75,7 +75,6 @@ export class VotingDetailsComponent {
       present: { label: 'Obecni', variants: ['obecn', 'present'] },
     };
 
-    // Sprawdź każdy typ głosu czy występuje w danych
     Object.entries(voteTypeMap).forEach(([key, config]) => {
       const hasVotes = details.votes.some((vote) =>
         config.variants.some((variant) => vote.vote.toLowerCase().includes(variant))
@@ -133,7 +132,41 @@ export class VotingDetailsComponent {
 
   getClubNames(): string[] {
     const details = this.votingDetails();
-    return details ? Object.keys(details.clubVotes) : [];
+    return details ? Object.keys(details.clubVotes!) : [];
+  }
+
+  getClubListNames(): string[] {
+    const details = this.votingDetails();
+    return details && details.clubListVotes ? Object.keys(details.clubListVotes) : [];
+  }
+
+  getOptionNamesForClub(clubName: string): string[] {
+    const details = this.votingDetails();
+    return details && details.clubListVotes && details.clubListVotes[clubName]
+      ? Object.keys(details.clubListVotes[clubName])
+      : [];
+  }
+
+  getAllVotingOptions(): string[] {
+    const details = this.votingDetails();
+    if (!details || !details.votes || details.votes.length === 0) return [];
+
+    const firstVoteWithList = details.votes.find(
+      (v) => v.listVotes && Object.keys(v.listVotes).length > 0
+    );
+    if (firstVoteWithList && firstVoteWithList.listVotes) {
+      return Object.keys(firstVoteWithList.listVotes);
+    }
+    return [];
+  }
+
+  hasVoteList(): boolean {
+    const details = this.votingDetails();
+    return details?.votes?.some((v) => v.listVotes && Object.keys(v.listVotes).length > 0) || false;
+  }
+
+  getVoteForOption(vote: any, optionName: string): string {
+    return vote.listVotes && vote.listVotes[optionName] ? vote.listVotes[optionName] : '-';
   }
 
   onSearchChange(event: Event): void {
@@ -180,6 +213,39 @@ export class VotingDetailsComponent {
     return stats;
   }
 
+  getVoteStatisticsForOption(optionName: string): {
+    yes: number;
+    no: number;
+    abstain: number;
+    absent: number;
+    total: number;
+  } {
+    const details = this.votingDetails();
+    if (!details || !details.votes) {
+      return { yes: 0, no: 0, abstain: 0, absent: 0, total: 0 };
+    }
+
+    const stats = { yes: 0, no: 0, abstain: 0, absent: 0, total: 0 };
+
+    details.votes.forEach((vote) => {
+      if (vote.listVotes && vote.listVotes[optionName]) {
+        stats.total++;
+        const voteText = vote.listVotes[optionName].toLowerCase();
+        if (voteText.includes('za') || voteText.includes('yes')) {
+          stats.yes++;
+        } else if (voteText.includes('przeciw') || voteText.includes('no')) {
+          stats.no++;
+        } else if (voteText.includes('wstrzym') || voteText.includes('abstain')) {
+          stats.abstain++;
+        } else {
+          stats.absent++;
+        }
+      }
+    });
+
+    return stats;
+  }
+
   getPercentage(value: number, total: number): number {
     return total > 0 ? Math.round((value / total) * 100) : 0;
   }
@@ -190,24 +256,31 @@ export class VotingDetailsComponent {
 
   shouldShowLabel(value: number, total: number): boolean {
     const percentage = this.getPercentage(value, total);
-    // Pokaż etykietę wewnątrz paska tylko jeśli jest wystarczająco szeroki
     return percentage >= 5;
   }
 
-  filterByClubVote(club: string, voteType: string) {
+  filterByClubVote(club: string, voteType: string, optionName?: string) {
     const current = this.selectedClubFilter();
-    if (current && current.club === club && current.voteType === voteType) {
-      // Deselect
+    if (
+      current &&
+      current.club === club &&
+      current.voteType === voteType &&
+      current.optionName === optionName
+    ) {
       this.selectedClubFilter.set(null);
     } else {
-      // Select new filter
-      this.selectedClubFilter.set({ club, voteType });
+      this.selectedClubFilter.set({ club, voteType, optionName });
     }
   }
 
-  isFilterActive(club: string, voteType: string): boolean {
+  isFilterActive(club: string, voteType: string, optionName?: string): boolean {
     const current = this.selectedClubFilter();
-    return current !== null && current.club === club && current.voteType === voteType;
+    return (
+      current !== null &&
+      current.club === club &&
+      current.voteType === voteType &&
+      current.optionName === optionName
+    );
   }
 
   getFilteredVotes(): any[] {
@@ -216,7 +289,6 @@ export class VotingDetailsComponent {
 
     let votes = [...details.votes];
 
-    // Zastosuj filtr klubowy jeśli jest wybrany
     const clubFilter = this.selectedClubFilter();
     if (clubFilter) {
       votes = votes.filter((vote) => {
@@ -229,13 +301,18 @@ export class VotingDetailsComponent {
         };
 
         const searchTerms = typeMap[clubFilter.voteType];
-        const voteMatch = searchTerms.some((term) => vote.vote.toLowerCase().includes(term));
 
-        return clubMatch && voteMatch;
+        if (clubFilter.optionName && vote.listVotes && vote.listVotes[clubFilter.optionName]) {
+          const optionVote = vote.listVotes[clubFilter.optionName].toLowerCase();
+          const voteMatch = searchTerms.some((term) => optionVote.includes(term));
+          return clubMatch && voteMatch;
+        } else {
+          const voteMatch = searchTerms.some((term) => vote.vote.toLowerCase().includes(term));
+          return clubMatch && voteMatch;
+        }
       });
     }
 
-    // Zastosuj filtr typu głosu z dropdown jeśli jest wybrany
     if (this.selectedVoteType) {
       const voteTypeMap: { [key: string]: string[] } = {
         yes: ['za', 'yes'],
