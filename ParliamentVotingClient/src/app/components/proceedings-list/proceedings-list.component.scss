@@ -26,10 +26,46 @@ h1 {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .search-label {
   color: #64B5F6;
   font-weight: 700;
   font-size: 1rem;
+  white-space: nowrap;
+}
+
+::ng-deep .search-row .p-iconfield {
+  width: 250px;
+}
+
+::ng-deep .search-row .p-iconfield input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  color: #ffffff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+}
+
+::ng-deep .search-row .p-iconfield input:focus {
+  border-color: #64B5F6;
+  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+  outline: none;
+}
+
+::ng-deep .search-row .p-iconfield input::placeholder {
+  color: #888888;
+}
+
+::ng-deep .search-row .p-iconfield .p-inputicon {
+  color: #64B5F6;
 }
 
 .search-input {
@@ -60,9 +96,97 @@ h1 {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 }
 
+::ng-deep .p-paginator {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  color: #e0e0e0;
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  margin: 0 0.125rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background: #3a3a3a;
+  border-color: #64B5F6;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-paginator-page-selected {
+  background: #64B5F6;
+  border-color: #64B5F6;
+  color: #1a1a1a;
+}
+
+::ng-deep .p-paginator .p-paginator-first,
+::ng-deep .p-paginator .p-paginator-prev,
+::ng-deep .p-paginator .p-paginator-next,
+::ng-deep .p-paginator .p-paginator-last {
+  color: #e0e0e0;
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  margin: 0 0.125rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+}
+
+::ng-deep .p-paginator .p-paginator-first:not(.p-disabled):hover,
+::ng-deep .p-paginator .p-paginator-prev:not(.p-disabled):hover,
+::ng-deep .p-paginator .p-paginator-next:not(.p-disabled):hover,
+::ng-deep .p-paginator .p-paginator-last:not(.p-disabled):hover {
+  background: #3a3a3a;
+  border-color: #64B5F6;
+}
+
+::ng-deep .p-paginator .p-dropdown {
+  background: #1f1f1f;
+  border: 1px solid #3a3a3a;
+  color: #e0e0e0;
+  border-radius: 6px;
+}
+
+::ng-deep .p-paginator .p-dropdown:hover {
+  border-color: #64B5F6;
+}
+
+::ng-deep .p-dropdown-panel {
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-option {
+  color: #e0e0e0;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-option:hover {
+  background: #3a3a3a;
+  color: #64B5F6;
+}
+
+::ng-deep .p-dropdown-panel .p-dropdown-option.p-dropdown-option-selected {
+  background: #64B5F6;
+  color: #1a1a1a;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  color: #64B5F6;
+  font-weight: 600;
+}
+
 .proceedings-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 1.5rem;
   align-items: stretch;
 }
@@ -201,8 +325,50 @@ h1 {
   display: inline-block;
 }
 
-.dates-block {
-  position: relative;
+.dates-section {
+  padding: 0.5rem 0;
+}
+
+.dates-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  color: #64B5F6;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.dates-header i {
+  font-size: 1rem;
+}
+
+.dates-label {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.85rem;
+}
+
+.dates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.date-item {
+  padding: 0.5rem 0.75rem;
+  background: rgba(100, 181, 246, 0.1);
+  border-left: 3px solid #64B5F6;
+  border-radius: 4px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.date-item:hover {
+  background: rgba(100, 181, 246, 0.2);
+  transform: translateX(2px);
 }
 
 .proceeding-card {

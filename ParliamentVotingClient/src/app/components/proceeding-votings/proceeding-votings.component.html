@@ -6,9 +6,40 @@
     severity="secondary"
   ></p-button>
 
-  <h1>Głosowania - Posiedzenie nr {{ proceedingNumber() }}</h1>
+  <div class="header-with-navigation">
+    <p-button
+      icon="pi pi-chevron-left"
+      (onClick)="goToProceeding('previous')"
+      [disabled]="!hasProceeding('previous')"
+      severity="secondary"
+      [rounded]="true"
+      title="Poprzednie posiedzenie"
+    ></p-button>
+
+    <h1>Głosowania - Posiedzenie nr {{ proceedingNumber() }}</h1>
+
+    <p-button
+      icon="pi pi-chevron-right"
+      (onClick)="goToProceeding('next')"
+      [disabled]="!hasProceeding('next')"
+      severity="secondary"
+      [rounded]="true"
+      title="Następne posiedzenie"
+    ></p-button>
+  </div>
 
   <div class="filters-section">
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchVotingNumber"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Szukaj numeru głosowania..."
+      />
+    </p-iconfield>
+
     <p-select
       [(ngModel)]="selectedStatus"
       [options]="statusOptions"

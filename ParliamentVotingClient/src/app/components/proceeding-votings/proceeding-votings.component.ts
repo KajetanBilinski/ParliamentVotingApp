@@ -42,8 +42,10 @@ export class ProceedingVotingsComponent {
   votings = signal<Voting[]>([]);
   loading = signal(false);
   error = signal('');
+  allProceedingNumbers = signal<number[]>([]);
 
   searchText = signal<string>('');
+  searchVotingNumber = signal<string>('');
   selectedStatus = signal<string | null>(null);
 
   statusOptions = [
@@ -65,6 +67,11 @@ export class ProceedingVotingsComponent {
       } else if (status === 'false') {
         filtered = filtered.filter((v) => v.adopted === false);
       }
+    }
+
+    const votingNum = this.searchVotingNumber().trim();
+    if (votingNum) {
+      filtered = filtered.filter((v) => v.votingNumber.toString() === votingNum);
     }
 
     const search = this.searchText().toLowerCase();
@@ -92,6 +99,8 @@ export class ProceedingVotingsComponent {
   });
 
   constructor() {
+    this.loadAllProceedingNumbers();
+
     this.route.params.subscribe((params) => {
       const num = +params['proceedingNumber'];
       if (num > 0) {
@@ -131,11 +140,54 @@ export class ProceedingVotingsComponent {
       .toLowerCase()
       .split(/\s+/)
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' '); 
+      .join(' ');
   }
 
   goBack(): void {
     this.router.navigate(['/']);
+  }
+
+  loadAllProceedingNumbers(): void {
+    this.apiService.getAllProceedings().subscribe({
+      next: (proceedings) => {
+        const numbers = proceedings.map((p) => p.proceedingNumber).sort((a, b) => a - b);
+        this.allProceedingNumbers.set(numbers);
+      },
+      error: (err) => {
+        console.error('Błąd podczas ładowania listy posiedzeń:', err);
+      },
+    });
+  }
+
+  hasPreviousProceeding(): boolean {
+    const allNumbers = this.allProceedingNumbers();
+    const current = this.proceedingNumber();
+    const currentIndex = allNumbers.indexOf(current);
+    return currentIndex > 0;
+  }
+
+  hasProceeding(direction: 'previous' | 'next'): boolean {
+    const allNumbers = this.allProceedingNumbers();
+    const current = this.proceedingNumber();
+    const currentIndex = allNumbers.indexOf(current);
+    if (direction === 'next') {
+      return currentIndex >= 0 && currentIndex < allNumbers.length - 1;
+    }
+    return currentIndex > 0;
+  }
+
+  goToProceeding(direction: 'previous' | 'next'): void {
+    const allNumbers = this.allProceedingNumbers();
+    const current = this.proceedingNumber();
+    const currentIndex = allNumbers.indexOf(current);
+
+    if (direction === 'previous' && currentIndex > 0) {
+      const previousNumber = allNumbers[currentIndex - 1];
+      this.router.navigate(['/proceeding', previousNumber]);
+    } else if (direction === 'next' && currentIndex >= 0 && currentIndex < allNumbers.length - 1) {
+      const nextNumber = allNumbers[currentIndex + 1];
+      this.router.navigate(['/proceeding', nextNumber]);
+    }
   }
 
   onPageChange(event: any): void {
@@ -149,12 +201,17 @@ export class ProceedingVotingsComponent {
 
   formatDate(dateString: string): string {
     const date = new Date(dateString);
-    return date.toLocaleDateString('pl-PL', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    return (
+      date.toLocaleDateString('pl-PL', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }) +
+      ' • ' +
+      date.toLocaleTimeString('pl-PL', {
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+    );
   }
 }
