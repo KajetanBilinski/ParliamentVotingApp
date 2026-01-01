@@ -55,7 +55,7 @@ public class ParliamentVotingsController : ControllerBase
         return Ok(filtred);
     }
 
-    [HttpGet("details/{proceedingNumber}/{votingNumber}")]
+    [HttpGet("details/{proceedingNumber}/{votingNumber}")] 
     public async Task<IActionResult> GetVotingDetails(int proceedingNumber, int votingNumber)
     {
         var voting = await _databaseManager.GetVotingDetails(proceedingNumber, votingNumber);
