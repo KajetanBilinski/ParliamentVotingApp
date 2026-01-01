@@ -43,8 +43,6 @@ public class PVBackendAPI : IPVBackendAPI
         catch (Exception ex)
         {
             _logger.LogError("Error during fetching current term");
-            _logger.LogError(ex.Message);
-            _logger.LogError(ex.StackTrace);
         }
         return null;
     }
@@ -133,21 +131,14 @@ public class PVBackendAPI : IPVBackendAPI
 
         var prints = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        // Pattern for numbers (with optional suffix like -A)
         var numberPattern = new Regex(
             @"\b\d+(?:-[A-Za-z])?\b",
             RegexOptions.Compiled
         );
-
-        // Pattern 1: Comprehensive pattern that captures everything after "druk*/nr" until closing parenthesis or end of logical segment
-        // Handles: (druki nr 12, 13, 14, 15, 16, 17, 18 i 19)
-        // Updated to capture all content including "i" before the closing parenthesis
         var comprehensivePattern = new Regex(
             @"(?i)\bdruk\w*\s+nr\s+([^)]+?)(?=\s*\))",
             RegexOptions.Compiled
         );
-
-        // Try comprehensive pattern first (most greedy, captures entire sequences in parentheses)
         foreach (Match match in comprehensivePattern.Matches(title))
         {
             var segment = match.Groups[1].Value;
@@ -156,8 +147,6 @@ public class PVBackendAPI : IPVBackendAPI
                 prints.Add(num.Value);
             }
         }
-
-        // Pattern 2: Fallback for sequences without closing parenthesis
         if (prints.Count == 0)
         {
             var rangePattern = new Regex(
@@ -175,7 +164,6 @@ public class PVBackendAPI : IPVBackendAPI
             }
         }
 
-        // Pattern 3: Generic fallback - any number after "druk nr"
         if (prints.Count == 0)
         {
             var fallbackPattern = new Regex(
@@ -352,7 +340,6 @@ public class PVBackendAPI : IPVBackendAPI
 
     public async Task<string?> GetPrintTitleForVoting(TermInfoResponse termInfoResponse, string printNumber)
     {
-        //https://api.sejm.gov.pl/sejm/term10/prints/226
         var printInfo = await _httpClient.GetFromJsonAsync<VotingDetailsResponse>(
             $"{_baseUrl}/term{termInfoResponse.Number}/prints/{printNumber}"
         );

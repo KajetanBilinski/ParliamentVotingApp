@@ -3,7 +3,6 @@ using ParliamentVotingApp.Contracts;
 using ParliamentVotingApp.Enums;
 using ParliamentVotingApp.Models.DB;
 using ParliamentVotingApp.Models.DTO;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace ParliamentVotingApp.Services;
@@ -17,10 +16,10 @@ public class DatabaseManager : IDatabaseManager
         _context = context;
     }
 
-    public async Task<Dictionary<int,List<int>>> GetAllProceedingAndVotingNumbers()
+    public async Task<Dictionary<int, List<int>>> GetAllProceedingAndVotingNumbers()
     {
         var data = await _context.VotingDetails
-            .Include(v => v.Proceeding) 
+            .Include(v => v.Proceeding)
             .Select(v => new
             {
                 v.Proceeding.ProceedingNumber,
@@ -55,6 +54,8 @@ public class DatabaseManager : IDatabaseManager
     public async Task<VotingDetailsResponse?> GetVotingDetails(int proceedingNumber, int votingNumber)
     {
         var voting = await _context.VotingDetails
+            .AsNoTracking()
+            .AsSplitQuery()
             .Include(v => v.Proceeding)
             .Include(v => v.VotingOptions)
             .Include(v => v.ClubVotes)
@@ -64,32 +65,23 @@ public class DatabaseManager : IDatabaseManager
                 v.VotingNumber == votingNumber
             )
             .FirstOrDefaultAsync();
-
         if (voting == null)
             return null;
-
-        // Build option index -> option name mapping
         var optionIndexNameMap = (voting.VotingOptions ?? Enumerable.Empty<VotingOption>())
             .ToDictionary(o => o.OptionIndex, o => o.OptionName);
 
-        // Reconstruct VoteResponseDTOs with ListVotes
         var voteResponsesDb = voting.VoteResponses ?? Enumerable.Empty<VoteResponse>();
-        
         var groupedByMp = voteResponsesDb
-            .GroupBy(vr => new { vr.ClubName, vr.FirstName, vr.SecondName, vr.LastName });
+            .GroupBy(vr => new { vr.ClubName, vr.FirstName, vr.SecondName, vr.LastName })
+            .ToList();
 
-        var votesDto = new List<VoteResponseDTO>();
+        var votesDto = new List<VoteResponseDTO>(groupedByMp.Count);
+
         foreach (var grp in groupedByMp)
         {
-            var club = grp.Key.ClubName;
-            var first = grp.Key.FirstName;
-            var second = grp.Key.SecondName;
-            var last = grp.Key.LastName;
-
-            // Entries with OptionIndex (list votes)
-            var listEntries = grp.Where(x => x.OptionIndex != null).ToList();
-            // Entry without OptionIndex (single vote)
-            var singleEntry = grp.FirstOrDefault(x => x.OptionIndex == null);
+            var grpList = grp.ToList();
+            var listEntries = grpList.Where(x => x.OptionIndex != null).ToList();
+            var singleEntry = grpList.FirstOrDefault(x => x.OptionIndex == null);
 
             Dictionary<string, VoteType>? listVotes = null;
             if (listEntries.Count > 0)
@@ -97,29 +89,28 @@ public class DatabaseManager : IDatabaseManager
                 listVotes = listEntries
                     .GroupBy(x => x.OptionIndex!.Value)
                     .ToDictionary(
-                        g => voting.VotingOptions!.SingleOrDefault(vo=>vo.OptionIndex==g.Key)!.OptionName,
+                        g => optionIndexNameMap.TryGetValue(g.Key, out var name) ? name : g.Key.ToString(),
                         g => g.First().VoteType
                     );
             }
+
             var mainVoteType = singleEntry != null
                 ? singleEntry.VoteType
                 : (listVotes != null && listVotes.Count > 0 ? VoteType.VOTE_VALID : VoteType.NO_VOTE);
 
             votesDto.Add(new VoteResponseDTO
             {
-                Club = club,
-                FirstName = first,
-                SecondName = second,
-                LastName = last,
+                Club = grp.Key.ClubName,
+                FirstName = grp.Key.FirstName,
+                SecondName = grp.Key.SecondName,
+                LastName = grp.Key.LastName,
                 VoteType = mainVoteType,
                 ListVotes = listVotes
             });
         }
-
-        // Build ClubListVotes: Club -> (OptionName -> (VoteType -> count))
         Dictionary<string, Dictionary<string, Dictionary<VoteType, int>>>? clubListVotes = null;
-
         var votesWithListVotes = voteResponsesDb.Where(vr => vr.OptionIndex != null).ToList();
+
         if (votesWithListVotes.Count > 0)
         {
             clubListVotes = votesWithListVotes
@@ -127,13 +118,9 @@ public class DatabaseManager : IDatabaseManager
                 .ToDictionary(
                     clubGroup => clubGroup.Key,
                     clubGroup => clubGroup
-                        .GroupBy(vr =>
-                        {
-                            // Map OptionIndex to OptionName, fallback to index as string
-                            if (optionIndexNameMap.TryGetValue(vr.OptionIndex!.Value, out var name))
-                                return name;
-                            return vr.OptionIndex!.Value.ToString();
-                        })
+                        .GroupBy(vr => optionIndexNameMap.TryGetValue(vr.OptionIndex!.Value, out var name)
+                            ? name
+                            : vr.OptionIndex!.Value.ToString())
                         .ToDictionary(
                             optionGroup => optionGroup.Key,
                             optionGroup => optionGroup
@@ -188,14 +175,14 @@ public class DatabaseManager : IDatabaseManager
 
             ClubListVotes = clubListVotes
         };
-        
+
         return response;
     }
 
 
     public async Task AddNewProceeding(ProceedingResponse proceedingResponse)
     {
-        var exist = await _context.Proceedings.FirstOrDefaultAsync(p=>p.ProceedingNumber == proceedingResponse.ProceedingNumber);
+        var exist = await _context.Proceedings.FirstOrDefaultAsync(p => p.ProceedingNumber == proceedingResponse.ProceedingNumber);
         if (exist != null) return;
         StringBuilder datesBuilder = new StringBuilder();
         proceedingResponse?.Dates?.ForEach(d => datesBuilder.Append(d.ToString("MM-dd-yyyy")).Append(" "));
@@ -319,8 +306,4 @@ public class DatabaseManager : IDatabaseManager
 
         await _context.SaveChangesAsync();
     }
-
-
-
-
 }

@@ -65,16 +65,23 @@ public class ParliamentVotingsController : ControllerBase
         {
             voting.ProceedingNumber,
             voting.VotingNumber,
+            voting.YesVotesCount,
+            voting.NoVotesCount,
+            voting.AbstainCount,
+            voting.NotParticipatingCount,
             voting.Title,
             voting.Description,
             voting.Topic,
             voting.Date,
             voting.Adopted,
+            voting.MajorityType,
+            voting.MajorityVotes,
             voting.ClubVotes,
             voting.ClubListVotes,
             voting.VotingOptions,
             voting.Votes,
             voting.TotalVoted,
+            voting.AdoptedList,
             PrintInfo =voting.PrintsInfo,
 
         };

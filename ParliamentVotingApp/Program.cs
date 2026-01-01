@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using ParliamentVotingApp;
 using ParliamentVotingApp.Contracts;
 using ParliamentVotingApp.Options;
@@ -23,7 +22,6 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddHttpClient<IPVBackendAPI, PVBackendAPI>();
-builder.Services.AddScoped<IXIntegrationService, XIntegrationService>();
 builder.Services.AddScoped<IDatabaseManager, DatabaseManager>();
 builder.Services.AddScoped<IPVBackendAPI, PVBackendAPI>();
 builder.Services.Configure<ExternalAPIOptions>(builder.Configuration.GetSection(ExternalAPIOptions.SectionKey));
