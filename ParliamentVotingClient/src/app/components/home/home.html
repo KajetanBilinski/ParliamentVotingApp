@@ -1,0 +1,58 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>Głosowania Sejmowe</h1>
+  </div>
+
+  <div class="cards-grid">
+    <p-card class="calendar-card">
+      <ng-template pTemplate="header">
+        <div class="card-icon">
+          <i class="pi pi-calendar"></i>
+        </div>
+      </ng-template>
+      <h2>Kalendarz Posiedzeń</h2>
+      @if (loading()) {
+      <div class="calendar-loading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Ładowanie dat posiedzeń...</span>
+      </div>
+      } @else {
+      <div class="calendar-wrapper">
+        <p-datepicker
+          [inline]="true"
+          [showOtherMonths]="false"
+          (onSelect)="onDateSelect($event)"
+          dateFormat="dd.mm.yy"
+        >
+          <ng-template #date let-date>
+            <span
+              class="calendar-day"
+              [class.has-proceeding]="hasProceeding(date)"
+              [class.range-start]="hasProceeding(date) && !hasPreviousDay(date) && hasNextDay(date)"
+              [class.range-middle]="hasProceeding(date) && hasPreviousDay(date) && hasNextDay(date)"
+              [class.range-end]="hasProceeding(date) && hasPreviousDay(date) && !hasNextDay(date)"
+              >{{ date.day }}</span
+            >
+          </ng-template>
+        </p-datepicker>
+      </div>
+      }
+    </p-card>
+
+    <p-card class="action-card">
+      <ng-template pTemplate="header">
+        <div class="card-icon">
+          <i class="pi pi-list"></i>
+        </div>
+      </ng-template>
+      <h2>Przeglądaj Posiedzenia</h2>
+      <p>Przejdź do pełnej listy posiedzeń Sejmu</p>
+      <p-button
+        label="Zobacz Posiedzenia"
+        icon="pi pi-arrow-right"
+        (onClick)="goToProceedings()"
+        styleClass="p-button-lg"
+      ></p-button>
+    </p-card>
+  </div>
+</div>
