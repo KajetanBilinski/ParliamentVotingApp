@@ -80,27 +80,6 @@ h1 {
   outline: none;
 }
 
-.search-input {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #3a3a3a;
-  background: #1f1f1f;
-  color: #fff;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  font-size: 1rem;
-}
-
-.search-input:focus {
-  border-color: #64B5F6;
-  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
-  outline: none;
-}
-
-.p-datepicker {
-  --p-input-padding: 0.75rem 1rem;
-}
-
 .proceedings-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -150,98 +129,6 @@ h1 {
   font-weight: 700;
 }
 
-.card-header .header-right {
-  background: rgba(100, 181, 246, 0.15);
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  border: 1px solid rgba(100, 181, 246, 0.3);
-  color: #ffffff;
-}
-
-.proceeding-title {
-  color: #ffffff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.proceeding-meta {
-  color: #bdbdbd;
-  font-size: 0.95rem;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: flex-start;
-  padding: 1rem 1.25rem;
-  background: linear-gradient(90deg, #1f1f1f, #161616);
-  border-top: 1px solid #3a3a3a;
-}
-
-.open-btn {
-  background: linear-gradient(135deg, #64B5F6, #42A5F5);
-  color: #fff;
-  border: none;
-  padding: 0.65rem 1.25rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3);
-}
-
-.open-btn:hover {
-  background: linear-gradient(135deg, #42A5F5, #2196F3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
-}
-
-/* Dates list styles */
-.dates-list {
-  list-style: none;
-  padding: 0.75rem;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: flex-start;
-  height: 100px;
-  min-height: 125px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  background: linear-gradient(135deg, rgba(100, 181, 246, 0.05), rgba(100, 181, 246, 0.02));
-  border-radius: 8px;
-  border: 1px solid rgba(100, 181, 246, 0.2);
-}
-
-::ng-deep .dates-list .date-chip {
-  background: linear-gradient(135deg, rgba(100, 181, 246, 0.25), rgba(100, 181, 246, 0.15));
-  color: #ffffff;
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-  line-height: 1.5;
-  white-space: nowrap;
-  border: 1px solid rgba(100, 181, 246, 0.4);
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-  font-weight: 600;
-}
-
-::ng-deep .date-chip:hover {
-  background: linear-gradient(135deg, rgba(100, 181, 246, 0.4), rgba(100, 181, 246, 0.3));
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-  border-color: rgba(100, 181, 246, 0.6);
-}
-
-::ng-deep .date-chip {
-  display: inline-block;
-}
-
 .dates-section {
   padding: 0.5rem 0;
 }
@@ -286,35 +173,6 @@ h1 {
 .date-item:hover {
   background: rgba(100, 181, 246, 0.2);
   transform: translateX(2px);
-}
-
-.proceeding-card {
-  min-height: 300px;
-}
-
-/* Thin, subtle scrollbar for the date area */
-.dates-list::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.dates-list::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
-}
-
-.dates-list::-webkit-scrollbar-thumb {
-  background: rgba(100, 181, 246, 0.4);
-  border-radius: 4px;
-}
-
-.dates-list:hover::-webkit-scrollbar-thumb {
-  background: rgba(100, 181, 246, 0.6);
-}
-
-.dates-list {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(100, 181, 246, 0.4) transparent;
 }
 
 .loading {
