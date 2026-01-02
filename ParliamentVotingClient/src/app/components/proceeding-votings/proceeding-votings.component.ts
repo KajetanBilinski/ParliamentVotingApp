@@ -134,15 +134,6 @@ export class ProceedingVotingsComponent {
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
 
-  toTitleCase(text?: string): string {
-    if (!text) return '';
-    return text
-      .toLowerCase()
-      .split(/\s+/)
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ');
-  }
-
   goBack(): void {
     this.router.navigate(['/']);
   }
@@ -157,13 +148,6 @@ export class ProceedingVotingsComponent {
         console.error('Błąd podczas ładowania listy posiedzeń:', err);
       },
     });
-  }
-
-  hasPreviousProceeding(): boolean {
-    const allNumbers = this.allProceedingNumbers();
-    const current = this.proceedingNumber();
-    const currentIndex = allNumbers.indexOf(current);
-    return currentIndex > 0;
   }
 
   hasProceeding(direction: 'previous' | 'next'): boolean {
