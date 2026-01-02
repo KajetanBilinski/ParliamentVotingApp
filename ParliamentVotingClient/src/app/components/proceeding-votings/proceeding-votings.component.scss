@@ -126,64 +126,12 @@ h1 {
   flex-direction: column;
 }
 
-.voting-title {
-  color: #ffffff;
-  margin: 0;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.description {
-  color: #cfcfcf;
-  margin: 0;
-  line-height: 1.6;
-  max-height: 3.6em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card-footer {
-  display: flex;
-  justify-content: flex-end;
-  padding: 1rem 1.25rem;
-  background: linear-gradient(90deg, #1f1f1f, #161616);
-  border-top: 1px solid #3a3a3a;
-}
-
-.open-btn {
-  background: linear-gradient(135deg, #64B5F6, #42A5F5);
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(100, 181, 246, 0.3);
-}
-
-.open-btn:hover {
-  background: linear-gradient(135deg, #42A5F5, #2196F3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
-}
-
 .voting-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-bottom: 1rem;
-}
-
-.voting-number {
-  font-weight: 700;
-  color: #64B5F6;
-  font-size: 1rem;
-  background: rgba(100, 181, 246, 0.15);
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
-  border: 1px solid rgba(100, 181, 246, 0.3);
 }
 
 .voting-date {
@@ -279,36 +227,6 @@ h1 {
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #64B5F6;
   font-weight: 700;
-}
-
-.card-header .header-right {
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  color: #ffffff;
-}
-
-.proceeding-title {
-  color: #ffffff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-::ng-deep .voting-card h3 {
-  color: #ffffff;
-  margin: 0.75rem 0;
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.topic {
-  color: #b0b0b0;
-  margin: 0.75rem 0 0 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
 }
 
 .loading {
