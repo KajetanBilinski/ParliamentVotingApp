@@ -9,7 +9,7 @@
 
   <div class="header">
     <h1>{{ votingDetails()!.title }}</h1>
-    @if(votingDetails()?.votingOptions == null) {
+    @if(votingDetails()?.clubListVotes === undefined || votingDetails()?.clubListVotes === null) {
     <p-tag
       [value]="votingDetails()!.adopted ? 'PRZYJĘTE' : 'ODRZUCONE'"
       [severity]="votingDetails()!.adopted ? 'success' : 'danger'"
