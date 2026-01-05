@@ -202,6 +202,6 @@ export class Home {
   }
 
   goToProceedings(): void {
-    this.router.navigate(['/proceedings']);
+    this.router.navigate(['/proceeding']);
   }
 }
