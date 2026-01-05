@@ -49,9 +49,74 @@
   <p-card class="vote-chart-card">
     <div class="vote-chart-header">
       <h2>Rozkład głosów</h2>
+      @if (isQuorumVoting()) {
+      <span class="total-votes"
+        >Łącznie: {{ getVoteStatistics().present + getVoteStatistics().absent }} posłów</span
+      >
+      } @else {
       <span class="total-votes">Łącznie: {{ getVoteStatistics().total }} głosów</span>
+      }
     </div>
     <div class="vote-chart">
+      @if(isQuorumVoting()) {
+      <div
+        class="vote-bar yes"
+        [style.width.%]="
+          getBarWidth(
+            getVoteStatistics().present,
+            getVoteStatistics().present + getVoteStatistics().absent
+          )
+        "
+        [title]="
+          'Obecni: ' +
+          getVoteStatistics().present +
+          ' (' +
+          getPercentage(
+            getVoteStatistics().present,
+            getVoteStatistics().present + getVoteStatistics().absent
+          ) +
+          '%)'
+        "
+      >
+        @if (getVoteStatistics().present > 0 && shouldShowLabel(getVoteStatistics().present,
+        getVoteStatistics().present + getVoteStatistics().absent)) {
+        <span class="vote-label">
+          {{
+            getPercentage(
+              getVoteStatistics().present,
+              getVoteStatistics().present + getVoteStatistics().absent
+            )
+          }}%
+        </span>
+        }
+      </div>
+      <div
+        class="vote-bar no"
+        [style.width.%]="getBarWidth(getVoteStatistics().absent, getVoteStatistics().total)"
+        [title]="
+          'Nieobecni: ' +
+          getVoteStatistics().absent +
+          ' (' +
+          getPercentage(
+            getVoteStatistics().absent,
+            getVoteStatistics().present + getVoteStatistics().absent
+          ) +
+          '%)'
+        "
+      >
+        @if (getVoteStatistics().absent > 0 && shouldShowLabel(getVoteStatistics().absent,
+        getVoteStatistics().present + getVoteStatistics().absent)) {
+        <span class="vote-label">
+          {{
+            getPercentage(
+              getVoteStatistics().absent,
+              getVoteStatistics().present + getVoteStatistics().absent
+            )
+          }}%
+        </span>
+        }
+      </div>
+      } @else {
       <div
         class="vote-bar yes"
         [style.width.%]="getBarWidth(getVoteStatistics().yes, getVoteStatistics().total)"
@@ -124,8 +189,19 @@
         </span>
         }
       </div>
+      }
     </div>
     <div class="vote-legend">
+      @if(isQuorumVoting()) {
+      <div class="legend-item">
+        <div class="legend-color yes"></div>
+        <span>Obecni: {{ getVoteStatistics().present }}</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color no"></div>
+        <span>Nieobecni: {{ getVoteStatistics().absent }}</span>
+      </div>
+      } @else {
       <div class="legend-item">
         <div class="legend-color yes"></div>
         <span>Za: {{ getVoteStatistics().yes }}</span>
@@ -142,6 +218,7 @@
         <div class="legend-color absent"></div>
         <span>Nieobecni: {{ getVoteStatistics().absent }}</span>
       </div>
+      }
     </div>
   </p-card>
   } @else {
@@ -162,6 +239,38 @@
         }
       </div>
       <div class="vote-chart">
+        <div
+          class="vote-bar yes"
+          [style.width.%]="
+            getBarWidth(
+              getVoteStatisticsForOption(option).present,
+              getVoteStatisticsForOption(option).present + getVoteStatisticsForOption(option).absent
+            )
+          "
+          [title]="
+            'Za: ' +
+            getVoteStatisticsForOption(option).yes +
+            ' (' +
+            getPercentage(
+              getVoteStatisticsForOption(option).yes,
+              getVoteStatisticsForOption(option).total
+            ) +
+            '%)'
+          "
+        >
+          @if (getVoteStatisticsForOption(option).yes > 0 &&
+          shouldShowLabel(getVoteStatisticsForOption(option).yes,
+          getVoteStatisticsForOption(option).total)) {
+          <span class="vote-label">
+            {{
+              getPercentage(
+                getVoteStatisticsForOption(option).yes,
+                getVoteStatisticsForOption(option).total
+              )
+            }}%
+          </span>
+          }
+        </div>
         <div
           class="vote-bar yes"
           [style.width.%]="
@@ -328,6 +437,15 @@
             <span class="label">Za:</span>
             <span class="value">{{ votingDetails()!.clubVotes![clubName].YES }}</span>
           </div>
+          } @if (votingDetails()!.clubVotes![clubName].PRESENT) {
+          <div
+            class="stat yes"
+            [class.active]="isFilterActive(clubName, 'PRESENT')"
+            (click)="filterByClubVote(clubName, 'PRESENT')"
+          >
+            <span class="label">Obecni:</span>
+            <span class="value">{{ votingDetails()!.clubVotes![clubName].PRESENT }}</span>
+          </div>
           } @if (votingDetails()!.clubVotes![clubName].NO) {
           <div
             class="stat no"
@@ -413,6 +531,17 @@
               <span class="label">Nieobecni:</span>
               <span class="value">{{
                 votingDetails()!.clubListVotes![clubName][optionName].ABSENT
+              }}</span>
+            </div>
+            } @if (votingDetails()!.clubListVotes![clubName][optionName].PRESENT) {
+            <div
+              class="stat yes"
+              [class.active]="isFilterActive(clubName, 'PRESENT', optionName)"
+              (click)="filterByClubVote(clubName, 'PRESENT', optionName)"
+            >
+              <span class="label">Obecni:</span>
+              <span class="value">{{
+                votingDetails()!.clubListVotes![clubName][optionName].PRESENT
               }}</span>
             </div>
             }
