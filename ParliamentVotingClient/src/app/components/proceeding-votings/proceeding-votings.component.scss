@@ -1,6 +1,6 @@
 .votings-container {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 1.8rem;
+  max-width: 1080px;
   margin: 0 auto;
 }
 
@@ -8,8 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
-  margin: 1.5rem 0 2.5rem 0;
+  gap: 1.8rem;
+  margin: 1.35rem 0 2.25rem 0;
 }
 
 .header-with-navigation h1 {
@@ -20,35 +20,35 @@
 h1 {
   text-align: center;
   color: #ffffff;
-  font-size: 2.2rem;
+  font-size: 1.98rem;
   font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1.8px 3.6px rgba(0, 0, 0, 0.3);
 }
 
 .filters-section {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding: 1.25rem;
+  gap: 0.9rem;
+  margin-bottom: 1.8rem;
+  padding: 1.125rem;
   background: #2a2a2a;
-  border-radius: 12px;
-  border: 1px solid #3a3a3a;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 10.8px;
+  border: 0.9px solid #3a3a3a;
+  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
   align-items: center;
 }
 
 ::ng-deep .filters-section .p-select {
-  min-width: 220px;
+  min-width: 198px;
 }
 
 ::ng-deep .filters-section .p-select .p-select-label {
-  padding: 0.75rem 1rem;
+  padding: 0.675rem 0.9rem;
   color: #ffffff;
   background: #1f1f1f;
-  border-radius: 8px;
+  border-radius: 7.2px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  border: 1px solid #3a3a3a;
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
+  border: 0.9px solid #3a3a3a;
 }
 
 ::ng-deep .filters-section .p-select:not(.p-disabled):hover .p-select-label {
@@ -57,34 +57,34 @@ h1 {
 
 ::ng-deep .filters-section .p-select:not(.p-disabled).p-focus .p-select-label {
   border-color: #64B5F6;
-  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+  box-shadow: 0 0 0 2.7px rgba(100, 181, 246, 0.2);
   outline: none;
 }
 
 ::ng-deep .filters-section .p-select .p-select-dropdown {
   background: #1f1f1f;
   color: #64B5F6;
-  border-left: 1px solid #3a3a3a;
+  border-left: 0.9px solid #3a3a3a;
 }
 
 ::ng-deep .filters-section .p-iconfield {
-  width: 250px;
+  width: 225px;
 }
 
 ::ng-deep .filters-section .p-iconfield input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  padding: 0.675rem 0.9rem 0.675rem 2.475rem;
   color: #ffffff;
   background: #1f1f1f;
-  border: 1px solid #3a3a3a;
-  border-radius: 8px;
+  border: 0.9px solid #3a3a3a;
+  border-radius: 7.2px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
 }
 
 ::ng-deep .filters-section .p-iconfield input:focus {
   border-color: #64B5F6;
-  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+  box-shadow: 0 0 0 2.7px rgba(100, 181, 246, 0.2);
   outline: none;
 }
 
@@ -93,19 +93,19 @@ h1 {
 }
 
 .voting-paginator {
-  margin-top: 1.5rem;
+  margin-top: 1.35rem;
 }
 
 .votings-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(405px, 1fr));
+  gap: 1.35rem;
   align-items: stretch;
 }
 
 ::ng-deep .voting-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transform: translateY(-3.6px);
+  box-shadow: 0 7.2px 21.6px rgba(0, 0, 0, 0.5);
   border-color: #64B5F6;
   cursor: pointer;
 }
@@ -113,14 +113,14 @@ h1 {
 ::ng-deep .voting-card .p-card-header {
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #64B5F6;
-  font-size: 1.15rem;
+  font-size: 1.035rem;
   font-weight: 700;
-  padding: 1rem 1.25rem;
+  padding: 0.9rem 1.125rem;
 }
 
 ::ng-deep .voting-card .p-card-body {
   background: transparent;
-  padding: 1.25rem;
+  padding: 1.125rem;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -131,21 +131,21 @@ h1 {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
 }
 
 .voting-date {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   color: #ffffff;
-  font-size: 0.95rem;
+  font-size: 0.855rem;
   font-weight: 600;
-  padding: 0.5rem 0.75rem;
+  padding: 0.45rem 0.675rem;
   background: rgba(100, 181, 246, 0.15);
-  border-radius: 6px;
+  border-radius: 5.4px;
   width: fit-content;
-  border: 1px solid rgba(100, 181, 246, 0.3);
+  border: 0.9px solid rgba(100, 181, 246, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -154,76 +154,76 @@ h1 {
 }
 
 .voting-date i {
-  font-size: 0.95rem;
+  font-size: 0.855rem;
   color: #64B5F6;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.675rem;
   flex: 1 1 auto;
 }
 
 .content-section {
   background: rgba(100, 181, 246, 0.05);
-  padding: 0.75rem;
-  border-radius: 8px;
+  padding: 0.675rem;
+  border-radius: 7.2px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  border-left: 3px solid #64B5F6;
+  border-left: 2.7px solid #64B5F6;
   transition: all 0.3s ease;
 }
 
 .content-section:hover {
   background: rgba(100, 181, 246, 0.1);
-  transform: translateX(4px);
+  transform: translateX(3.6px);
 }
 
 .section-label {
   color: #64B5F6;
-  font-size: 0.75rem;
+  font-size: 0.675rem;
   font-weight: 700;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.36rem;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.45px;
 }
 
 .section-content {
   color: #e8e8e8;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  font-size: 0.855rem;
+  line-height: 1.44;
   word-break: break-word;
   flex: 1;
 }
 
 .title-content {
-  font-size: 1.1rem;
+  font-size: 0.99rem;
   font-weight: 600;
   color: #ffffff;
 }
 
 .voting-card {
-  min-height: 320px;
-  border-radius: 12px;
+  min-height: 288px;
+  border-radius: 10.8px;
   overflow: hidden;
 }
 
 .card-body {
-  padding: 1.25rem;
+  padding: 1.125rem;
   background: transparent;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.675rem;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 1.25rem;
+  padding: 0.9rem 1.125rem;
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #64B5F6;
   font-weight: 700;
@@ -231,21 +231,21 @@ h1 {
 
 .loading {
   text-align: center;
-  padding: 3rem;
+  padding: 2.7rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.35rem;
 }
 
 .loading p {
   color: #e0e0e0;
-  font-size: 1.1rem;
+  font-size: 0.99rem;
   font-weight: 500;
 }
 
 ::ng-deep .p-message {
-  margin: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin: 1.8rem;
+  border-radius: 7.2px;
+  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
 }

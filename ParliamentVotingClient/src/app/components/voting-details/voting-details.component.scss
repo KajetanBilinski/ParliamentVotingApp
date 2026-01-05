@@ -1,41 +1,41 @@
 .details-container {
-  padding: 2rem;
-  max-width: 1400px;
+  padding: 1.8rem;
+  max-width: 1260px;
   margin: 0 auto;
 }
 
 ::ng-deep .p-button:hover {
   background: linear-gradient(135deg, #42A5F5, #2196F3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
+  transform: translateY(-1.8px);
+  box-shadow: 0 3.6px 10.8px rgba(100, 181, 246, 0.4);
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1.5rem 0 2rem 0;
-  gap: 2rem;
-  padding: 1.5rem;
-  border-radius: 12px;
+  margin: 1.35rem 0 1.8rem 0;
+  gap: 1.8rem;
+  padding: 1.35rem;
+  border-radius: 10.8px;
   background-color: #18181b;
-  border: 1px solid #3a3a3a;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 0.9px solid #3a3a3a;
+  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
   color: #ffffff;
   margin: 0;
   flex: 1;
-  font-size: 1.8rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-size: 1.62rem;
+  text-shadow: 0 1.8px 3.6px rgba(0, 0, 0, 0.3);
 }
 
 ::ng-deep .text-lg {
-  font-size: 1.1rem;
-  padding: 0.75rem 1.5rem;
+  font-size: 0.99rem;
+  padding: 0.675rem 1.35rem;
   font-weight: 600;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.2);
 }
 
 ::ng-deep .vote-chart-card:hover {
@@ -45,31 +45,31 @@ h1 {
 
 ::ng-deep .vote-chart-card .p-card-body {
   background: transparent;
-  padding: 1.5rem;
+  padding: 1.35rem;
 }
 
 .vote-chart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 3px solid #64B5F6;
+  margin-bottom: 1.35rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 2.7px solid #64B5F6;
 }
 
 .vote-chart-header h2 {
   margin: 0;
   border: none;
   padding: 0;
-  font-size: 1.4rem;
+  font-size: 1.26rem;
   color: #64B5F6;
   font-weight: 700;
 }
 
 .option-chart-section {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 0.9px solid rgba(255, 255, 255, 0.1);
 }
 
 .option-chart-section:last-child {
@@ -81,39 +81,39 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
 }
 
 .option-title {
   margin: 0;
   color: #64B5F6;
-  font-size: 1.1rem;
+  font-size: 0.99rem;
   font-weight: 600;
 }
 
 .option-votes-summary {
-  margin-bottom: 1rem;
+  margin-bottom: 0.9rem;
   text-align: right;
 }
 
 .total-votes {
   color: #b0b0b0;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   background: rgba(255, 255, 255, 0.06);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 5.4px;
 }
 
 .vote-chart {
   display: flex;
   width: 100%;
-  height: 60px;
-  border-radius: 8px;
+  height: 54px;
+  border-radius: 7.2px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1.35rem;
+  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.4);
+  border: 0.9px solid rgba(255, 255, 255, 0.1);
 }
 
 .vote-bar {
@@ -149,40 +149,40 @@ h1 {
 .vote-label {
   color: #ffffff;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.855rem;
   text-align: center;
-  padding: 0.5rem;
+  padding: 0.45rem;
   white-space: nowrap;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0.9px 2.7px rgba(0, 0, 0, 0.5);
 }
 
 .vote-legend {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 1.35rem;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.675rem;
   background: rgba(255, 255, 255, 0.03);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 5.4px;
   transition: all 0.3s ease;
 }
 
 .legend-item:hover {
   background: rgba(255, 255, 255, 0.06);
-  transform: translateY(-2px);
+  transform: translateY(-1.8px);
 }
 
 .legend-color {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  width: 25.2px;
+  height: 25.2px;
+  border-radius: 5.4px;
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
 }
 
 .legend-color.yes {
@@ -204,120 +204,120 @@ h1 {
 .legend-item span {
   color: #ffffff;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 ::ng-deep .info-card {
-  margin-bottom: 1.5rem;
-  border-radius: 12px;
+  margin-bottom: 1.35rem;
+  border-radius: 10.8px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3.6px 14.4px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
 ::ng-deep .info-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1.8px);
+  box-shadow: 0 5.4px 18px rgba(0, 0, 0, 0.5);
 }
 
 ::ng-deep .info-card .p-card-body {
   background: transparent;
-  padding: 1.5rem;
+  padding: 1.35rem;
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+  gap: 1.35rem;
 }
 
 .info-item {
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.03);
-  padding: 1rem;
-  border-radius: 8px;
-  border-left: 3px solid #64B5F6;
+  padding: 0.9rem;
+  border-radius: 7.2px;
+  border-left: 2.7px solid #64B5F6;
   transition: all 0.3s ease;
 }
 
 .info-item:hover {
   background: rgba(255, 255, 255, 0.06);
-  transform: translateX(4px);
+  transform: translateX(3.6px);
 }
 
 .info-item strong {
   color: #64B5F6;
   font-weight: 600;
   display: block;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.225rem;
 }
 
 ::ng-deep p-panel {
   display: block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.35rem;
 }
 
 ::ng-deep .p-panel {
-  border-radius: 12px;
+  border-radius: 10.8px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3.6px 14.4px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
 ::ng-deep .p-panel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(-1.8px);
+  box-shadow: 0 5.4px 18px rgba(0, 0, 0, 0.5);
 }
 
 ::ng-deep .p-panel .p-panel-header {
   color: #64B5F6;
   border: none;
-  border-bottom: 3px solid #64B5F6;
+  border-bottom: 2.7px solid #64B5F6;
   font-weight: 700;
-  font-size: 1.1rem;
-  padding: 1rem 1.5rem;
+  font-size: 0.99rem;
+  padding: 0.9rem 1.35rem;
 }
 
 ::ng-deep .p-panel .p-panel-content {
   background: transparent;
   color: #e0e0e0;
   border: none;
-  padding: 1.5rem;
-  line-height: 1.8;
+  padding: 1.35rem;
+  line-height: 1.62;
 }
 
 h2 {
   color: #64B5F6;
-  margin: 2.5rem 0 1.5rem 0;
-  font-size: 1.5rem;
-  border-bottom: 3px solid #64B5F6;
-  padding-bottom: 0.75rem;
+  margin: 2.25rem 0 1.35rem 0;
+  font-size: 1.35rem;
+  border-bottom: 2.7px solid #64B5F6;
+  padding-bottom: 0.675rem;
   font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1.8px 3.6px rgba(0, 0, 0, 0.3);
 }
 
 .club-votes-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .clubs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.35rem;
+  margin-top: 0.9rem;
 }
 
 ::ng-deep .clubs-grid .p-card {
-  border-radius: 12px;
+  border-radius: 10.8px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3.6px 14.4px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
 ::ng-deep .clubs-grid .p-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transform: translateY(-3.6px);
+  box-shadow: 0 5.4px 18px rgba(0, 0, 0, 0.5);
 }
 
 ::ng-deep .clubs-grid .p-card .p-card-header {
@@ -325,27 +325,27 @@ h2 {
   color: #64B5F6;
   border: none;
   font-weight: 700;
-  font-size: 1.1rem;
-  padding: 1rem 1.25rem;
+  font-size: 0.99rem;
+  padding: 0.9rem 1.125rem;
 }
 
 ::ng-deep .clubs-grid .p-card .p-card-body {
   background: transparent;
-  padding: 1.25rem;
+  padding: 1.125rem;
 }
 
 .vote-stats {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.675rem;
 }
 
 .option-group {
-  margin-bottom: 1.5rem;
-  padding: 1rem;
+  margin-bottom: 1.35rem;
+  padding: 0.9rem;
   background: rgba(255, 255, 255, 0.02);
-  border-radius: 8px;
-  border-left: 3px solid #64B5F6;
+  border-radius: 7.2px;
+  border-left: 2.7px solid #64B5F6;
 }
 
 .option-group:last-child {
@@ -353,56 +353,56 @@ h2 {
 }
 
 .option-group h4 {
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.9rem 0;
   color: #64B5F6;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.45px;
 }
 
 .stat {
   display: flex;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
+  padding: 0.675rem 0.9rem;
+  border-radius: 7.2px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
   position: relative;
   cursor: pointer;
 }
 
 .stat:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  transform: translateX(3.6px);
+  box-shadow: 0 3.6px 9px rgba(0, 0, 0, 0.4);
 }
 
 .stat.active {
   transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 5.4px 14.4px rgba(0, 0, 0, 0.5);
+  border: 1.8px solid rgba(255, 255, 255, 0.5);
 }
 
 .stat.active::after {
   content: '✓';
   position: absolute;
-  right: -8px;
-  top: -8px;
+  right: -7.2px;
+  top: -7.2px;
   background: #ffffff;
   color: #2a2a2a;
-  width: 24px;
-  height: 24px;
+  width: 21.6px;
+  height: 21.6px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1.8px 7.2px rgba(0, 0, 0, 0.4);
 }
 
 .stat.yes {
   background: linear-gradient(135deg, #2e7d32, #43a047);
-  border-left: 4px solid #1b5e20;
+  border-left: 3.6px solid #1b5e20;
 }
 
 .stat.yes.active {
@@ -411,7 +411,7 @@ h2 {
 
 .stat.no {
   background: linear-gradient(135deg, #c62828, #e53935);
-  border-left: 4px solid #b71c1c;
+  border-left: 3.6px solid #b71c1c;
 }
 
 .stat.no.active {
@@ -420,7 +420,7 @@ h2 {
 
 .stat.abstain {
   background: linear-gradient(135deg, #f57f17, #ffa726);
-  border-left: 4px solid #e65100;
+  border-left: 3.6px solid #e65100;
 }
 
 .stat.abstain.active {
@@ -429,7 +429,7 @@ h2 {
 
 .stat.not-participating {
   background: linear-gradient(135deg, #424242, #616161);
-  border-left: 4px solid #212121;
+  border-left: 3.6px solid #212121;
 }
 
 .stat.not-participating.active {
@@ -439,29 +439,29 @@ h2 {
 .stat .label {
   font-weight: 600;
   color: #ffffff;
-  font-size: 0.95rem;
+  font-size: 0.855rem;
 }
 
 .stat .value {
   font-weight: 700;
   color: #ffffff;
-  font-size: 1.1rem;
+  font-size: 0.99rem;
 }
 
 .individual-votes-section {
-  margin-top: 2rem;
+  margin-top: 1.8rem;
 }
 
 .header-with-search {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding: 1.25rem;
+  margin-bottom: 1.35rem;
+  padding: 1.125rem;
   background: #2a2a2a;
-  border-radius: 12px;
-  border: 1px solid #3a3a3a;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 10.8px;
+  border: 0.9px solid #3a3a3a;
+  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
 }
 
 .header-with-search h2 {
@@ -472,22 +472,22 @@ h2 {
 
 .filters {
   display: flex;
-  gap: 1rem;
+  gap: 0.9rem;
   align-items: center;
 }
 
 ::ng-deep .filters .p-select {
-  min-width: 200px;
+  min-width: 180px;
 }
 
 ::ng-deep .filters .p-select .p-select-label {
-  padding: 0.75rem 1rem;
+  padding: 0.675rem 0.9rem;
   color: #ffffff;
   background: #1f1f1f;
-  border-radius: 8px;
+  border-radius: 7.2px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  border: 1px solid #3a3a3a;
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
+  border: 0.9px solid #3a3a3a;
 }
 
 ::ng-deep .filters .p-select:not(.p-disabled):hover .p-select-label {
@@ -507,23 +507,23 @@ h2 {
 }
 
 ::ng-deep .filters .p-iconfield {
-  width: 320px;
+  width: 288px;
 }
 
 ::ng-deep .filters .p-iconfield input {
   width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  padding: 0.675rem 0.9rem 0.675rem 2.475rem;
   color: #ffffff;
   background: #1f1f1f;
-  border: 1px solid #3a3a3a;
-  border-radius: 8px;
+  border: 0.9px solid #3a3a3a;
+  border-radius: 7.2px;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
 }
 
 ::ng-deep .filters .p-iconfield input:focus {
   border-color: #64B5F6;
-  box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
+  box-shadow: 0 0 0 2.7px rgba(100, 181, 246, 0.2);
   outline: none;
 }
 
@@ -533,9 +533,9 @@ h2 {
 
 ::ng-deep .p-table {
   background: #2a2a2a;
-  border-radius: 12px;
+  border-radius: 10.8px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 3.6px 14.4px rgba(0, 0, 0, 0.4);
 }
 
 ::ng-deep .p-table .p-datatable-table {
@@ -580,17 +580,17 @@ h2 {
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #ffffff;
   border: none;
-  padding: 1rem;
+  padding: 0.9rem;
 }
 
 ::ng-deep .p-table .p-datatable-thead > tr > th {
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #64B5F6;
   border: none;
-  border-bottom: 2px solid #3a3a3a;
-  padding: 1rem;
+  border-bottom: 1.8px solid #3a3a3a;
+  padding: 0.9rem;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -604,13 +604,13 @@ h2 {
 
 ::ng-deep .p-table .p-datatable-tbody > tr:hover {
   background: #353535;
-  transform: translateX(4px);
+  transform: translateX(3.6px);
 }
 
 ::ng-deep .p-table .p-datatable-tbody > tr > td {
   border: none;
-  border-bottom: 1px solid #3a3a3a;
-  padding: 0.85rem 1rem;
+  border-bottom: 0.9px solid #3a3a3a;
+  padding: 0.765rem 0.9rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -620,13 +620,13 @@ h2 {
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #ffffff;
   border: none;
-  border-top: 2px solid #3a3a3a;
-  padding: 1rem;
+  border-top: 1.8px solid #3a3a3a;
+  padding: 0.9rem;
 }
 
 ::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
   color: #ffffff;
-  border-radius: 6px;
+  border-radius: 5.4px;
   transition: all 0.3s ease;
 }
 
@@ -638,14 +638,14 @@ h2 {
   background: linear-gradient(135deg, #64B5F6, #42A5F5);
   border-color: #64B5F6;
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(100, 181, 246, 0.3);
+  box-shadow: 0 1.8px 5.4px rgba(100, 181, 246, 0.3);
 }
 
 ::ng-deep .p-dropdown {
   background: #1f1f1f;
   color: #ffffff;
-  border: 1px solid #3a3a3a;
-  border-radius: 6px;
+  border: 0.9px solid #3a3a3a;
+  border-radius: 5.4px;
 }
 
 ::ng-deep .p-dropdown:hover {
@@ -654,8 +654,8 @@ h2 {
 
 ::ng-deep .p-dropdown-panel {
   color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  border-radius: 7.2px;
+  box-shadow: 0 3.6px 14.4px rgba(0, 0, 0, 0.5);
 }
 
 ::ng-deep .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
@@ -674,21 +674,21 @@ h2 {
 
 .loading {
   text-align: center;
-  padding: 3rem;
+  padding: 2.7rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.35rem;
 }
 
 .loading p {
   color: #e0e0e0;
-  font-size: 1.1rem;
+  font-size: 0.99rem;
   font-weight: 500;
 }
 
 ::ng-deep .p-message {
-  margin: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin: 1.8rem;
+  border-radius: 7.2px;
+  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
 }

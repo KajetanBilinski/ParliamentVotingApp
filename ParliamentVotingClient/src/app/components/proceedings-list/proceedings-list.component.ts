@@ -12,6 +12,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { InputTextModule } from 'primeng/inputtext';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-proceedings-list',
@@ -27,6 +28,7 @@ import { InputIconModule } from 'primeng/inputicon';
     InputTextModule,
     IconFieldModule,
     InputIconModule,
+    ButtonModule,
   ],
   templateUrl: './proceedings-list.component.html',
   styleUrl: './proceedings-list.component.scss',
@@ -81,7 +83,9 @@ export class ProceedingsListComponent {
   onFilterChange(): void {
     this.first.set(0);
   }
-
+  goToHomePage() {
+    this.router.navigate(['/']);
+  }
   paginatedProceedings(): Proceeding[] {
     const filtered = this.filteredProceedings();
     const startIndex = this.first();

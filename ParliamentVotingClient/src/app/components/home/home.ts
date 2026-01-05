@@ -48,8 +48,59 @@ export class Home {
   loading = signal(false);
   showSearchDialog = signal(false);
   searchLoading = signal(false);
-  plLocale = { closeText: 'Zamknij', prevText: 'Poprzedni', nextText: 'Następny', monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'], monthNamesShort: ['Sty','Lut','Mar','Kwi','Maj','Cze', 'Lip','Sie','Wrz','Paź','Lis','Gru'], dayNames: ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'], dayNamesShort: ['Nie','Pon','Wt','Śr','Czw','Pt','So'], dayNamesMin: ['N','P','W','Ś','Cz','P','S'], weekHeader: 'Tydzień', firstDay: 1, isRTL: false, showMonthAfterYear: false, yearSuffix: 'r', timeOnlyTitle: 'Tylko czas', timeText: 'Czas', hourText: 'Godzina', minuteText: 'Minuta', secondText: 'Sekunda', currentText: 'Teraz', ampm: false, month: 'Miesiąc', week: 'Tydzień', day: 'Dzień', allDayText : 'Cały dzień' };
- 
+  plLocale = {
+    closeText: 'Zamknij',
+    prevText: 'Poprzedni',
+    nextText: 'Następny',
+    monthNames: [
+      'Styczeń',
+      'Luty',
+      'Marzec',
+      'Kwiecień',
+      'Maj',
+      'Czerwiec',
+      'Lipiec',
+      'Sierpień',
+      'Wrzesień',
+      'Październik',
+      'Listopad',
+      'Grudzień',
+    ],
+    monthNamesShort: [
+      'Sty',
+      'Lut',
+      'Mar',
+      'Kwi',
+      'Maj',
+      'Cze',
+      'Lip',
+      'Sie',
+      'Wrz',
+      'Paź',
+      'Lis',
+      'Gru',
+    ],
+    dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+    dayNamesShort: ['Nie', 'Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'So'],
+    dayNamesMin: ['N', 'P', 'W', 'Ś', 'Cz', 'P', 'S'],
+    weekHeader: 'Tydzień',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: 'r',
+    timeOnlyTitle: 'Tylko czas',
+    timeText: 'Czas',
+    hourText: 'Godzina',
+    minuteText: 'Minuta',
+    secondText: 'Sekunda',
+    currentText: 'Teraz',
+    ampm: false,
+    month: 'Miesiąc',
+    week: 'Tydzień',
+    day: 'Dzień',
+    allDayText: 'Cały dzień',
+  };
+
   proceedingDates = computed(() => {
     const dates: Date[] = [];
     this.proceedings().forEach((proceeding) => {
@@ -92,8 +143,10 @@ export class Home {
 
   viewVotingDetails(voting: VotingDetails) {
     if (voting.votingNumber && voting.proceedingNumber) {
-      this.router.navigate(['/proceeding', voting.proceedingNumber, 'voting', voting.votingNumber]);
       this.closeSearchDialog();
+      setTimeout(() => {
+        this.router.navigate(['/voting', voting.proceedingNumber, voting.votingNumber]);
+      }, 500);
     }
   }
   // Sprawdza czy data ma posiedzenie
