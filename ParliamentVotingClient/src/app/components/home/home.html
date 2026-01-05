@@ -43,11 +43,11 @@
       <div class="action-section">
         <div class="section-header">
           <i class="pi pi-list"></i>
-          <h2>Przeglądaj Posiedzenia</h2>
+          <h2>Przeglądaj posiedzenia</h2>
         </div>
         <p>Przejdź do pełnej listy posiedzeń Sejmu</p>
         <p-button
-          label="Zobacz Posiedzenia"
+          label="Przeglądaj posiedzenia"
           icon="pi pi-arrow-right"
           (onClick)="goToProceedings()"
           severity="info"
@@ -100,7 +100,6 @@
 </div>
   </div>
 </div>
-    <
 
 <p-dialog
   [(visible)]="showSearchDialog"
@@ -135,10 +134,10 @@
   >
     <ng-template pTemplate="header">
       <tr>
-        <th style="width: 150px">Nr. posiedzenia</th>
-        <th style="width: 150px">Nr. głosowania</th>
+        <th style="width: 75px">Nr. pos</th>
+        <th style="width: 75px">Nr. głos</th>
         <th>Tytuł</th>
-        <th style="width: 225px">Data</th>
+        <th style="width: 200px">Data</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-voting>

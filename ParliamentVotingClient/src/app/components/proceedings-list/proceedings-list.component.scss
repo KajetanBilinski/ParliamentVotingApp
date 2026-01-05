@@ -79,7 +79,11 @@ h1 {
   box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.2);
   outline: none;
 }
-
+.pagination-section {
+  width: 100%;
+  justify-content: center;
+  margin-top: 2rem;
+}
 .proceedings-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));

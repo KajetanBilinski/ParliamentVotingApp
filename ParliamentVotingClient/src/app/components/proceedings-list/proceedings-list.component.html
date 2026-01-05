@@ -1,4 +1,10 @@
 <div class="proceedings-container">
+    <p-button
+    label="Powrót do strony startowej"
+    icon="pi pi-arrow-left"
+    severity="secondary"
+    (onClick)="goToHomePage()"
+  ></p-button>
   <h1>Lista Posiedzeń Sejmu</h1>
 
   <div class="search-row">
@@ -57,19 +63,21 @@
     </p-card>
     }
   </div>
-  <p-paginator
-    [first]="first()"
-    [rows]="rows()"
-    [totalRecords]="getTotalRecords()"
-    [rowsPerPageOptions]="[10, 20, 50]"
-    (onPageChange)="onPageChange($event)"
-  ></p-paginator>
-  @if (loading()) {
-  <div class="loading">
-    <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
-    <p>Ładowanie...</p>
+  <div class="pagination-section">
+    <p-paginator
+      [first]="first()"
+      [rows]="rows()"
+      [totalRecords]="getTotalRecords()"
+      [rowsPerPageOptions]="[10, 20, 50]"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+    @if (loading()) {
+    <div class="loading">
+      <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
+      <p>Ładowanie...</p>
+    </div>
+    } @if (error()) {
+    <p-message severity="error" [text]="error()"></p-message>
+    }
   </div>
-  } @if (error()) {
-  <p-message severity="error" [text]="error()"></p-message>
-  }
 </div>

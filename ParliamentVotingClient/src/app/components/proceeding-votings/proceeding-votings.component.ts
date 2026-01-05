@@ -135,7 +135,7 @@ export class ProceedingVotingsComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/proceeding']);
   }
 
   loadAllProceedingNumbers(): void {
