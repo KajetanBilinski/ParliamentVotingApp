@@ -15,9 +15,11 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { CardModule } from 'primeng/card';
 import { DatePickerModule } from 'primeng/datepicker';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
 import { ParliamentApiService } from '../../services/parliament-api.service';
-import { Proceeding } from '../../models/proceeding.model';
-
+import { Proceeding, VotingDetails } from '../../models/proceeding.model';
+import { PrimeNG } from 'primeng/config';
 @Component({
   selector: 'app-home',
   imports: [
@@ -29,6 +31,8 @@ import { Proceeding } from '../../models/proceeding.model';
     InputIconModule,
     CardModule,
     DatePickerModule,
+    DialogModule,
+    TableModule,
   ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
@@ -37,11 +41,15 @@ import { Proceeding } from '../../models/proceeding.model';
 export class Home {
   private router = inject(Router);
   private apiService = inject(ParliamentApiService);
-
+  public _config: PrimeNG = inject(PrimeNG);
   proceedings = signal<Proceeding[]>([]);
+  foundVotings = signal<VotingDetails[]>([]);
+  searchText = signal<string>('');
   loading = signal(false);
-
-  // Daty posiedzeń dla kalendarza
+  showSearchDialog = signal(false);
+  searchLoading = signal(false);
+  plLocale = { closeText: 'Zamknij', prevText: 'Poprzedni', nextText: 'Następny', monthNames: ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'], monthNamesShort: ['Sty','Lut','Mar','Kwi','Maj','Cze', 'Lip','Sie','Wrz','Paź','Lis','Gru'], dayNames: ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'], dayNamesShort: ['Nie','Pon','Wt','Śr','Czw','Pt','So'], dayNamesMin: ['N','P','W','Ś','Cz','P','S'], weekHeader: 'Tydzień', firstDay: 1, isRTL: false, showMonthAfterYear: false, yearSuffix: 'r', timeOnlyTitle: 'Tylko czas', timeText: 'Czas', hourText: 'Godzina', minuteText: 'Minuta', secondText: 'Sekunda', currentText: 'Teraz', ampm: false, month: 'Miesiąc', week: 'Tydzień', day: 'Dzień', allDayText : 'Cały dzień' };
+ 
   proceedingDates = computed(() => {
     const dates: Date[] = [];
     this.proceedings().forEach((proceeding) => {
@@ -60,7 +68,34 @@ export class Home {
     });
     return dates;
   });
+  searchVotings() {
+    if (this.searchText().trim().length === 0) {
+      return;
+    }
+    this.searchLoading.set(true);
+    this.apiService.getVotingDetailsByText(this.searchText().trim()).subscribe({
+      next: (data) => {
+        this.foundVotings.set(data);
+        this.showSearchDialog.set(true);
+        this.searchLoading.set(false);
+      },
+      error: (err) => {
+        console.error('Error searching votings:', err);
+        this.searchLoading.set(false);
+      },
+    });
+  }
 
+  closeSearchDialog() {
+    this.showSearchDialog.set(false);
+  }
+
+  viewVotingDetails(voting: VotingDetails) {
+    if (voting.votingNumber && voting.proceedingNumber) {
+      this.router.navigate(['/proceeding', voting.proceedingNumber, 'voting', voting.votingNumber]);
+      this.closeSearchDialog();
+    }
+  }
   // Sprawdza czy data ma posiedzenie
   hasProceeding(date: any): boolean {
     // date z PrimeNG ma format: { day: number, month: number, year: number }
@@ -106,6 +141,7 @@ export class Home {
 
   constructor() {
     this.loadProceedings();
+    this._config.setTranslation(this.plLocale);
   }
 
   loadProceedings(): void {
@@ -152,6 +188,17 @@ export class Home {
     if (proceeding) {
       this.router.navigate(['/proceeding', proceeding.proceedingNumber]);
     }
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pl-PL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
   }
 
   goToProceedings(): void {
