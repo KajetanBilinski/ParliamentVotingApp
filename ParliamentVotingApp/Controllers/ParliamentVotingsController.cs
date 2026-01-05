@@ -55,6 +55,33 @@ public class ParliamentVotingsController : ControllerBase
         return Ok(filtred);
     }
 
+    [HttpGet("statistics")]
+    public async Task<IActionResult> GetAllStatistics()
+    {
+        return Ok();
+    }
+
+    [HttpGet("details")]
+    public async Task<IActionResult> GetAllVotingsWithText([FromQuery]string text)
+    {
+        var proceedings = await _databaseManager.GetAllProceedings();
+        if (proceedings == null) return NotFound();
+        var votings = await _databaseManager.GetAllVotingsWithText(text);
+        if (votings == null) return NotFound();
+        var filtred = votings.Select(v => new
+        {
+            v.Date,
+            v.Title,
+            v.Description,
+            v.Topic,
+            v.VotingNumber,
+            v.Proceeding.ProceedingNumber,
+            v.Adopted,
+            ShowAdopted = v.VotingOptions.Count == 0,
+        }).OrderBy(v => v.VotingNumber);
+        return Ok(filtred);
+    }
+
     [HttpGet("details/{proceedingNumber}/{votingNumber}")]
     public async Task<IActionResult> GetVotingDetails(int proceedingNumber, int votingNumber)
     {
