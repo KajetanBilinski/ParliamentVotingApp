@@ -112,6 +112,11 @@ export class VotingDetailsComponent {
     });
   }
 
+  isQuorumVoting(): boolean {
+    const details = this.votingDetails();
+    return details ? details.topic?.toLowerCase().includes('głosowanie kworum') : false;
+  }
+
   goBack(): void {
     const details = this.votingDetails();
     if (details) {
@@ -177,7 +182,12 @@ export class VotingDetailsComponent {
   }
 
   getVoteSeverity(vote: string): 'success' | 'danger' | 'warn' | 'secondary' {
-    if (vote.toLowerCase().includes('za') || vote.toLowerCase().includes('yes')) {
+    if (
+      vote.toLowerCase().includes('za') ||
+      vote.toLowerCase().includes('yes') ||
+      vote.toLowerCase().includes('obecn') ||
+      vote.toLowerCase().includes('present')
+    ) {
       return 'success';
     }
     if (vote.toLowerCase().includes('przeciw') || vote.toLowerCase().includes('no')) {
@@ -189,13 +199,20 @@ export class VotingDetailsComponent {
     return 'secondary';
   }
 
-  getVoteStatistics(): { yes: number; no: number; abstain: number; absent: number; total: number } {
+  getVoteStatistics(): {
+    yes: number;
+    no: number;
+    abstain: number;
+    present: number;
+    absent: number;
+    total: number;
+  } {
     const details = this.votingDetails();
     if (!details || !details.votes) {
-      return { yes: 0, no: 0, abstain: 0, absent: 0, total: 0 };
+      return { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: 0 };
     }
 
-    const stats = { yes: 0, no: 0, abstain: 0, absent: 0, total: details.totalVoted };
+    const stats = { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: details.totalVoted };
 
     details.votes.forEach((vote) => {
       const voteText = vote.vote.toLowerCase();
@@ -205,7 +222,9 @@ export class VotingDetailsComponent {
         stats.no++;
       } else if (voteText.includes('wstrzym') || voteText.includes('abstain')) {
         stats.abstain++;
-      } else {
+      } else if (voteText.includes('obecn') || voteText.includes('present')) {
+        stats.present++;
+      } else if (voteText.includes('nieobecn') || voteText.includes('absent')) {
         stats.absent++;
       }
     });
@@ -217,15 +236,16 @@ export class VotingDetailsComponent {
     yes: number;
     no: number;
     abstain: number;
+    present: number;
     absent: number;
     total: number;
   } {
     const details = this.votingDetails();
     if (!details || !details.votes) {
-      return { yes: 0, no: 0, abstain: 0, absent: 0, total: 0 };
+      return { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: 0 };
     }
 
-    const stats = { yes: 0, no: 0, abstain: 0, absent: 0, total: 0 };
+    const stats = { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: 0 };
 
     details.votes.forEach((vote) => {
       if (vote.listVotes && vote.listVotes[optionName]) {
@@ -237,7 +257,9 @@ export class VotingDetailsComponent {
           stats.no++;
         } else if (voteText.includes('wstrzym') || voteText.includes('abstain')) {
           stats.abstain++;
-        } else {
+        } else if (voteText.includes('obecn') || voteText.includes('present')) {
+          stats.present++;
+        } else if (voteText.includes('nieobecn') || voteText.includes('absent')) {
           stats.absent++;
         }
       }
@@ -298,6 +320,7 @@ export class VotingDetailsComponent {
           NO: ['przeciw', 'no'],
           ABSTAIN: ['wstrzym', 'abstain'],
           ABSENT: ['nieobecn', 'absent', 'brak'],
+          PRESENT: ['obecn', 'present'],
         };
 
         const searchTerms = typeMap[clubFilter.voteType];
