@@ -22,29 +22,29 @@ public class Worker : BackgroundService
         using var scope = _scopeFactory.CreateScope();
         var _pvBackendAPI = scope.ServiceProvider.GetRequiredService<IPVBackendAPI>();
         var _databaseManager = scope.ServiceProvider.GetRequiredService<IDatabaseManager>();
-        var term = await _pvBackendAPI.GetCurrentTerm();
-        var proceedingsAndVotingsDB = await _databaseManager.GetAllProceedingAndVotingNumbers();
-        var proceedings = await _pvBackendAPI.GetProceedings(term!);
-        if (proceedings == null) return;
-        foreach(var p in proceedings)
-        {
-            await _databaseManager.AddNewProceeding(p);
-        }
-        foreach (var proceeding in proceedings!)
-        {
-            var votings = await _pvBackendAPI.GetVotingsForProceeding(term!, proceeding.ProceedingNumber);
-            if (votings != null)
-            {
-                foreach (var voting in votings)
-                {
-                    if (proceedingsAndVotingsDB.TryGetValue(proceeding.ProceedingNumber, out var votingNumbers))
-                    {
-                        if (votingNumbers.Contains(voting.VotingNumber))
-                            continue;
-                    }
-                    await _databaseManager.SaveVotingDetails(voting);
-                }
-            }
-        }
+        var term = await _pvBackendAPI.GetCurrentTerm(); 
+        //var proceedingsAndVotingsDB = await _databaseManager.GetAllProceedingAndVotingNumbers();
+        //var proceedings = await _pvBackendAPI.GetProceedings(term!);
+        //if (proceedings == null) return;
+        //foreach(var p in proceedings)
+        //{
+        //    await _databaseManager.AddNewProceeding(p);
+        //}
+        //foreach (var proceeding in proceedings!)
+        //{
+        //    var votings = await _pvBackendAPI.GetVotingsForProceeding(term!, proceeding.ProceedingNumber);
+        //    if (votings != null)
+        //    {
+        //        foreach (var voting in votings)
+        //        {
+        //            if (proceedingsAndVotingsDB.TryGetValue(proceeding.ProceedingNumber, out var votingNumbers))
+        //            {
+        //                if (votingNumbers.Contains(voting.VotingNumber))
+        //                    continue;
+        //            }
+        //            await _databaseManager.SaveVotingDetails(voting);
+        //        }
+        //    }
+        //}
     }
 }

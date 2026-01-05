@@ -10,5 +10,6 @@ public interface IDatabaseManager
     Task AddNewProceeding(ProceedingResponse proceedingResponse);
     Task<List<Proceeding>> GetAllProceedings();
     Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber);
+    Task<List<VotingDetail>> GetAllVotingsWithText(string text);
     Task<VotingDetailsResponse?> GetVotingDetails(int proceedingNumber, int votingNumber);
 }

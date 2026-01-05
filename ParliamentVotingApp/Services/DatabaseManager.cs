@@ -19,6 +19,8 @@ public class DatabaseManager : IDatabaseManager
     public async Task<Dictionary<int, List<int>>> GetAllProceedingAndVotingNumbers()
     {
         var data = await _context.VotingDetails
+            .AsNoTracking()
+            .AsSplitQuery()
             .Include(v => v.Proceeding)
             .Select(v => new
             {
@@ -47,6 +49,21 @@ public class DatabaseManager : IDatabaseManager
     public async Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber)
     {
         var votings = await _context.VotingDetails.Include(v => v.VotingOptions).Where(v => v.Proceeding.ProceedingNumber == proceedingNumber).ToListAsync();
+        if (votings == null || votings.Count == 0) return new List<VotingDetail>();
+        return votings;
+    }
+
+    public async Task<List<VotingDetail>> GetAllVotingsWithText(string text)
+    {
+        var votings = await _context.VotingDetails
+            .AsNoTracking()
+            .AsSplitQuery()
+            .Include(v => v.Proceeding)
+            .Where(v =>
+                EF.Functions.Like(v.Title, $"%{text}%") ||
+                EF.Functions.Like(v.Description, $"%{text}%") ||
+                EF.Functions.Like(v.Topic, $"%{text}%"))
+            .ToListAsync();
         if (votings == null || votings.Count == 0) return new List<VotingDetail>();
         return votings;
     }
@@ -177,6 +194,11 @@ public class DatabaseManager : IDatabaseManager
         };
 
         return response;
+    }
+
+    public async Task GetTopFiveBestAttendanceMPs()
+    {
+        // Implementation for statistics can be added here
     }
 
 

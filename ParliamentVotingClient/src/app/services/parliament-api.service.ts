@@ -24,4 +24,7 @@ export class ParliamentApiService {
       `${this.apiUrl}/details/${proceedingNumber}/${votingNumber}`
     );
   }
+  getVotingDetailsByText(text: string): Observable<VotingDetails[]> {
+    return this.http.get<VotingDetails[]>(`${this.apiUrl}/details/`, { params: { text } });
+  }
 }
