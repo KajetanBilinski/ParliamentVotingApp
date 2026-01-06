@@ -1,21 +1,21 @@
 .votings-container {
-  padding: 1.8rem;
-  max-width: 1080px;
+  padding: 1.152rem;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
 .header-actions {
   display: flex;
-  gap: 0.9rem;
-  margin-bottom: 1.5rem;
+  gap: 0.576rem;
+  margin-bottom: 0.96rem;
 }
 
 .header-with-navigation {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.8rem;
-  margin: 1.35rem 0 2.25rem 0;
+  gap: 1.152rem;
+  margin: 0.864rem 0 1.44rem 0;
 }
 
 .header-with-navigation h1 {
@@ -26,35 +26,36 @@
 h1 {
   text-align: center;
   color: #ffffff;
-  font-size: 1.98rem;
+  font-size: 1.604rem;
   font-weight: 700;
-  text-shadow: 0 1.8px 3.6px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1.152px 2.304px rgba(0, 0, 0, 0.3);
 }
 
 .filters-section {
   display: flex;
-  gap: 0.9rem;
-  margin-bottom: 1.8rem;
-  padding: 1.125rem;
+  gap: 2rem;
+  margin-bottom: 1.44rem;
+  padding: 0.9rem;
   background: #2a2a2a;
-  border-radius: 10.8px;
-  border: 0.9px solid #3a3a3a;
-  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
+  border-radius: 8.64px;
+  border: 0.72px solid #3a3a3a;
+  box-shadow: 0 2.88px 8.64px rgba(0, 0, 0, 0.3);
   align-items: center;
+  justify-content: center;
 }
 
 ::ng-deep .filters-section .p-select {
-  min-width: 198px;
+  min-width: 200px;
 }
 
 ::ng-deep .filters-section .p-select .p-select-label {
-  padding: 0.675rem 0.9rem;
+  padding: 0.54rem 0.72rem;
   color: #ffffff;
   background: #1f1f1f;
-  border-radius: 7.2px;
+  border-radius: 5.76px;
   transition: all 0.3s ease;
-  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
-  border: 0.9px solid #3a3a3a;
+  box-shadow: 0 1.44px 4.32px rgba(0, 0, 0, 0.3);
+  border: 0.72px solid #3a3a3a;
 }
 
 ::ng-deep .filters-section .p-select:not(.p-disabled):hover .p-select-label {
@@ -63,34 +64,34 @@ h1 {
 
 ::ng-deep .filters-section .p-select:not(.p-disabled).p-focus .p-select-label {
   border-color: #64B5F6;
-  box-shadow: 0 0 0 2.7px rgba(100, 181, 246, 0.2);
+  box-shadow: 0 0 0 2.16px rgba(100, 181, 246, 0.2);
   outline: none;
 }
 
 ::ng-deep .filters-section .p-select .p-select-dropdown {
   background: #1f1f1f;
   color: #64B5F6;
-  border-left: 0.9px solid #3a3a3a;
+  border-left: 0.72px solid #3a3a3a;
 }
 
 ::ng-deep .filters-section .p-iconfield {
-  width: 225px;
+  width: 275px;
 }
 
 ::ng-deep .filters-section .p-iconfield input {
   width: 100%;
-  padding: 0.675rem 0.9rem 0.675rem 2.475rem;
+  padding: 0.54rem 0.72rem 0.54rem 1.98rem;
   color: #ffffff;
   background: #1f1f1f;
-  border: 0.9px solid #3a3a3a;
-  border-radius: 7.2px;
+  border: 0.72px solid #3a3a3a;
+  border-radius: 5.76px;
   transition: all 0.3s ease;
-  box-shadow: 0 1.8px 5.4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1.44px 4.32px rgba(0, 0, 0, 0.3);
 }
 
 ::ng-deep .filters-section .p-iconfield input:focus {
   border-color: #64B5F6;
-  box-shadow: 0 0 0 2.7px rgba(100, 181, 246, 0.2);
+  box-shadow: 0 0 0 2.16px rgba(100, 181, 246, 0.2);
   outline: none;
 }
 
@@ -99,19 +100,19 @@ h1 {
 }
 
 .voting-paginator {
-  margin-top: 1.35rem;
+  margin-top: 1.08rem;
 }
 
 .votings-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(405px, 1fr));
-  gap: 1.35rem;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.08rem;
   align-items: stretch;
 }
 
 ::ng-deep .voting-card:hover {
-  transform: translateY(-3.6px);
-  box-shadow: 0 7.2px 21.6px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2.88px);
+  box-shadow: 0 5.76px 17.28px rgba(0, 0, 0, 0.5);
   border-color: #64B5F6;
   cursor: pointer;
 }
@@ -119,14 +120,14 @@ h1 {
 ::ng-deep .voting-card .p-card-header {
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #64B5F6;
-  font-size: 1.035rem;
+  font-size: 0.932rem;
   font-weight: 700;
-  padding: 0.9rem 1.125rem;
+  padding: 0.72rem 0.9rem;
 }
 
 ::ng-deep .voting-card .p-card-body {
   background: transparent;
-  padding: 1.125rem;
+  padding: 0.9rem;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -137,21 +138,21 @@ h1 {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.72rem;
 }
 
 .voting-date {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.36rem;
   color: #ffffff;
-  font-size: 0.855rem;
+  font-size: 0.77rem;
   font-weight: 600;
-  padding: 0.45rem 0.675rem;
+  padding: 0.36rem 0.54rem;
   background: rgba(100, 181, 246, 0.15);
-  border-radius: 5.4px;
+  border-radius: 4.32px;
   width: fit-content;
-  border: 0.9px solid rgba(100, 181, 246, 0.3);
+  border: 0.72px solid rgba(100, 181, 246, 0.3);
   transition: all 0.3s ease;
 }
 
@@ -160,76 +161,76 @@ h1 {
 }
 
 .voting-date i {
-  font-size: 0.855rem;
+  font-size: 0.77rem;
   color: #64B5F6;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.675rem;
+  gap: 0.54rem;
   flex: 1 1 auto;
 }
 
 .content-section {
   background: rgba(100, 181, 246, 0.05);
-  padding: 0.675rem;
-  border-radius: 7.2px;
+  padding: 0.54rem;
+  border-radius: 5.76px;
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  border-left: 2.7px solid #64B5F6;
+  border-left: 2.16px solid #64B5F6;
   transition: all 0.3s ease;
 }
 
 .content-section:hover {
   background: rgba(100, 181, 246, 0.1);
-  transform: translateX(3.6px);
+  transform: translateX(2.88px);
 }
 
 .section-label {
   color: #64B5F6;
-  font-size: 0.675rem;
+  font-size: 0.608rem;
   font-weight: 700;
-  margin-bottom: 0.36rem;
+  margin-bottom: 0.288rem;
   text-transform: uppercase;
-  letter-spacing: 0.45px;
+  letter-spacing: 0.36px;
 }
 
 .section-content {
   color: #e8e8e8;
-  font-size: 0.855rem;
-  line-height: 1.44;
+  font-size: 0.77rem;
+  line-height: 1.152;
   word-break: break-word;
   flex: 1;
 }
 
 .title-content {
-  font-size: 0.99rem;
+  font-size: 0.891rem;
   font-weight: 600;
   color: #ffffff;
 }
 
 .voting-card {
-  min-height: 288px;
-  border-radius: 10.8px;
+  min-height: 230.4px;
+  border-radius: 8.64px;
   overflow: hidden;
 }
 
 .card-body {
-  padding: 1.125rem;
+  padding: 0.9rem;
   background: transparent;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.675rem;
+  gap: 0.54rem;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.9rem 1.125rem;
+  padding: 0.72rem 0.9rem;
   background: linear-gradient(90deg, #2f2f2f, #242424);
   color: #64B5F6;
   font-weight: 700;
@@ -237,21 +238,21 @@ h1 {
 
 .loading {
   text-align: center;
-  padding: 2.7rem;
+  padding: 2.16rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.35rem;
+  gap: 1.08rem;
 }
 
 .loading p {
   color: #e0e0e0;
-  font-size: 0.99rem;
+  font-size: 0.891rem;
   font-weight: 500;
 }
 
 ::ng-deep .p-message {
-  margin: 1.8rem;
-  border-radius: 7.2px;
-  box-shadow: 0 3.6px 10.8px rgba(0, 0, 0, 0.3);
+  margin: 1.44rem;
+  border-radius: 5.76px;
+  box-shadow: 0 2.88px 8.64px rgba(0, 0, 0, 0.3);
 }
