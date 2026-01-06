@@ -122,6 +122,29 @@ export class ProceedingsListComponent {
     });
   }
 
+  /**
+   * Odświeża dane z API, pomijając cache
+   */
+  refreshProceedings(): void {
+    this.loading.set(true);
+    this.apiService.refreshProceedings().subscribe({
+      next: (data) => {
+        this.proceedings.set(data);
+        this.proceedings().forEach((p) => {
+          p.formattedDates = String(p.dates || '')
+            .split(/\s+/)
+            .filter(Boolean);
+        });
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Błąd podczas odświeżania posiedzeń');
+        this.loading.set(false);
+        console.error(err);
+      },
+    });
+  }
+
   openProceeding(proceedingNumber: number): void {
     this.router.navigate(['/proceeding', proceedingNumber]);
   }

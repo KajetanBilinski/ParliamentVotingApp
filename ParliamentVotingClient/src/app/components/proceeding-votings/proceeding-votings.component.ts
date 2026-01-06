@@ -125,6 +125,27 @@ export class ProceedingVotingsComponent {
     });
   }
 
+  /**
+   * Odświeża dane z API, pomijając cache
+   */
+  refreshVotings(): void {
+    const num = this.proceedingNumber();
+    if (num > 0) {
+      this.loading.set(true);
+      this.apiService.refreshVotings(num).subscribe({
+        next: (data) => {
+          this.votings.set(data);
+          this.loading.set(false);
+        },
+        error: (err) => {
+          this.error.set('Błąd podczas odświeżania głosowań');
+          this.loading.set(false);
+          console.error(err);
+        },
+      });
+    }
+  }
+
   openVotingDetails(voting: Voting): void {
     this.router.navigate(['/voting', this.proceedingNumber(), voting.votingNumber]);
   }

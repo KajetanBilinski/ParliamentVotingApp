@@ -4,6 +4,12 @@
   margin: 0 auto;
 }
 
+.header-actions {
+  display: flex;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
 h1 {
   text-align: center;
   color: #ffffff;

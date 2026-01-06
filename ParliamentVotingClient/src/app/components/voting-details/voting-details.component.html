@@ -1,11 +1,20 @@
 @if (!loading() && votingDetails()) {
 <div class="details-container">
-  <p-button
-    label="Powrót do głosowań"
-    icon="pi pi-arrow-left"
-    (onClick)="goBack()"
-    severity="secondary"
-  ></p-button>
+  <div class="header-actions">
+    <p-button
+      label="Powrót do głosowań"
+      icon="pi pi-arrow-left"
+      (onClick)="goBack()"
+      severity="secondary"
+    ></p-button>
+    <p-button
+      label="Odśwież dane"
+      icon="pi pi-refresh"
+      severity="info"
+      (onClick)="refreshVotingDetails()"
+      [loading]="loading()"
+    ></p-button>
+  </div>
 
   <div class="header">
     <h1>{{ votingDetails()!.title }}</h1>

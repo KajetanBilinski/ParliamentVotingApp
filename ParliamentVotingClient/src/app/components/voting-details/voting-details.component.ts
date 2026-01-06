@@ -112,6 +112,29 @@ export class VotingDetailsComponent {
     });
   }
 
+  /**
+   * Odświeża dane z API, pomijając cache
+   */
+  refreshVotingDetails(): void {
+    const details = this.votingDetails();
+    if (details) {
+      this.loading.set(true);
+      this.apiService
+        .refreshVotingDetails(details.proceedingNumber, details.votingNumber)
+        .subscribe({
+          next: (data) => {
+            this.votingDetails.set(data);
+            this.loading.set(false);
+          },
+          error: (err) => {
+            this.error.set('Błąd podczas odświeżania szczegółów głosowania');
+            this.loading.set(false);
+            console.error(err);
+          },
+        });
+    }
+  }
+
   isQuorumVoting(): boolean {
     const details = this.votingDetails();
     return details ? details.topic?.toLowerCase().includes('głosowanie kworum') : false;

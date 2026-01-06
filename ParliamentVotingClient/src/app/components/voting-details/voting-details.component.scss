@@ -4,6 +4,12 @@
   margin: 0 auto;
 }
 
+.header-actions {
+  display: flex;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
 ::ng-deep .p-button:hover {
   background: linear-gradient(135deg, #42A5F5, #2196F3);
   transform: translateY(-1.8px);
