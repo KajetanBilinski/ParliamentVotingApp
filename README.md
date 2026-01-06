@@ -1,10 +1,6 @@
 # ParliamentVotingApp
 
-A web application for browsing and analyzing votings of the Polish Parliament (Sejm). The system consists of an ASP.NET Core backend and an Angular frontend application using the PrimeNG library.
-
-## Project Description
-
-ParliamentVotingApp is a web application that enables browsing and analyzing parliamentary votings. The system use public Sejm API (`api.sejm.gov.pl`), stores it in a MariaDB database, and provides access through its own REST API to angular website.
+A web application for browsing and analyzing votings of the Polish Parliament (Sejm API `api.sejm.gov.pl`). The system consists of an ASP.NET Core backend and an Angular frontend application using the PrimeNG library.
 
 ## Architecture
 
@@ -65,9 +61,8 @@ The system uses MariaDB with the following tables:
 
 ### Requirements
 - **.NET 10.0 SDK**
-- **Node.js 18+** (with npm 11.6.2+)
-- **MySQL 12.1.0+**
-- **Angular CLI 21.0.4+**
+- **MariaDB 12.1.0**
+- **Angular CLI 21.0.4**
 
 ### Backend
 
