@@ -111,10 +111,6 @@ export class VotingDetailsComponent {
       },
     });
   }
-
-  /**
-   * Odświeża dane z API, pomijając cache
-   */
   refreshVotingDetails(): void {
     const details = this.votingDetails();
     if (details) {

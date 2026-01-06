@@ -45,9 +45,6 @@ export class ParliamentApiService {
     );
   }
 
-  /**
-   * Odświeża cache dla wszystkich posiedzeń
-   */
   refreshProceedings(): Observable<Proceeding[]> {
     return this.cacheService.refresh(
       'proceedings_all',
@@ -56,9 +53,6 @@ export class ParliamentApiService {
     );
   }
 
-  /**
-   * Odświeża cache dla głosowań danego posiedzenia
-   */
   refreshVotings(proceedingNumber: number): Observable<Voting[]> {
     return this.cacheService.refresh(
       `votings_${proceedingNumber}`,
@@ -66,10 +60,6 @@ export class ParliamentApiService {
       true
     );
   }
-
-  /**
-   * Odświeża cache dla szczegółów głosowania
-   */
   refreshVotingDetails(proceedingNumber: number, votingNumber: number): Observable<VotingDetails> {
     return this.cacheService.refresh(
       `details_${proceedingNumber}_${votingNumber}`,
@@ -78,10 +68,6 @@ export class ParliamentApiService {
       true
     );
   }
-
-  /**
-   * Czyści cały cache
-   */
   clearCache(): void {
     this.cacheService.clear();
   }

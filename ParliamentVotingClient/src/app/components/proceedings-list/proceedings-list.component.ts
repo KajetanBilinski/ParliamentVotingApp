@@ -71,8 +71,6 @@ export class ProceedingsListComponent {
         });
       });
     }
-
-    // Filter by proceeding number if search term is provided
     if (searchNum) {
       filtered = filtered.filter((p) => p.proceedingNumber.toString() === searchNum);
     }
@@ -121,10 +119,6 @@ export class ProceedingsListComponent {
       },
     });
   }
-
-  /**
-   * Odświeża dane z API, pomijając cache
-   */
   refreshProceedings(): void {
     this.loading.set(true);
     this.apiService.refreshProceedings().subscribe({

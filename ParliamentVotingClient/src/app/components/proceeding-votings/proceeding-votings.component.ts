@@ -125,9 +125,6 @@ export class ProceedingVotingsComponent {
     });
   }
 
-  /**
-   * Odświeża dane z API, pomijając cache
-   */
   refreshVotings(): void {
     const num = this.proceedingNumber();
     if (num > 0) {
