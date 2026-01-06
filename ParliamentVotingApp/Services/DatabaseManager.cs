@@ -93,6 +93,7 @@ public class DatabaseManager : IDatabaseManager
             .ToList();
 
         var votesDto = new List<VoteResponseDTO>(groupedByMp.Count);
+        var hasMultipleOptions = optionIndexNameMap.Count > 0;
 
         foreach (var grp in groupedByMp)
         {
@@ -114,6 +115,14 @@ public class DatabaseManager : IDatabaseManager
             var mainVoteType = singleEntry != null
                 ? singleEntry.VoteType
                 : (listVotes != null && listVotes.Count > 0 ? VoteType.VOTE_VALID : VoteType.NO_VOTE);
+
+            if (hasMultipleOptions && listVotes == null && singleEntry != null)
+            {
+                listVotes = optionIndexNameMap.Values.ToDictionary(
+                    optionName => optionName,
+                    optionName => singleEntry.VoteType
+                );
+            }
 
             votesDto.Add(new VoteResponseDTO
             {
@@ -148,6 +157,38 @@ public class DatabaseManager : IDatabaseManager
                                 )
                         )
                 );
+
+            var votesWithoutOptions = voteResponsesDb
+                .Where(vr => vr.OptionIndex == null)
+                .GroupBy(vr => new { vr.ClubName, vr.FirstName, vr.SecondName, vr.LastName, vr.VoteType })
+                .Select(g => g.First())
+                .ToList();
+
+            if (votesWithoutOptions.Count > 0 && optionIndexNameMap.Count > 0)
+            {
+                foreach (var vote in votesWithoutOptions)
+                {
+                    if (!clubListVotes.ContainsKey(vote.ClubName))
+                    {
+                        clubListVotes[vote.ClubName] = new Dictionary<string, Dictionary<VoteType, int>>();
+                    }
+
+                    foreach (var optionName in optionIndexNameMap.Values)
+                    {
+                        if (!clubListVotes[vote.ClubName].ContainsKey(optionName))
+                        {
+                            clubListVotes[vote.ClubName][optionName] = new Dictionary<VoteType, int>();
+                        }
+
+                        if (!clubListVotes[vote.ClubName][optionName].ContainsKey(vote.VoteType))
+                        {
+                            clubListVotes[vote.ClubName][optionName][vote.VoteType] = 0;
+                        }
+
+                        clubListVotes[vote.ClubName][optionName][vote.VoteType]++;
+                    }
+                }
+            }
         }
 
         var response = new VotingDetailsResponse

@@ -4,6 +4,12 @@
   margin: 0 auto;
 }
 
+.header-actions {
+  display: flex;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
 .header-with-navigation {
   display: flex;
   align-items: center;

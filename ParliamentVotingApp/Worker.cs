@@ -22,7 +22,7 @@ public class Worker : BackgroundService
         using var scope = _scopeFactory.CreateScope();
         var _pvBackendAPI = scope.ServiceProvider.GetRequiredService<IPVBackendAPI>();
         var _databaseManager = scope.ServiceProvider.GetRequiredService<IDatabaseManager>();
-        var term = await _pvBackendAPI.GetCurrentTerm(); 
+        //var term = await _pvBackendAPI.GetCurrentTerm(); 
         //var proceedingsAndVotingsDB = await _databaseManager.GetAllProceedingAndVotingNumbers();
         //var proceedings = await _pvBackendAPI.GetProceedings(term!);
         //if (proceedings == null) return;

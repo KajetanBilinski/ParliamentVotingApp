@@ -71,8 +71,6 @@ export class ProceedingsListComponent {
         });
       });
     }
-
-    // Filter by proceeding number if search term is provided
     if (searchNum) {
       filtered = filtered.filter((p) => p.proceedingNumber.toString() === searchNum);
     }
@@ -116,6 +114,25 @@ export class ProceedingsListComponent {
       },
       error: (err) => {
         this.error.set('Błąd podczas ładowania posiedzeń');
+        this.loading.set(false);
+        console.error(err);
+      },
+    });
+  }
+  refreshProceedings(): void {
+    this.loading.set(true);
+    this.apiService.refreshProceedings().subscribe({
+      next: (data) => {
+        this.proceedings.set(data);
+        this.proceedings().forEach((p) => {
+          p.formattedDates = String(p.dates || '')
+            .split(/\s+/)
+            .filter(Boolean);
+        });
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Błąd podczas odświeżania posiedzeń');
         this.loading.set(false);
         console.error(err);
       },

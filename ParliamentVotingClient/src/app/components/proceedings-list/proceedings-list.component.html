@@ -1,10 +1,19 @@
 <div class="proceedings-container">
+  <div class="header-actions">
     <p-button
-    label="Powrót do strony startowej"
-    icon="pi pi-arrow-left"
-    severity="secondary"
-    (onClick)="goToHomePage()"
-  ></p-button>
+      label="Powrót do strony startowej"
+      icon="pi pi-arrow-left"
+      severity="secondary"
+      (onClick)="goToHomePage()"
+    ></p-button>
+    <p-button
+      label="Odśwież dane"
+      icon="pi pi-refresh"
+      severity="info"
+      (onClick)="refreshProceedings()"
+      [loading]="loading()"
+    ></p-button>
+  </div>
   <h1>Lista Posiedzeń Sejmu</h1>
 
   <div class="search-row">
