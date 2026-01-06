@@ -1,20 +1,11 @@
 @if (!loading() && votingDetails()) {
 <div class="details-container">
-  <div class="header-actions">
-    <p-button
-      label="Powrót do głosowań"
-      icon="pi pi-arrow-left"
-      (onClick)="goBack()"
-      severity="secondary"
-    ></p-button>
-    <p-button
-      label="Odśwież dane"
-      icon="pi pi-refresh"
-      severity="info"
-      (onClick)="refreshVotingDetails()"
-      [loading]="loading()"
-    ></p-button>
-  </div>
+  <p-button
+    label="Powrót do głosowań"
+    icon="pi pi-arrow-left"
+    (onClick)="goBack()"
+    severity="secondary"
+  ></p-button>
 
   <div class="header">
     <h1>{{ votingDetails()!.title }}</h1>
@@ -191,12 +182,6 @@
           '%)'
         "
       >
-        @if (getVoteStatistics().absent > 0 && shouldShowLabel(getVoteStatistics().absent,
-        getVoteStatistics().total)) {
-        <span class="vote-label">
-          {{ getPercentage(getVoteStatistics().absent, getVoteStatistics().total) }}%
-        </span>
-        }
       </div>
       }
     </div>
@@ -248,38 +233,6 @@
         }
       </div>
       <div class="vote-chart">
-        <div
-          class="vote-bar yes"
-          [style.width.%]="
-            getBarWidth(
-              getVoteStatisticsForOption(option).present,
-              getVoteStatisticsForOption(option).present + getVoteStatisticsForOption(option).absent
-            )
-          "
-          [title]="
-            'Za: ' +
-            getVoteStatisticsForOption(option).yes +
-            ' (' +
-            getPercentage(
-              getVoteStatisticsForOption(option).yes,
-              getVoteStatisticsForOption(option).total
-            ) +
-            '%)'
-          "
-        >
-          @if (getVoteStatisticsForOption(option).yes > 0 &&
-          shouldShowLabel(getVoteStatisticsForOption(option).yes,
-          getVoteStatisticsForOption(option).total)) {
-          <span class="vote-label">
-            {{
-              getPercentage(
-                getVoteStatisticsForOption(option).yes,
-                getVoteStatisticsForOption(option).total
-              )
-            }}%
-          </span>
-          }
-        </div>
         <div
           class="vote-bar yes"
           [style.width.%]="
@@ -395,18 +348,6 @@
             '%)'
           "
         >
-          @if (getVoteStatisticsForOption(option).absent > 0 &&
-          shouldShowLabel(getVoteStatisticsForOption(option).absent,
-          getVoteStatisticsForOption(option).total)) {
-          <span class="vote-label">
-            {{
-              getPercentage(
-                getVoteStatisticsForOption(option).absent,
-                getVoteStatisticsForOption(option).total
-              )
-            }}%
-          </span>
-          }
         </div>
       </div>
       <div class="vote-legend">

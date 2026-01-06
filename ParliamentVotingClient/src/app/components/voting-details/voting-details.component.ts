@@ -182,6 +182,7 @@ export class VotingDetailsComponent {
     const firstVoteWithList = details.votes.find(
       (v) => v.listVotes && Object.keys(v.listVotes).length > 0
     );
+
     if (firstVoteWithList && firstVoteWithList.listVotes) {
       return Object.keys(firstVoteWithList.listVotes);
     }
@@ -268,11 +269,10 @@ export class VotingDetailsComponent {
       return { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: 0 };
     }
 
-    const stats = { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: 0 };
+    const stats = { yes: 0, no: 0, abstain: 0, present: 0, absent: 0, total: details.totalVoted };
 
     details.votes.forEach((vote) => {
       if (vote.listVotes && vote.listVotes[optionName]) {
-        stats.total++;
         const voteText = vote.listVotes[optionName].toLowerCase();
         if (voteText.includes('za') || voteText.includes('yes')) {
           stats.yes++;
