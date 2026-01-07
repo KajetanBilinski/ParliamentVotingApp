@@ -43,6 +43,7 @@ The system consists of three main components:
 #### REST API
 `ParliamentVotingsController` provides the following endpoints:
 
+- `GET /api/home` - Home page with statistics and search options
 - `GET /api/proceedings` - List of all proceedings
 - `GET /api/votings/{proceedingNumber}` - Votings for a specific proceeding
 - `GET /api/voting/{proceedingNumber}/{votingNumber}` - Details of a single voting 
