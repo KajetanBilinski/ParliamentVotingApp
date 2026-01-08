@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ParliamentVotingApp.Contracts;
-using ParliamentVotingApp.Models.DTO;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ParliamentVotingApp.Controllers;
 
@@ -30,7 +25,7 @@ public class ParliamentVotingsController : ControllerBase
             p.ProceedingNumber,
             p.Title,
             p.Dates
-        }).OrderByDescending(p=>p.ProceedingNumber);
+        }).OrderByDescending(p => p.ProceedingNumber);
         return Ok(filtred);
     }
 
@@ -38,9 +33,9 @@ public class ParliamentVotingsController : ControllerBase
     public async Task<IActionResult> GetAllVotings(int proceedingNumber)
     {
         var proceedings = await _databaseManager.GetAllProceedings();
-        if(proceedings==null)return NotFound();
+        if(proceedings == null) return NotFound();
         var votings = await _databaseManager.GetAllVotingsForProceeding(proceedingNumber);
-        if (votings == null) return NotFound();
+        if(votings == null) return NotFound();
         var filtred = votings.Select(v => new
         {
             v.Date,
@@ -48,10 +43,10 @@ public class ParliamentVotingsController : ControllerBase
             v.Description,
             v.Topic,
             v.VotingNumber,
-            ProceedingNumber=proceedingNumber,
+            ProceedingNumber = proceedingNumber,
             v.Adopted,
-            ShowAdopted = v.VotingOptions.Count==0,
-        }).OrderBy(v=>v.VotingNumber);
+            ShowAdopted = v.VotingOptions.Count == 0,
+        }).OrderBy(v => v.VotingNumber);
         return Ok(filtred);
     }
 
@@ -62,12 +57,12 @@ public class ParliamentVotingsController : ControllerBase
     }
 
     [HttpGet("details")]
-    public async Task<IActionResult> GetAllVotingsWithText([FromQuery]string text)
+    public async Task<IActionResult> GetAllVotingsWithText([FromQuery] string text)
     {
         var proceedings = await _databaseManager.GetAllProceedings();
-        if (proceedings == null) return NotFound();
+        if(proceedings == null) return NotFound();
         var votings = await _databaseManager.GetAllVotingsWithText(text);
-        if (votings == null) return NotFound();
+        if(votings == null) return NotFound();
         var filtred = votings.Select(v => new
         {
             v.Date,
@@ -87,7 +82,7 @@ public class ParliamentVotingsController : ControllerBase
     {
         var voting = await _databaseManager.GetVotingDetails(proceedingNumber, votingNumber);
         if(voting == null) return NotFound();
-        voting.Votes = voting.Votes.OrderBy(v => v.FirstName).ThenBy(v=>v.LastName).ToList();
+        voting.Votes = voting.Votes.OrderBy(v => v.FirstName).ThenBy(v => v.LastName).ToList();
         var filtred = new
         {
             voting.ProceedingNumber,
@@ -109,7 +104,7 @@ public class ParliamentVotingsController : ControllerBase
             voting.Votes,
             voting.TotalVoted,
             voting.AdoptedList,
-            PrintInfo =voting.PrintsInfo,
+            PrintInfo = voting.PrintsInfo,
 
         };
         return Ok(filtred);

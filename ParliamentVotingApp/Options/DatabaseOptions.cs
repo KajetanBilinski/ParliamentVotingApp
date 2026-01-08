@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ParliamentVotingApp.Options;
+﻿namespace ParliamentVotingApp.Options;
 
 internal class DatabaseOptions
 {

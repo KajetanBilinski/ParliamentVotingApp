@@ -42,14 +42,14 @@ public class DatabaseManager : IDatabaseManager
     public async Task<List<Proceeding>> GetAllProceedings()
     {
         var proceedings = await _context.Proceedings.ToListAsync();
-        if (proceedings == null || proceedings.Count == 0) return new List<Proceeding>();
+        if(proceedings == null || proceedings.Count == 0) return new List<Proceeding>();
         return proceedings;
     }
 
     public async Task<List<VotingDetail>> GetAllVotingsForProceeding(int proceedingNumber)
     {
         var votings = await _context.VotingDetails.Include(v => v.VotingOptions).Where(v => v.Proceeding.ProceedingNumber == proceedingNumber).ToListAsync();
-        if (votings == null || votings.Count == 0) return new List<VotingDetail>();
+        if(votings == null || votings.Count == 0) return new List<VotingDetail>();
         return votings;
     }
 
@@ -64,7 +64,7 @@ public class DatabaseManager : IDatabaseManager
                 EF.Functions.Like(v.Description, $"%{text}%") ||
                 EF.Functions.Like(v.Topic, $"%{text}%"))
             .ToListAsync();
-        if (votings == null || votings.Count == 0) return new List<VotingDetail>();
+        if(votings == null || votings.Count == 0) return new List<VotingDetail>();
         return votings;
     }
 
@@ -82,7 +82,7 @@ public class DatabaseManager : IDatabaseManager
                 v.VotingNumber == votingNumber
             )
             .FirstOrDefaultAsync();
-        if (voting == null)
+        if(voting == null)
             return null;
         var optionIndexNameMap = (voting.VotingOptions ?? Enumerable.Empty<VotingOption>())
             .ToDictionary(o => o.OptionIndex, o => o.OptionName);
@@ -95,14 +95,14 @@ public class DatabaseManager : IDatabaseManager
         var votesDto = new List<VoteResponseDTO>(groupedByMp.Count);
         var hasMultipleOptions = optionIndexNameMap.Count > 0;
 
-        foreach (var grp in groupedByMp)
+        foreach(var grp in groupedByMp)
         {
             var grpList = grp.ToList();
             var listEntries = grpList.Where(x => x.OptionIndex != null).ToList();
             var singleEntry = grpList.FirstOrDefault(x => x.OptionIndex == null);
 
             Dictionary<string, VoteType>? listVotes = null;
-            if (listEntries.Count > 0)
+            if(listEntries.Count > 0)
             {
                 listVotes = listEntries
                     .GroupBy(x => x.OptionIndex!.Value)
@@ -116,7 +116,7 @@ public class DatabaseManager : IDatabaseManager
                 ? singleEntry.VoteType
                 : (listVotes != null && listVotes.Count > 0 ? VoteType.VOTE_VALID : VoteType.NO_VOTE);
 
-            if (hasMultipleOptions && listVotes == null && singleEntry != null)
+            if(hasMultipleOptions && listVotes == null && singleEntry != null)
             {
                 listVotes = optionIndexNameMap.Values.ToDictionary(
                     optionName => optionName,
@@ -137,7 +137,7 @@ public class DatabaseManager : IDatabaseManager
         Dictionary<string, Dictionary<string, Dictionary<VoteType, int>>>? clubListVotes = null;
         var votesWithListVotes = voteResponsesDb.Where(vr => vr.OptionIndex != null).ToList();
 
-        if (votesWithListVotes.Count > 0)
+        if(votesWithListVotes.Count > 0)
         {
             clubListVotes = votesWithListVotes
                 .GroupBy(vr => vr.ClubName)
@@ -164,23 +164,23 @@ public class DatabaseManager : IDatabaseManager
                 .Select(g => g.First())
                 .ToList();
 
-            if (votesWithoutOptions.Count > 0 && optionIndexNameMap.Count > 0)
+            if(votesWithoutOptions.Count > 0 && optionIndexNameMap.Count > 0)
             {
-                foreach (var vote in votesWithoutOptions)
+                foreach(var vote in votesWithoutOptions)
                 {
-                    if (!clubListVotes.ContainsKey(vote.ClubName))
+                    if(!clubListVotes.ContainsKey(vote.ClubName))
                     {
                         clubListVotes[vote.ClubName] = new Dictionary<string, Dictionary<VoteType, int>>();
                     }
 
-                    foreach (var optionName in optionIndexNameMap.Values)
+                    foreach(var optionName in optionIndexNameMap.Values)
                     {
-                        if (!clubListVotes[vote.ClubName].ContainsKey(optionName))
+                        if(!clubListVotes[vote.ClubName].ContainsKey(optionName))
                         {
                             clubListVotes[vote.ClubName][optionName] = new Dictionary<VoteType, int>();
                         }
 
-                        if (!clubListVotes[vote.ClubName][optionName].ContainsKey(vote.VoteType))
+                        if(!clubListVotes[vote.ClubName][optionName].ContainsKey(vote.VoteType))
                         {
                             clubListVotes[vote.ClubName][optionName][vote.VoteType] = 0;
                         }
@@ -246,7 +246,7 @@ public class DatabaseManager : IDatabaseManager
     public async Task AddNewProceeding(ProceedingResponse proceedingResponse)
     {
         var exist = await _context.Proceedings.FirstOrDefaultAsync(p => p.ProceedingNumber == proceedingResponse.ProceedingNumber);
-        if (exist != null) return;
+        if(exist != null) return;
         StringBuilder datesBuilder = new StringBuilder();
         proceedingResponse?.Dates?.ForEach(d => datesBuilder.Append(d.ToString("MM-dd-yyyy")).Append(" "));
         var proceeding = new Proceeding
@@ -261,12 +261,12 @@ public class DatabaseManager : IDatabaseManager
 
     public async Task SaveVotingDetails(VotingDetailsResponse votingDetailsResponse)
     {
-        if (votingDetailsResponse == null)
+        if(votingDetailsResponse == null)
             throw new ArgumentNullException(nameof(votingDetailsResponse));
 
         var proceeding = await _context.Proceedings
             .FirstOrDefaultAsync(p => p.ProceedingNumber == votingDetailsResponse.ProceedingNumber);
-        if (proceeding == null)
+        if(proceeding == null)
             throw new ArgumentNullException(nameof(proceeding));
 
         var votingDetail = new VotingDetail
@@ -291,7 +291,7 @@ public class DatabaseManager : IDatabaseManager
         _context.VotingDetails.Add(votingDetail);
         await _context.SaveChangesAsync();
 
-        if (votingDetailsResponse.ClubVotes != null)
+        if(votingDetailsResponse.ClubVotes != null)
         {
             var clubVotes = votingDetailsResponse.ClubVotes
                 .SelectMany(kvp => kvp.Value.Select(v =>
@@ -307,7 +307,7 @@ public class DatabaseManager : IDatabaseManager
             _context.ClubVotes.AddRange(clubVotes);
         }
 
-        if (votingDetailsResponse.VotingOptions != null)
+        if(votingDetailsResponse.VotingOptions != null)
         {
             var votingOptions = votingDetailsResponse.VotingOptions
                 .Select(option => new VotingOption
@@ -321,17 +321,17 @@ public class DatabaseManager : IDatabaseManager
             _context.VotingOptions.AddRange(votingOptions);
         }
 
-        if (votingDetailsResponse.Votes != null)
+        if(votingDetailsResponse.Votes != null)
         {
             var voteResponses = new List<VoteResponse>();
             var hasOptions = votingDetailsResponse.VotingOptions != null && votingDetailsResponse.VotingOptions.Count > 0;
-            foreach (var vote in votingDetailsResponse.Votes)
+            foreach(var vote in votingDetailsResponse.Votes)
             {
-                if (hasOptions && vote.ListVotes != null && vote.ListVotes.Count > 0)
+                if(hasOptions && vote.ListVotes != null && vote.ListVotes.Count > 0)
                 {
-                    foreach (var kvp in vote.ListVotes)
+                    foreach(var kvp in vote.ListVotes)
                     {
-                        if (!int.TryParse(kvp.Key, out var optionIndex))
+                        if(!int.TryParse(kvp.Key, out var optionIndex))
                         {
                             continue;
                         }
@@ -363,7 +363,7 @@ public class DatabaseManager : IDatabaseManager
                 }
             }
 
-            if (voteResponses.Count > 0)
+            if(voteResponses.Count > 0)
                 _context.VoteResponses.AddRange(voteResponses);
         }
 
