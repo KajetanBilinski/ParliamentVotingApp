@@ -5,7 +5,7 @@ namespace ParliamentVotingApp.Models.DB;
 public class Proceeding
 {
     [Key]
-    public long IdProceeding { get; set; } 
+    public long IdProceeding { get; set; }
 
     public int ProceedingNumber { get; set; }
     public string? Title { get; set; }
