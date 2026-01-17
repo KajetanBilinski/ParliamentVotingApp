@@ -1,0 +1,451 @@
+:host {
+  display: block;
+}
+
+.home-container {
+  padding: 1.944rem 1.296rem;
+  max-width: 1008px;
+  margin: 0 auto;
+  min-height: calc(100vh - 3.888rem);
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 2.592rem;
+
+  h1 {
+    font-size: 2.187rem;
+    font-weight: 700;
+    color: #64B5F6;
+    margin: 0;
+    text-shadow: 0 1.296px 5.184px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.592rem;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 1.944rem;
+  }
+}
+
+.calendar-section,
+.action-section,
+.stats-section {
+  margin-bottom: 1.944rem;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.648rem;
+  margin-bottom: 1.296rem;
+  padding-bottom: 0.648rem;
+  border-bottom: 0.72px solid rgba(100, 181, 246, 0.3);
+
+  i {
+    font-size: 1.215rem;
+    color: #64B5F6;
+  }
+
+  h2 {
+    color: #e0e0e0;
+    font-size: 0.972rem;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
+.action-section {
+  p {
+    color: #b0b0b0;
+    font-size: 0.729rem;
+    line-height: 1.152;
+    margin-bottom: 0.972rem;
+  }
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.648rem;
+  min-height: 288px;
+  max-height: 324px;
+  overflow: hidden;
+  flex: 1;
+}
+
+.calendar-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #e0e0e0;
+
+  i {
+    font-size: 1.094rem;
+    color: #64B5F6;
+  }
+}
+
+.stats-section {
+  .stats-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.972rem;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.324rem;
+    padding: 0.972rem;
+    background: rgba(100, 181, 246, 0.05);
+    border-left: 2.16px solid #64B5F6;
+    border-radius: 2.88px;
+
+    .stat-label {
+      font-size: 0.689rem;
+      color: #b0b0b0;
+      text-transform: uppercase;
+      letter-spacing: 0.36px;
+    }
+
+    .stat-value {
+      font-size: 1.094rem;
+      font-weight: 700;
+      color: #64B5F6;
+    }
+  }
+}
+  ::ng-deep .calendar-section {
+    .p-datepicker-select-month
+    {
+      font-size: 0.891rem;
+    }
+    .p-datepicker-select-year
+    {
+      font-size: 0.891rem;
+    }
+   
+  }
+::ng-deep .calendar-section .p-datepicker {
+  background: transparent;
+  border-radius: 5.184px;
+  padding: 0.36rem;
+  font-size: 1.44rem;
+
+  table td {
+    padding: 0.0972rem;
+    width: 2.16rem;
+    height: 2.16rem;
+    font-size: 2.16rem;
+    > span {
+      border-radius: 70%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 0.81rem;
+
+      &:hover {
+        background: rgba(100, 181, 246, 0.2);
+      }
+
+      &.has-proceeding {
+        background: #64B5F6;
+        color: white;
+        font-weight: bold;
+        box-shadow: 0 0 5.76px rgba(100, 181, 246, 0.5);
+
+        &:hover {
+          background: #42A5F5;
+          transform: scale(1.1);
+          box-shadow: 0 0 8.64px rgba(100, 181, 246, 0.8);
+          cursor: pointer;
+        }
+      }
+    }
+
+    &.p-datepicker-today > span {
+      background: rgba(100, 181, 246, 0.3);
+      border: 2.16px solid #64B5F6;
+      font-weight: bold;
+    }
+  }
+}
+
+::ng-deep .calendar-section .calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+
+  &.has-proceeding {
+    background-color: #64B5F6;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 5.76px rgba(100, 181, 246, 0.5);
+    cursor: pointer;
+
+    &:hover {
+      background: #42A5F5;
+      box-shadow: 0 0 8.64px rgba(100, 181, 246, 0.8);
+    }
+  }
+
+  &.range-start {
+    border-radius: 50% 0 0 50%;
+  }
+
+  &.range-middle {
+    border-radius: 0;
+  }
+
+  &.range-end {
+    border-radius: 0 50% 50% 0;
+  }
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.648rem;
+}
+
+::ng-deep .search-form .p-iconfield {
+  width: 100%;
+
+  input {
+    width: 100%;
+    padding: 0.486rem 0.648rem 0.486rem 1.782rem;
+    color: #ffffff;
+    background: #1f1f1f;
+    border: 0.72px solid #3a3a3a;
+    border-radius: 5.184px;
+    transition: all 0.3s ease;
+    box-shadow: 0 1.296px 3.888px rgba(0, 0, 0, 0.3);
+
+    &:focus {
+      border-color: #64B5F6;
+      box-shadow: 0 0 0 1.944px rgba(100, 181, 246, 0.2);
+      outline: none;
+    }
+  }
+
+  .p-inputicon {
+    color: #64B5F6;
+  }
+}
+
+// Dialog z wynikami wyszukiwania
+::ng-deep .search-results-dialog {
+  .p-dialog-header {
+    background: linear-gradient(135deg, #1976d2, #1565c0);
+    padding: 0.972rem 1.296rem;
+    border-bottom: 1.944px solid #64B5F6;
+  }
+
+  .p-dialog-content {
+    background: #1a1a1a;
+    padding: 1.296rem;
+  }
+
+  .p-dialog-footer {
+    background: #1a1a1a;
+    padding: 0.972rem 1.296rem;
+    border-top: 0.72px solid #3a3a3a;
+  }
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.648rem;
+
+  i {
+    font-size: 1.296rem;
+    color: white;
+  }
+
+  h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.094rem;
+    font-weight: 700;
+  }
+}
+
+.results-info {
+  display: flex;
+  align-items: center;
+  gap: 0.486rem;
+  padding: 0.648rem 0.972rem;
+  background: rgba(100, 181, 246, 0.1);
+  border: 0.72px solid rgba(100, 181, 246, 0.3);
+  border-radius: 5.184px;
+  margin-bottom: 0.972rem;
+  color: #64B5F6;
+  font-size: 0.802rem;
+
+  i {
+    font-size: 0.972rem;
+  }
+
+  strong {
+    color: #ffffff;
+    font-weight: 700;
+  }
+}
+
+.no-results {
+  text-align: center;
+  padding: 1.944rem 1.296rem;
+  color: #e0e0e0;
+
+  i {
+    font-size: 1.944rem;
+    color: #64B5F6;
+    margin-bottom: 0.648rem;
+  }
+
+  p {
+    font-size: 0.802rem;
+    margin: 0;
+  }
+
+  strong {
+    color: #64B5F6;
+  }
+}
+
+// Tabela wyników
+::ng-deep .search-results-table {
+  background: transparent;
+
+  .p-datatable-header {
+    background: #242424;
+    border: 0.72px solid #3a3a3a;
+    color: #e0e0e0;
+  }
+
+  .p-datatable-thead > tr > th {
+    background: #242424;
+    color: #64B5F6;
+    border: 0.72px solid #3a3a3a;
+    padding: 0.648rem;
+    font-weight: 700;
+    font-size: 0.692rem;
+    text-transform: uppercase;
+    letter-spacing: 0.324px;
+  }
+
+  .p-datatable-tbody > tr {
+    background: #1f1f1f;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      background: linear-gradient(90deg, #2a2a2a, #1f1f1f);
+      border-left: 1.944px solid #64B5F6;
+      box-shadow: 0 1.296px 5.184px rgba(100, 181, 246, 0.2);
+    }
+
+    > td {
+      border: 0.72px solid #3a3a3a;
+      padding: 0.648rem;
+      color: #e0e0e0;
+    }
+  }
+
+  .p-paginator {
+    background: #242424;
+    border: 0.72px solid #3a3a3a;
+    padding: 0.648rem;
+    color: #e0e0e0;
+
+    .p-paginator-pages .p-paginator-page {
+      color: #e0e0e0;
+      min-width: 1.62rem;
+      height: 1.62rem;
+      border-radius: 3.888px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #64B5F6;
+        color: white;
+      }
+
+      &.p-highlight {
+        background: #1976d2;
+        color: white;
+        border-color: #1976d2;
+      }
+    }
+
+    .p-dropdown {
+      background: #1f1f1f;
+      border: 0.72px solid #3a3a3a;
+      color: #e0e0e0;
+    }
+
+    .p-paginator-icon {
+      color: #64B5F6;
+    }
+  }
+}
+
+.voting-title {
+  font-size: 0.620rem;
+  line-height: 0.936;
+}
+
+.voting-number {
+  background: #2a2a2a;
+  color: #64B5F6;
+  padding: 0.259rem 0.518rem;
+  border-radius: 3.888px;
+  font-weight: 700;
+  font-size: 0.620rem;
+  display: inline-block;
+  border: 0.72px solid #3a3a3a;
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 1.458rem;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  ::ng-deep .search-results-dialog {
+    width: 95vw !important;
+  }
+
+  ::ng-deep .search-results-table {
+    .p-datatable-thead > tr > th,
+    .p-datatable-tbody > tr > td {
+      padding: 0.324rem;
+      font-size: 0.620rem;
+    }
+  }
+}

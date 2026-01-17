@@ -1,0 +1,92 @@
+<div class="proceedings-container">
+  <div class="header-actions">
+    <p-button
+      label="Powrót do strony startowej"
+      icon="pi pi-arrow-left"
+      severity="secondary"
+      (onClick)="goToHomePage()"
+    ></p-button>
+    <p-button
+      label="Odśwież dane"
+      icon="pi pi-refresh"
+      severity="info"
+      (onClick)="refreshProceedings()"
+      [loading]="loading()"
+    ></p-button>
+  </div>
+  <h1>Lista Posiedzeń Sejmu</h1>
+
+  <div class="search-row">
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchNumber"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Szukaj numeru posiedzenia..."
+      />
+    </p-iconfield>
+
+    <div class="filter-group">
+      <label class="search-label">Filtruj po zakresie dat:</label>
+      <p-datepicker
+        [inputStyle]="{ width: '250px' }"
+        selectionMode="range"
+        [(ngModel)]="dateRange"
+        [showClear]="true"
+        (onClear)="onFilterChange()"
+        (onSelect)="onFilterChange()"
+      ></p-datepicker>
+    </div>
+  </div>
+
+  <div class="proceedings-list">
+    @for (proceeding of paginatedProceedings(); track proceeding.proceedingNumber) {
+    <p-card class="proceeding-card" (dblclick)="openProceeding(proceeding.proceedingNumber)">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <div class="header-left">
+            {{
+              proceeding.proceedingNumber == 0
+                ? 'Planowane posiedzenie'
+                : 'Posiedzenie nr. ' + proceeding.proceedingNumber
+            }}
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="card-body">
+        <div class="dates-section">
+          <div class="dates-header">
+            <i class="pi pi-calendar"></i>
+            <span class="dates-label">Terminy posiedzeń:</span>
+          </div>
+          <div class="dates-grid">
+            @for (d of proceeding.formattedDates; track d) {
+            <div class="date-item">{{ formatDate(d) }}</div>
+            }
+          </div>
+        </div>
+      </div>
+    </p-card>
+    }
+  </div>
+  <div class="pagination-section">
+    <p-paginator
+      [first]="first()"
+      [rows]="rows()"
+      [totalRecords]="getTotalRecords()"
+      [rowsPerPageOptions]="[10, 20, 50]"
+      (onPageChange)="onPageChange($event)"
+    ></p-paginator>
+    @if (loading()) {
+    <div class="loading">
+      <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
+      <p>Ładowanie...</p>
+    </div>
+    } @if (error()) {
+    <p-message severity="error" [text]="error()"></p-message>
+    }
+  </div>
+</div>

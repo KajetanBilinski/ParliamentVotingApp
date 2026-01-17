@@ -1,0 +1,138 @@
+<div class="votings-container">
+  <div class="header-actions">
+    <p-button
+      label="Powrót do listy posiedzeń"
+      icon="pi pi-arrow-left"
+      (onClick)="goBack()"
+      severity="secondary"
+    ></p-button>
+    <p-button
+      label="Odśwież dane"
+      icon="pi pi-refresh"
+      severity="info"
+      (onClick)="refreshVotings()"
+      [loading]="loading()"
+    ></p-button>
+  </div>
+
+  <div class="header-with-navigation">
+    <p-button
+      icon="pi pi-chevron-left"
+      (onClick)="goToProceeding('previous')"
+      [disabled]="!hasProceeding('previous')"
+      severity="secondary"
+      [rounded]="true"
+      title="Poprzednie posiedzenie"
+    ></p-button>
+
+    <h1>Głosowania - Posiedzenie nr {{ proceedingNumber() }}</h1>
+
+    <p-button
+      icon="pi pi-chevron-right"
+      (onClick)="goToProceeding('next')"
+      [disabled]="!hasProceeding('next')"
+      severity="secondary"
+      [rounded]="true"
+      title="Następne posiedzenie"
+    ></p-button>
+  </div>
+
+  <div class="filters-section">
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchVotingNumber"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Szukaj numeru głosowania..."
+      />
+    </p-iconfield>
+
+    <p-select
+      [(ngModel)]="selectedStatus"
+      [options]="statusOptions"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Status głosowania"
+      (onChange)="onFilterChange()"
+      [style]="{ width: '220px' }"
+    ></p-select>
+
+    <p-iconfield iconPosition="left">
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input
+        pInputText
+        type="text"
+        [(ngModel)]="searchText"
+        (ngModelChange)="onFilterChange()"
+        placeholder="Szukaj w treści..."
+      />
+    </p-iconfield>
+  </div>
+
+  <div class="votings-list">
+    @for (voting of paginatedVotings(); track voting.votingNumber) {
+    <p-card class="voting-card" (click)="openVotingDetails(voting)">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <div class="header-left">Głosowanie nr {{ voting.votingNumber }}</div>
+          <div class="header-right">
+            @if (voting.showAdopted) {
+            <p-tag
+              [value]="voting.adopted ? 'Przyjęte' : 'Odrzucone'"
+              [severity]="voting.adopted ? 'success' : 'danger'"
+            ></p-tag>
+            } @else {
+            <p-tag [value]="'Głosowanie wielokrotne'" [severity]="'warn'"></p-tag>
+            }
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="card-body">
+        <div class="voting-date">
+          <i class="pi pi-calendar"></i>
+          <span>{{ formatDate(voting.date) }}</span>
+        </div>
+
+        <div class="content-wrapper">
+          <div class="content-section title-section">
+            <div class="section-label">Tytuł</div>
+            <div class="section-content title-content">{{ voting.title }}</div>
+          </div>
+          <div class="content-section topic-section">
+            <div class="section-label">Temat</div>
+            <div class="section-content">
+              {{ capitalize(voting.topic) || 'Brak' }}
+            </div>
+          </div>
+          <div class="content-section description-section">
+            <div class="section-label">Szczegóły</div>
+            <div class="section-content">
+              {{ capitalize(voting.description) || 'Brak' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+    }
+  </div>
+
+  <p-paginator
+    [rows]="itemsPerPage()"
+    [totalRecords]="filteredVotings().length"
+    [rowsPerPageOptions]="[10, 20, 50]"
+    (onPageChange)="onPageChange($event)"
+    class="voting-paginator"
+  ></p-paginator>
+
+  @if (loading()) {
+  <div class="loading">
+    <p-progressSpinner ariaLabel="Ładowanie"></p-progressSpinner>
+    <p>Ładowanie głosowań...</p>
+  </div>
+  } @if (error()) {
+  <p-message severity="error" [text]="error()"></p-message>
+  }
+</div>

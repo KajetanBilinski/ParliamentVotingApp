@@ -1,0 +1,166 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>Głosowania Sejmowe</h1>
+  </div>
+
+  <div class="main-content">
+    <div class="calendar-section">
+      <div class="section-header">
+        <i class="pi pi-calendar"></i>
+        <h2>Kalendarz Posiedzeń</h2>
+      </div>
+      @if (loading()) {
+      <div class="calendar-loading">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Ładowanie dat posiedzeń...</span>
+      </div>
+      } @else {
+      <div class="calendar-wrapper">
+        <p-datepicker
+          [inline]="true"
+          [showOtherMonths]="false"
+          (onSelect)="onDateSelect($event)"
+          dateFormat="dd.mm.yy"
+          [firstDayOfWeek]="1"
+
+        >
+          <ng-template #date let-date>
+            <span
+              class="calendar-day"
+              [class.has-proceeding]="hasProceeding(date)"
+              [class.range-start]="hasProceeding(date) && !hasPreviousDay(date) && hasNextDay(date)"
+              [class.range-middle]="hasProceeding(date) && hasPreviousDay(date) && hasNextDay(date)"
+              [class.range-end]="hasProceeding(date) && hasPreviousDay(date) && !hasNextDay(date)"
+              >{{ date.day }}</span
+            >
+          </ng-template>
+        </p-datepicker>
+      </div>
+      }
+    </div>
+
+    <div class="right-column">
+      <div class="action-section">
+        <div class="section-header">
+          <i class="pi pi-list"></i>
+          <h2>Przeglądaj posiedzenia</h2>
+        </div>
+        <p>Przejdź do pełnej listy posiedzeń Sejmu</p>
+        <p-button
+          label="Przeglądaj posiedzenia"
+          icon="pi pi-arrow-right"
+          (onClick)="goToProceedings()"
+          severity="info"
+        ></p-button>
+      </div>
+
+      <div class="action-section">
+        <div class="section-header">
+          <i class="pi pi-search"></i>
+          <h2>Znajdź głosowania</h2>
+        </div>
+        <p>Wyszukaj głosowania po tytule lub treści</p>
+        <div class="search-form">
+          <p-iconfield iconPosition="left">
+            <p-inputicon class="pi pi-search"></p-inputicon>
+            <input
+              pInputText
+              type="text"
+              [(ngModel)]="searchText"
+              placeholder="Wpisz szukaną frazę..."
+            />
+          </p-iconfield>
+          <p-button
+            label="Znajdź głosowania"
+            icon="pi pi-arrow-right"
+            (onClick)="searchVotings()"
+            [loading]="searchLoading()"
+            [disabled]="searchText().trim().length === 0"
+            severity="info"
+          ></p-button>
+        </div>
+      </div>
+
+      <div class="stats-section">
+        <div class="section-header">
+          <i class="pi pi-chart-bar"></i>
+          <h2>Statystyki</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">Najlepsza frekwencja posła</span>
+            <span class="stat-value">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Najlepsza frekwencja klubu</span>
+            <span class="stat-value">-</span>
+          </div>
+        </div>
+      </div>
+</div>
+  </div>
+</div>
+
+<p-dialog
+  [(visible)]="showSearchDialog"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  styleClass="search-results-dialog"
+  [style]="{ width: '90vw', maxWidth: '1200px' }"
+>
+  <ng-template pTemplate="header">
+    <div class="dialog-header">
+      <i class="pi pi-search"></i>
+      <h2>Wyniki wyszukiwania</h2>
+    </div>
+  </ng-template>
+
+  @if (foundVotings().length === 0) {
+  <div class="no-results">
+    <i class="pi pi-info-circle"></i>
+    <p>
+      Nie znaleziono głosowań pasujących do frazy: <strong>{{ searchText() }}</strong>
+    </p>
+  </div>
+  } @else {
+  <p-table
+    [value]="foundVotings()"
+    [paginator]="true"
+    [rows]="25"
+    [showCurrentPageReport]="true"
+    class="search-results-table"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 75px">Nr. pos</th>
+        <th style="width: 75px">Nr. głos</th>
+        <th>Tytuł</th>
+        <th style="width: 200px">Data</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-voting>
+      <tr class="voting-row" (click)="viewVotingDetails(voting)">
+        <td>
+          <span class="voting-number">{{ voting.proceedingNumber }}</span>
+        </td>
+        <td>
+          <span class="voting-number">{{ voting.votingNumber }}</span>
+        </td>
+        <td class="voting-title">{{ voting.title }}</td>
+        <td>{{ formatDate(voting.date) }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  }
+
+  <ng-template pTemplate="footer">
+    <p-button
+      label="Zamknij"
+      icon="pi pi-times"
+      (onClick)="closeSearchDialog()"
+      styleClass="p-button-secondary"
+    ></p-button>
+  </ng-template>
+</p-dialog>
